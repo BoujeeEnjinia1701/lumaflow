@@ -1,0 +1,17 @@
+# Card metadata consumed by https://amishchadha.com
+name: LumaFlow
+slug: lumaflow
+area: Water Security
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
+problem: >-
+  Point-of-use disinfection often depends on mercury UV lamps that break.
+budget_usd: 200
+difficulty: 2  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [water-security, open-hardware, cern-ohl-s]
