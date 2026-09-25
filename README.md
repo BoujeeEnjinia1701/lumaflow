@@ -6,30 +6,34 @@
 
 Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
 
+![LumaFlow concept](media/hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+
 ## Problem
 
 Point-of-use disinfection often depends on mercury UV lamps that break.
 
 ## Concept
 
-Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
+Water flows up a PTFE-lined stainless tube (25 mm bore, 200 mm long) while six 275 nm UV-C LEDs at the bottom shine up the water column through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode at the top estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. First estimates: about 40 mJ/cm² at 2 L/min (0.5 gpm) in clear water (90 %/cm UV transmittance), about 22 W while flowing and about 0.3 W on standby. At the NSF/ANSI 55 test water quality (70 %/cm) the dose is only about 14 mJ/cm², and the parts cost of about $217 is over the $200 budget; both gaps are open decisions in the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- UV-C LEDs 265 to 280 nm
-- Aluminum heat sink
-- Quartz sleeve
-- Flow switch
-- UV photodiode
-- LED driver
+- Six 275 nm UV-C LEDs on a water-cooled heat spreader and heat sink
+- 316 stainless reactor tube with a PTFE reflector liner
+- Fused quartz window (6 mm) between the LEDs and the water
+- Hall-effect flow sensor acting as the flow switch
+- UV-C photodiode dose monitor
+- Controller with constant-current LED driver, normally closed shutoff valve, external 24 V adapter
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ## Safety
 
-> UV-C light damages eyes and skin. Interlock the housing so LEDs cannot run when open.
+> UV-C light damages eyes and skin. Interlock the housing so LEDs cannot run when open. LumaFlow is a research and educational prototype, not a certified water treatment device; do not rely on it as the only barrier for drinking water. See the safety section of the [design precis](docs/02-concept.md).
 
 ## Repository layout
 
