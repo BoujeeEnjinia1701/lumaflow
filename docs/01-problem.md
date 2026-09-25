@@ -3,7 +3,7 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (problem, users, context, constraints, prior work with sources)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Record Amish's decisions (LMF-DDR-001) on the first user, dose target and budget; partner stays open
 ---
 
 # LumaFlow problem statement
@@ -55,7 +59,7 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 ## Constraints
 
-- Garage-buildable prototype, about $200 USD in parts, from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps.
+- Garage-buildable prototype, $225 USD or less in parts (budget raised from $200 by Amish, LMF-DDR-001 D2), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps.
 - Fits under a kitchen sink and connects to a standard cold line with push-fit fittings.
 - Wetted parts must be food-contact grade; no printed plastic on the water path.
 - Only safety extra-low voltage (24 V DC) at the unit; mains stays inside a certified external adapter.
@@ -68,8 +72,8 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 - Turbid or iron-rich water without pre-treatment; UV needs clear water to work.
 - Certification testing to NSF/ANSI 55 or the WHO scheme (a later step, not part of this portfolio phase).
 
-## Open questions
+## Decisions and open questions
 
-- Is the first target a well-water household, a community water point or a research bench? This sets the design water quality. Proposed: a well-water household with a sediment pre-filter, awaiting Amish.
-- Should the concept aim at the NSF/ANSI 55 Class A dose at 70 % UV transmittance, which roughly triples the LED count and cost, or at the Class A dose only for clear water (90 % or better) with an alarm below that? Proposed: the second, awaiting Amish (see LMF-PRC-001).
-- Which partner (a well-water association, a university lab or a water charity) could supply real water-quality data and later test the reactor?
+- **First user (decided).** A well-water household with a sediment pre-filter. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D9). This sets the design water quality at 90 %/cm UVT or better.
+- **Dose target (decided).** The Class A dose level of 40 mJ/cm² is the target for clear water (90 %/cm or better), with an alarm and valve closure below it, and the 70 %/cm test condition kept visibly not met. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D1). The TRL 3 calculation (LMF-CAL-001) shows that the concept as drawn delivers only 14.7 to 19.0 mJ/cm² even in clear water; the routes to close that gap are proposals awaiting Amish in `docs/REVIEW.md`.
+- **Partner (open).** Which partner (a well-water association, a university lab or a water charity) could supply real water-quality data and later test the reactor? Proposed, awaiting Amish; the portfolio decision is to pick partners per area later.

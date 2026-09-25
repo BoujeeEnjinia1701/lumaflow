@@ -1,17 +1,17 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Reactor tube,1,"316 stainless tube, 40 mm OD x 3 mm wall x 200 mm, ends faced",Metal supplier or machine shop,15.00,buy,Indicative price
-2 PTFE reflector liner,1,"Virgin PTFE tube, 34 mm OD x 25 mm ID x 200 mm (diffuse UV-C reflector and water channel)",Plastics supplier,14.00,buy,Indicative price; reflectance at 275 nm to be confirmed
-3 Quartz window,1,"UV-grade fused silica disc, 32 mm diameter x 6 mm thick",Optics supplier,14.00,buy,Indicative price; 6 mm set by 8 bar window stress estimate
-4 UV-C LED array,6,"275 nm SMD LED, about 60 mW optical at 350 mA, on one round aluminum-core board",LED distributor,9.00,buy,Indicative price per LED; board included; wavelength proposed awaiting Amish
-5 Heat spreader and heat sink,1,"Aluminum finned sink, 64 x 64 x 30 mm, with stainless contact plate to the wetted cap",Online retailer,8.00,buy,Indicative price
-6 Lower end cap,1,"Machined acetal (POM) or 316 stainless, inlet port 3/8 in, window seat, EPDM O-rings",Machine shop,10.00,make,Indicative material and machining; food-contact grade required
-7 Upper end cap,1,"Machined acetal (POM) or 316 stainless, outlet port 3/8 in, sensor port with small quartz window, EPDM O-rings",Machine shop,10.00,make,Indicative material and machining; food-contact grade required
-8 Hall-effect flow sensor,1,"Food-grade body, about 0.3 to 6 L/min, pulse output",Online retailer,8.00,buy,Indicative price; doubles as flow switch
-9 UV-C photodiode and amplifier,1,"SiC or AlGaN UV-C photodiode (TO-46) with transimpedance amplifier",Sensor distributor,20.00,buy,Indicative price
-10 Controller and LED driver,1,"Microcontroller, 350 mA constant-current buck driver, amplifier input, valve MOSFET, buzzer and status LED outputs",Self-assembled from modules,16.00,buy,Indicative price; module-based at TRL 2
-11 Solenoid shutoff valve,1,"24 V DC normally closed, food-grade, 3/8 in push-fit",Online retailer,12.00,buy,Indicative price; closes on alarm or power loss
-12 24 V power adapter,1,"24 V DC, 1.25 A (30 W), safety-certified external adapter",Electronics distributor,10.00,buy,Indicative price; only mains-voltage part
-13 Electronics enclosure,1,"3D-printed PETG with lid reed-switch interlock, light pipe and cable glands",Self,6.00,make,Material and switch cost
-14 Wall bracket,1,"Folded steel or printed backplate with two clamp rings",Self,5.00,make,Indicative price
-15 Fittings and tubing,1,"3/8 in push-fit fittings, 1 m food-grade tubing, tee for the cold line, flow restrictor 2 L/min",Plumbing supplier,10.00,buy,Indicative price
-16 Hardware and consumables,1,"Screws, wire, thermal paste, PTFE tape",Self,5.00,buy,Not modeled; indicative price
+1 Reactor tube,1,"316 stainless tube, 40 mm OD x 3 mm wall x 200 mm, ends faced square for face O-rings",Metals distributor (cut to length) or machine shop,15.00,buy,Estimate for a cut length from stock; single unit
+2 PTFE liner and top disc,1,"Virgin PTFE tube 34 mm OD x 25 mm ID x 224 mm (tube length plus 24 mm into the upper cap), 34 mm x 3 mm top disc with 8 mm hole, outlet hole 7 mm",Engineering plastics supplier,16.00,buy,Estimate; wetted reflectance at 275 nm assumed 0.80 in LMF-CAL-001 and to be measured
+3 Quartz window,1,"UV-grade fused silica (JGS1 class) disc, 32 mm diameter x 6 mm, both faces polished",Optics supplier (catalog window),14.00,buy,Estimate; 6 mm sized in LMF-CAL-001 [G4]
+4 UV-C LED array,6,"275 nm SMD LED (3535 class), about 60 mW optical at 350 mA and about 6.2 V; price per LED, round 34 mm aluminum-core board included",UV-C LED distributor,9.00,buy,Estimate per LED; the largest cost line; output bin must be confirmed
+5 Heat sink and spreader ring,1,"Aluminum finned sink 64 x 64 x 30 mm (7 fins), 60 mm OD x 3 mm aluminum spreader ring, two 0.5 mm thermal pads",Online electronics retailer,9.00,buy,Estimate; ring cut from plate
+6 Lower end cap,1,"316 stainless, 60 mm diameter x 30 mm, LED aperture 26 mm, window pocket and seat, 25 mm bore, 3/8 in inlet port, 4 rod holes, EPDM O-rings",Online CNC machining service or machine shop,28.00,make,Estimate for one part from 316 bar; stainless chosen for UV-C exposure and the water-cooled heat path
+7 Upper end cap,1,"Acetal (POM) food-contact grade, 60 mm diameter x 30 mm, liner pocket, 8 mm detector bore, outlet boss for the 316 insert, 4 rod holes, EPDM O-rings",Online CNC machining service or machine shop,12.00,make,Estimate; sees no UV-C because the PTFE liner and top disc and the 316 insert shield it
+8 Hall-effect flow sensor,1,"Food-grade body, 3/8 in, about 0.3 to 6 L/min, pulse output (about 7.5 Hz per L/min assumed)",Online retailer (sensor module),8.00,buy,Estimate; pressure drop and K factor to confirm from the datasheet
+9 UV-C photodiode and amplifier,1,"SiC UV-C photodiode (TO-46, about 0.06 mm2) with transimpedance amplifier, 8 mm x 3 mm quartz sensor window",Sensor distributor,22.00,buy,Estimate; includes the sensor window
+10 Controller and LED driver,1,"Microcontroller module, 350 mA constant-current buck driver, amplifier input, valve MOSFET, buzzer and status LED outputs, 24 V input fuse",Electronics distributor (modules),16.00,buy,Estimate; module-based with no custom PCB (R16)
+11 Solenoid shutoff valve,1,"24 V DC normally closed, food-grade, 3/8 in push-fit, about 0.2 A",Online retailer (plumbing solenoid),12.00,buy,Estimate; flow coefficient to confirm (Kv 0.25 assumed)
+12 24 V power adapter,1,"24 V DC, 1.25 A (30 W), safety-certified external adapter, no-load draw 0.1 W or less",Electronics distributor,10.00,buy,Estimate; the only mains-voltage part
+13 Electronics enclosure,1,"3D-printed PETG with lid reed-switch interlock, light pipe and cable gland",Self (printed),6.00,make,Filament plus switch and gland
+14 Wall bracket,1,"Printed or folded steel backplate with two clamp rings and an enclosure shelf",Self (printed or folded),5.00,make,Estimate
+15 Fittings and outlet insert,1,"3/8 in push-fit fittings, 1 m food-grade tube (1/4 in bore), cold-line tee, 2 L/min flow restrictor, 316 outlet port insert",Plumbing supplier,14.00,buy,Estimate; the 316 insert keeps UV-C off the acetal cap
+16 Tie rods and hardware,1,"Four M4 x 270 mm 316 threaded rods with nuts and washers, screws, wire, thermal paste",Fastener supplier and self,8.00,buy,Estimate
