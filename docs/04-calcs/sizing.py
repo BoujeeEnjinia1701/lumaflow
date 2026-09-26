@@ -1,4 +1,4 @@
-"""LumaFlow sizing calculations for LMF-CAL-001 (TRL 3).
+"""LumaFlow sizing calculations for LMF-CAL-001 v0.2 (TRL 3, design as revised by LMF-DDR-002).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md, each tagged [A1], [B2] ...
@@ -11,8 +11,6 @@ All values are first-principles estimates for a paper proof of concept.
 """
 import csv
 import math
-import os
-import subprocess
 import sys
 from pathlib import Path
 
@@ -23,11 +21,6 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "cad" / "src"))
 from model import PARAMS as P, levels, build_parts, build  # noqa: E402
 
-STUDY_BORE = os.environ.get("LMF_BORE")      # bore study (section J6): rerun sections A and B with a larger bore
-if STUDY_BORE:
-    b = float(STUDY_BORE)
-    P.update(bore_d=b, liner_od=b + 9, tube_od=b + 15, aperture_d=b + 1, win_d=b + 7,
-             led_pcr=min(8 + (b - 25) / 3, b / 2 - 4))
 L = levels()
 OUT = {}
 
@@ -44,7 +37,7 @@ def head(title):
 
 
 # ---------------------------------------------------------------- assumptions
-Q_LPM = 2.0                       # design flow, L/min (R1)
+Q_LPM = 1.2                       # design flow, L/min (R1), set by the restrictor (LMF-DDR-002)
 T_WATER, T_AIR = 25.0, 30.0       # R10 thermal case, degC
 RHO, MU20, MU5 = 998.0, 1.002e-3, 1.52e-3   # water density kg/m3, viscosity Pa s at 20 and 5 degC
 CP_W = 4180.0                     # J/(kg K)
@@ -53,7 +46,7 @@ ETA_DRV, P_VALVE, P_CTRL, ETA_AD = 0.90, 4.8, 0.6, 0.88
 P_SENSE_SB, P_MCU_SB, P_AD_NL, ETA_AD_LIGHT = 0.075, 0.005, 0.10, 0.70
 DRAWS, L_DAY, RUNON = 20, 15.0, 5.0
 N_QUARTZ, N_WATER = 1.496, 1.372  # refractive indices near 275 nm
-R_PTFE, R_STEEL, R_BOTTOM = 0.80, 0.30, 0.10   # wetted diffuse reflectances (assumed)
+R_PTFE, R_STEEL, R_BOTTOM = 0.95, 0.30, 0.10   # wetted diffuse reflectances (assumed); 0.95 high-reflectance PTFE
 D10 = 20.0                        # challenge organism, mJ/cm2 per log (MS2-like), taken as valid at 275 nm
 NPHOT = 600_000
 DOSE_T = 40.0                     # mJ/cm2, R2 and R3
@@ -142,7 +135,8 @@ def trace(uvt, r_ptfe=R_PTFE, n=NPHOT, seed=1):
     pos[:, 2] = 1e-6
     absorbed = np.zeros((NR, NZ))
     lost_wall = lost_top = lost_bottom = to_det = 0.0
-    det_r = P["det_win_d"] / 20
+    det_r = P["det_win_d"] / 20                                  # wall sensor window, taken as a square patch
+    det_z = (L["z_det"] - L["z_win1"]) / 10
     steel_z = L["steel_len"] / 10
     alive = w > 0
     for _ in range(200):
@@ -173,8 +167,7 @@ def trace(uvt, r_ptfe=R_PTFE, n=NPHOT, seed=1):
         u = rng.random(ii.size)
         # wall: stainless in the lower cap, PTFE above
         refl = np.where(p2[:, 2] < steel_z, R_STEEL, r_ptfe)
-        rr = np.hypot(p2[:, 0], p2[:, 1])
-        det = top & (rr < det_r)
+        det = wall & (np.abs(p2[:, 2] - det_z) < det_r) & (np.abs(p2[:, 1]) < det_r) & (p2[:, 0] > 0)
         to_det += w2[det].sum() * p_ph
         R_here = np.where(wall, refl, np.where(top, r_ptfe, R_BOTTOM))
         R_here = np.where(det, 0.0, R_here)
@@ -234,7 +227,7 @@ res = {}
 for uvt in CASES:
     E = runs[uvt][0]
     res[uvt] = {pr: dose(E, Q_LPM, pr) for pr in ("plug", "laminar")}
-print("  Table: dose at 2.0 L/min by UVT (mJ/cm2). avg = flow-weighted average dose; RED for D10 = 20 mJ/cm2")
+print(f"  Table: dose at {Q_LPM} L/min by UVT (mJ/cm2). avg = flow-weighted average dose; RED for D10 = 20 mJ/cm2")
 print("  UVT    avg(plug)  RED(plug)  avg(lam)  RED(lam)  eff(lam)")
 for uvt in CASES:
     (_, _, ap, rp), (_, _, al, rl) = res[uvt]["plug"], res[uvt]["laminar"]
@@ -242,57 +235,51 @@ for uvt in CASES:
 RED90_p, RED90_l = res[0.90]["plug"][3], res[0.90]["laminar"][3]
 RED70_p, RED70_l = res[0.70]["plug"][3], res[0.70]["laminar"][3]
 AVG90 = res[0.90]["laminar"][2]
-show("B5", f"90 %/cm, 2.0 L/min: average dose {AVG90:.1f} mJ/cm2; RED {RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2; "
+show("B5", f"90 %/cm, {Q_LPM} L/min: average dose {AVG90:.1f} mJ/cm2; RED {RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2; "
      f"reactor efficiency {RED90_l/AVG90:.2f} laminar", RED90_l)
-show("B6", f"70 %/cm, 2.0 L/min: average dose {res[0.70]['laminar'][2]:.1f} mJ/cm2; RED {RED70_l:.1f} (laminar) to {RED70_p:.1f} (plug) mJ/cm2", RED70_l)
-if STUDY_BORE:
-    sys.exit(0)
+show("B6", f"70 %/cm, {Q_LPM} L/min: average dose {res[0.70]['laminar'][2]:.1f} mJ/cm2; RED {RED70_l:.1f} (laminar) to {RED70_p:.1f} (plug) mJ/cm2", RED70_l)
 Dr_l = res[0.90]["laminar"][0]
 show("B7", f"Laminar streamline doses at 90 %/cm: {Dr_l[0]:.0f} mJ/cm2 on the axis, {Dr_l[NR//2]:.0f} at mid radius, "
      f"{Dr_l[-1]:.0f} next to the wall")
 sens = {}
-for rp_ in (0.60, 0.90):
+for rp_ in (0.80, 0.90):
     E, _, _ = trace(0.90, r_ptfe=rp_, seed=2)
     sens[rp_] = dose(E, Q_LPM, "laminar")[3]
-show("B8", f"Sensitivity to wetted PTFE reflectance at 90 %/cm (laminar RED): {sens[0.60]:.1f} at 0.60, "
-     f"{RED90_l:.1f} at 0.80, {sens[0.90]:.1f} at 0.90 mJ/cm2")
+show("B8", f"Sensitivity to wetted liner reflectance at 90 %/cm (laminar RED): {sens[0.80]:.1f} at 0.80 (plain PTFE), "
+     f"{sens[0.90]:.1f} at 0.90, {RED90_l:.1f} at 0.95 mJ/cm2", sens[0.80])
 show("B9", f"LED output 20 % low (aging, bin, temperature): laminar RED {RED90_l*0.8:.1f} mJ/cm2 at 90 %/cm")
 
 # ---------------------------------------------------------------- C dose monitor
-head("C. Dose monitor")
+head("C. Dose monitor (wall sensor at mid height)")
 RESP, A_PD, T_SWIN = 0.13, 0.06e-2, 0.92     # A/W, active area cm2 (0.06 mm2), sensor window transmittance
-det_area = math.pi * (P["det_win_d"] / 20) ** 2
-S = {uvt: runs[uvt][1]["to detector window"] / det_area for uvt in CASES}   # W/cm2 at the top disc
+det_area = (P["det_win_d"] / 10) ** 2        # square patch used in the ray trace, cm2
+S = {uvt: runs[uvt][1]["to detector window"] / det_area for uvt in CASES}   # W/cm2 on the wall window
 cur = {uvt: S[uvt] * A_PD * T_SWIN * RESP for uvt in CASES}
-print("  UVT    irradiance at top (mW/cm2)  photocurrent (nA)  signal / signal at 90 %   RED lam / RED lam at 90 %")
+print("  UVT    irradiance at wall window (mW/cm2)  photocurrent (nA)  signal / signal at 90 %   RED lam / RED lam at 90 %")
 for uvt in CASES:
-    print(f"  {uvt*100:3.0f} %   {S[uvt]*1e3:12.3f}              {cur[uvt]*1e9:10.2f}        {S[uvt]/S[0.90]:8.4f}"
+    print(f"  {uvt*100:3.0f} %   {S[uvt]*1e3:12.3f}                      {cur[uvt]*1e9:10.2f}        {S[uvt]/S[0.90]:8.4f}"
           f"              {res[uvt]['laminar'][3]/RED90_l:6.3f}")
-c70 = f"{cur[0.70]*1e9:.3f} nA" if cur[0.70] > 0 else "below the Monte Carlo resolution (no ray of 600,000 arrived)"
-show("C1", f"Far-end photocurrent {cur[0.90]*1e9:.1f} nA at 90 %/cm, {cur[0.80]*1e9:.2f} nA at 80 %/cm, {c70} at 70 %/cm "
-     f"(SiC, {RESP} A/W, 0.06 mm2)", cur[0.90])
+show("C1", f"Wall sensor at Z {L['z_det']:.0f} mm: {S[0.90]*1e3:.2f} mW/cm2 and {cur[0.90]*1e9:.1f} nA at 90 %/cm, "
+     f"{cur[0.80]*1e9:.1f} nA at 80 %/cm, {cur[0.70]*1e9:.2f} nA at 70 %/cm (SiC, {RESP} A/W, 0.06 mm2)", cur[0.90])
 g = math.log(S[0.85] / S[0.90]) / math.log(res[0.85]["laminar"][3] / RED90_l)
-show("C2", f"Between 90 and 85 %/cm the far-end signal falls {g:.1f} times faster (in log terms) than the RED")
+show("C2", f"Between 90 and 85 %/cm the wall signal falls {g:.1f} times as fast (in log terms) as the RED")
 thr = DOSE_T / RED90_l
 show("C3", f"Proportional mapping RED_est = RED_ref x (S/S_ref) x (Q_ref/Q) is always conservative; with RED_ref "
-     f"{RED90_l:.1f} mJ/cm2 the alarm threshold S/S_ref = {thr:.2f} is above 1, so the alarm would trip in any water", thr)
-# LED at 70 % output in 90 % water: true RED and what a UVT-based mapping would claim
-S_age = 0.7 * S[0.90]
+     f"{RED90_l:.1f} mJ/cm2 the alarm threshold is S/S_ref = {thr:.2f}", thr)
 uvts = np.array(CASES[::-1]); sig = np.array([S[u] for u in uvts]); reds = np.array([res[u]["laminar"][3] for u in uvts])
-ok_s = sig > 0
-uvt_claim = float(np.interp(math.log(S_age), np.log(sig[ok_s]), uvts[ok_s]))
+u_trip = float(np.interp(math.log(thr * S[0.90]), np.log(sig), uvts))
+show("C4", f"With LEDs at rated output the alarm trips below about {u_trip*100:.1f} %/cm UVT; LEDs aged to "
+     f"{thr*100:.0f} % of output trip it in 90 %/cm water, where the true RED is {thr*RED90_l:.1f} mJ/cm2 (safe)", u_trip)
+S_age = 0.7 * S[0.90]
+uvt_claim = float(np.interp(math.log(S_age), np.log(sig), uvts))
 red_claim = float(np.interp(uvt_claim, uvts, reds))
-Ew = {uvt: runs[uvt][0][-1, NZ // 2 - 2:NZ // 2 + 2].mean() for uvt in CASES}
-gw = math.log(Ew[0.85] / Ew[0.90]) / math.log(res[0.85]["laminar"][3] / RED90_l)
-show("C5", f"A sensor in the wall at mid height sees {Ew[0.90]*1e3:.2f} mW/cm2 at 90 %/cm and {Ew[0.70]*1e3:.3f} at 70 %/cm; "
-     f"its signal falls {gw:.1f} times as fast as the RED between 90 and 85 %/cm")
-show("C4", f"Aged LEDs at 70 % output in 90 %/cm water: true RED {0.7*RED90_l:.1f}; a mapping that blames UVT would read "
-     f"UVT {uvt_claim*100:.1f} %/cm and claim RED {red_claim:.1f} (unsafe); the proportional mapping reads {0.7*RED90_l:.1f} (safe)")
+show("C5", f"Aged LEDs at 70 % output in 90 %/cm water: true RED {0.7*RED90_l:.1f}; a mapping that blames UVT would read "
+     f"UVT {uvt_claim*100:.1f} %/cm and claim RED {red_claim:.1f}; the proportional mapping reads {0.7*RED90_l:.1f}")
 
 # ---------------------------------------------------------------- D flow switching and run-on
 head("D. Flow switching and run-on")
-K_HZ = 7.5                                   # Hz per L/min, typical Hall-effect turbine sensor (assumed)
-show("D1", f"Sensor pulses at 0.3 L/min: {K_HZ*0.3:.2f} Hz, one pulse every {1/(K_HZ*0.3):.2f} s; at 2.0 L/min {K_HZ*2:.0f} Hz", 1 / (K_HZ * 0.3))
+K_HZ = 15.0                                  # Hz per L/min, higher pulse-rate sensor (LMF-DDR-002)
+show("D1", f"Sensor pulses at 0.3 L/min: {K_HZ*0.3:.2f} Hz, one pulse every {1/(K_HZ*0.3):.2f} s; at {Q_LPM} L/min {K_HZ*Q_LPM:.1f} Hz", 1 / (K_HZ * 0.3))
 t_on = 1 / (K_HZ * 0.3) + 0.02
 show("D2", f"Worst-case detection plus LED rise at 0.3 L/min: {t_on:.2f} s against 0.5 s", t_on)
 # stagnant parcel doses (plug flow): prior pass + 5 s run-on + remainder after restart with a 0.5 s dark delay
@@ -378,8 +365,9 @@ R_nf = R_ring + R_cap + 1 / (50 * A_wet)                     # still water in th
 Ts_nf = (T_AIR / R_air + T_WATER / R_nf + Q_h) / (1 / R_air + 1 / R_nf)
 tau_nf = C / (1 / R_air + 1 / R_nf)
 t85 = -tau_nf * math.log(1 - (85 - 20 - T_AIR) / (Ts_nf - T_AIR)) if Ts_nf - T_AIR > 35 else float("inf")
+t65 = f"reaching 65 degC board after {t85/60:.1f} min" if math.isfinite(t85) else "never reaching 65 degC"
 show("F6", f"Fault, LEDs stuck on with no flow: board heads for {Ts_nf + Q_h*R_bs:.0f} degC (junction +{P_EACH*R_JB:.0f} K), "
-     f"reaching 65 degC board after {t85/60:.1f} min; run-on of 5 s adds {Q_h*RUNON/C:.2f} K")
+     f"{t65}; run-on of 5 s adds {Q_h*RUNON/C:.2f} K", Ts_nf + Q_h * R_bs)
 
 # ---------------------------------------------------------------- G pressure and structure
 head("G. Pressure drop (R8), window and structure (R7)")
@@ -398,7 +386,7 @@ dp_reac = 32 * MU20 * L["flow_len"] / 1e3 * U / (2 * R_b) ** 2 / 1e5
 dp = dp_s + dp_v + dp_tube + dp_fit + dp_ports + dp_reac
 show("G1", f"Flow sensor {dp_s:.2f} (Kv {KV_SENS}), valve {dp_v:.2f} (Kv {KV_VALVE}), 1 m of 1/4 in bore tube {dp_tube:.3f}, "
      f"fittings {dp_fit:.3f}, ports {dp_ports:.3f}, reactor {dp_reac:.5f} bar")
-show("G2", f"Total at 2.0 L/min, excluding the flow restrictor: {dp:.2f} bar ({dp*14.5:.1f} psi) against 0.5 bar", dp)
+show("G2", f"Total at {Q_LPM} L/min, excluding the flow restrictor: {dp:.2f} bar ({dp*14.5:.1f} psi) against 0.5 bar", dp)
 dp_lo = (q_m3h / 0.5) ** 2 + (q_m3h / 0.4) ** 2 + dp_tube + dp_fit + dp_ports
 show("G3", f"With Kv 0.5 sensor and Kv 0.4 valve: {dp_lo:.2f} bar; at 2 bar supply {2-dp:.2f} bar is left for the restrictor and faucet")
 p = 0.8
@@ -406,13 +394,17 @@ a_w = P["aperture_d"] / 2
 sig = lambda t, pr=p: 3 * (3 + 0.17) / 8 * pr * a_w ** 2 / t ** 2
 show("G4", f"Window {P['win_d']:.0f} x {P['win_t']:.0f} mm on a {P['aperture_d']:.0f} mm seat, simply supported: "
      f"{sig(P['win_t']):.2f} MPa at 8 bar (3 mm: {sig(3):.1f} MPa); allowable 6.8 MPa", sig(P["win_t"]))
-show("G5", f"At a 16 bar water-hammer spike: {sig(P['win_t'], 1.6):.1f} MPa (over 6.8 MPa; needs the pressure limiter)")
+P_LIM = 0.4                                  # MPa, upstream pressure-limiting valve setting (installation requirement)
+show("G5", f"Unprotected 16 bar water-hammer spike: {sig(P['win_t'], 1.6):.1f} MPa (over 6.8). With the limiter at "
+     f"{P_LIM*10:.0f} bar: {sig(P['win_t'], P_LIM):.2f} MPa static; a transient doubling to {2*P_LIM*10:.0f} bar gives "
+     f"{sig(P['win_t'], 2*P_LIM):.2f} MPa", sig(P["win_t"], 2 * P_LIM))
 sig_det = 3 * 3.17 / 8 * p * (P["det_win_d"] / 2) ** 2 / 3.0 ** 2
 show("G6", f"Sensor window {P['det_win_d']:.0f} mm x 3 mm: {sig_det:.2f} MPa; tube hoop stress "
      f"{p*(P['tube_od']/2-1.5)/3:.1f} MPa (316, 3 mm wall)")
 F_end = p * math.pi * (P["tube_od"] / 2) ** 2
-show("G7", f"End load on each cap {F_end:.0f} N (seal at the tube OD); per M4 rod {F_end/P['n_rod']:.0f} N, "
-     f"{F_end/P['n_rod']/8.78:.0f} MPa in the 8.78 mm2 stress area")
+A_S = {4.0: 8.78, 5.0: 14.2, 6.0: 20.1}[P["rod_d"]]
+show("G7", f"End load on each cap {F_end:.0f} N (seal at the tube OD); per M{P['rod_d']:.0f} rod {F_end/P['n_rod']:.0f} N, "
+     f"{F_end/P['n_rod']/A_S:.0f} MPa in the {A_S} mm2 stress area")
 
 # ---------------------------------------------------------------- H size
 head("H. Size (R14)")
@@ -431,58 +423,48 @@ show("I1", f"BOM {len(rows)} lines, total ${total:.2f} against budget_usd ${budg
 show("I2", "Largest lines: " + "; ".join(f"{r['item']} ${float(r['qty'])*float(r['unit_cost_usd']):.0f}" for r in top))
 
 # ---------------------------------------------------------------- J options
-head("J. Options against R3 (70 %/cm)")
-n_b = math.ceil(N_LED * DOSE_T / RED70_l)
-show("J1", f"Option B: LEDs for 40 mJ/cm2 at 70 %/cm and 2.0 L/min (laminar): {n_b}; LED power {n_b*I_LED*V_LED:.0f} W")
-qs = np.linspace(0.2, 2.0, 91)
-reds70 = np.array([dose(runs[0.70][0], q, "laminar")[3] for q in qs])
-q_c = float(qs[reds70 >= DOSE_T].max()) if (reds70 >= DOSE_T).any() else float("nan")
-show("J2", f"Option C: flow at which six LEDs give 40 mJ/cm2 at 70 %/cm (laminar): {q_c:.2f} L/min")
+head("J. Flow limits and options")
+qs = np.linspace(0.2, 3.0, 141)
 q90 = np.array([dose(E90, q, "laminar")[3] for q in qs])
 Q_R2 = float(qs[q90 >= DOSE_T].max())
-show("J3", f"Option R2-a: flow at which six LEDs give 40 mJ/cm2 at 90 %/cm (laminar): {Q_R2:.2f} L/min", Q_R2)
-n_r2 = math.ceil(N_LED * DOSE_T / RED90_l)
-p_r2 = ((n_r2 * I_LED * V_LED) / ETA_DRV + P_VALVE + P_CTRL) / ETA_AD
-show("J4", f"Option R2-b: LEDs for 40 mJ/cm2 at 90 %/cm and 2.0 L/min: {n_r2}; mains power {p_r2:.0f} W (R9 limit 25 W); "
-     f"about ${(n_r2-N_LED)*9:.0f} more in LEDs")
-E95r, _, _ = trace(0.90, r_ptfe=0.95, seed=3)
-red95r = dose(E95r, Q_LPM, "laminar")[3]
-q95r = np.array([dose(E95r, q, "laminar")[3] for q in qs])
-Q_R2c = float(qs[q95r >= DOSE_T].max())
-show("J5", f"Option R2-c: liner reflectance 0.95 (high-reflectance expanded PTFE): RED {red95r:.1f} mJ/cm2 at 2.0 L/min; "
-     f"40 mJ/cm2 up to {Q_R2c:.2f} L/min", Q_R2c)
-
-for b in (40, 50):
-    run = subprocess.run([sys.executable, __file__], env=dict(os.environ, LMF_BORE=str(b)),
-                         capture_output=True, text=True, check=True).stdout
-    line = next(x for x in run.splitlines() if x.startswith("[B5]"))
-    show(f"J6-{b}", f"Option R2-d, bore {b} mm (same LEDs, liner 0.80, window and caps scaled): " + line[5:])
-
-t50 = math.sqrt(3 * 3.17 / 8 * 0.8 * ((50 + 1) / 2) ** 2 / 6.8)
-show("J7", f"A 50 mm bore needs a window about {t50:.1f} mm thick (51 mm seat, 6.8 MPa at 8 bar)")
+Q_met = float(qs[q90 >= 1.2 * DOSE_T].max())
+show("J1", f"Six LEDs, this reactor, 90 %/cm (laminar RED): 40 mJ/cm2 up to {Q_R2:.2f} L/min; "
+     f"48 mJ/cm2 (the 20 % margin for Met) up to {Q_met:.2f} L/min", Q_R2)
+red2 = dose(E90, 2.0, "laminar")[3]; red2p = dose(E90, 2.0, "plug")[3]
+show("J2", f"At the former 2.0 L/min: RED {red2:.1f} (laminar) to {red2p:.1f} (plug) mJ/cm2 at 90 %/cm")
+n_b = math.ceil(N_LED * DOSE_T / RED70_l)
+show("J3", f"Option B (R3): LEDs for 40 mJ/cm2 at 70 %/cm and {Q_LPM} L/min (laminar): {n_b}; LED power {n_b*I_LED*V_LED:.0f} W")
+reds70 = np.array([dose(runs[0.70][0], q, "laminar")[3] for q in qs])
+q_c = float(qs[reds70 >= DOSE_T].max()) if (reds70 >= DOSE_T).any() else float("nan")
+show("J4", f"Option C (R3): flow at which six LEDs give 40 mJ/cm2 at 70 %/cm (laminar): {q_c:.2f} L/min")
 
 # ---------------------------------------------------------------- K requirement status
 head("K. Requirement status")
 dims = OUT["H1"]
 status = [
-    ("R1", "2.0 L/min, restrictor", "2.0 L/min restrictor; sensor range 0.3 to 6 L/min", "Met"),
-    ("R2", "RED >= 40 at 90 %/cm", f"{RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2",
+    ("R1", f"{Q_LPM} L/min, restrictor", f"{Q_LPM} L/min restrictor; sensor range 0.3 to 6 L/min", "Met"),
+    ("R2", f"RED >= 40 at 90 %/cm, {Q_LPM} L/min", f"{RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2",
      "Met" if RED90_l >= DOSE_T * 1.2 else ("At risk" if RED90_p >= DOSE_T else "Not met")),
     ("R3", "RED >= 40 at 70 %/cm", f"{RED70_l:.1f} to {RED70_p:.1f} mJ/cm2", "Met" if RED70_l >= DOSE_T else "Not met"),
-    ("R4", "Dose monitor, fail closed in 1 s", f"far-end signal {cur[0.90]*1e9:.1f} nA at 90 %/cm, near zero below 80 %/cm; "
-     "the alarm trips in any water because R2 is not met", "At risk"),
+    ("R4", "Dose monitor, fail closed in 1 s", f"wall signal {cur[0.90]*1e9:.1f} nA at 90 %/cm, {cur[0.70]*1e9:.2f} nA at 70 %/cm; "
+     f"alarm below about {u_trip*100:.0f} %/cm; mapping and fail-safe need firmware and test",
+     "Met" if RED90_l >= DOSE_T and cur[0.70] > 1e-9 else "At risk"),
     ("R5", "LEDs on in 0.5 s above 0.3 L/min; 5 s run-on", f"{t_on:.2f} s worst case", "At risk" if t_on > 0.4 else "Met"),
     ("R6", "No mercury; full output in 0.1 s", "LEDs, microsecond rise", "Met"),
     ("R7", "Window <= 6.8 MPa at 8 bar", f"{OUT['G4']:.2f} MPa", "Met" if OUT["G4"] <= 6.8 else "Not met"),
-    ("R8", "<= 0.5 bar at 2.0 L/min", f"{dp:.2f} bar", "At risk" if dp <= 0.5 else "Not met"),
+    ("R8", f"<= 0.5 bar at {Q_LPM} L/min, excluding the restrictor", f"{dp:.2f} bar on assumed Kv",
+     "Met" if dp <= 0.35 else ("At risk" if dp <= 0.5 else "Not met")),
     ("R9", "<= 25 W flowing, <= 0.5 W standby", f"{P_ac:.1f} W, {P_sb:.2f} W", "Met" if P_ac <= 25 and P_sb <= 0.5 else "Not met"),
-    ("R10", "Board <= 50 degC", f"{res_T[150][0]:.0f} to {res_T[600][0]:.0f} degC steady", "At risk" if Tb <= 50 else "Not met"),
+    ("R10", "Board <= 50 degC; cut-back above 50 degC", f"{res_T[600][0]:.0f} to {res_T[150][0]:.0f} degC steady",
+     "Met" if res_T[150][0] <= 50 else ("At risk" if Tb <= 50 else "Not met")),
     ("R11", "Food-contact wetted parts; no UV-C on plastics but PTFE", "316 lower cap; PTFE shields acetal", "Met"),
     ("R12", "No UV-C outside; interlocks", "Metal and PTFE light path; interlock by design", "Met"),
     ("R13", "24 V DC only at the unit", "Certified adapter, fuse", "Met"),
     ("R14", "<= 350 x 150 x 350 mm", f"{dims[0]:.0f} x {dims[1]:.0f} x {dims[2]:.0f} mm", "Met"),
     ("R15", "Service in 15 min", "Needs a build to time", "Not verifiable at TRL 3"),
     ("R16", f"<= ${budget:.0f}", f"${total:.0f}", "Met" if total <= budget else "Not met"),
+    ("R17", "Pressure limiter <= 4 bar upstream (installation)", f"window {OUT['G5']:.2f} MPa at twice the setting",
+     "Met" if OUT["G5"] <= 6.8 else "Not met"),
 ]
 for rid, tgt, val, st in status:
     print(f"  {rid:4s} {st:24s} {val}  (target: {tgt})")

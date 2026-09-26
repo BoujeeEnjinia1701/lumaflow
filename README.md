@@ -10,30 +10,71 @@ Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized f
 
 [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/LMF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
+## Concept rationale
+
+A UV-C LED reactor that runs only while water flows turns the LED's main weakness, low efficiency, into a small cost: at a household's few minutes of use a day, six LEDs use about 3.8 kWh a year, where a mercury lamp left on all day uses 114 to 193 kWh. Shining the LEDs along a wide, reflective tube, rather than wrapping lamps around a sleeve, keeps the part count low and puts every LED behind one flat quartz window that is easy to seal and service. A photodiode in the tube wall and a normally closed valve mean that a weak dose stops the water rather than passing it silently.
+
+The design is open and garage-buildable because the people who most need point-of-use disinfection, households on private wells and small water projects, are the least served by closed commercial units. Every dimension, dose calculation and part is published, so a university lab, a maker space or a water charity can build one from catalog LEDs, a stainless tube, a machined end cap and push-fit plumbing, test it and improve it.
+
+## Burning platform
+
+Unsafe water remains one of the largest preventable causes of illness. In 2022, 2.2 billion people lacked safely managed drinking water, and at least 1.7 billion used a source contaminated with faeces; microbiologically contaminated drinking water is estimated to cause about 505,000 diarrhoeal deaths each year ([WHO drinking-water fact sheet](https://www.who.int/news-room/fact-sheets/detail/drinking-water)).
+
+The gap is not confined to low-income countries. More than 43 million people in the United States, about 15 % of the population, rely on private domestic wells whose water quality is not regulated by the federal Safe Drinking Water Act ([USGS](https://www.usgs.gov/mission-areas/water-resources/science/domestic-private-supply-wells)), and an estimated three to four million Canadians are served by private supplies ([CMAJ, 2010](https://www.cmaj.ca/content/182/10/1061)). Each of those households is its own water utility, usually without monitoring.
+
+## Where it could be used
+
+### By industry
+
+| Industry | Use |
+| --- | --- |
+| Residential water treatment | Point-of-use disinfection at a kitchen drinking-water tap on a private well or rainwater tank |
+| Rural health clinics | A low-maintenance disinfection stage for the tap used for drinking and hand hygiene |
+| Schools and community water points | A metered, monitored barrier on an indoor drinking tap, with a visible fault light |
+| Humanitarian and development programs | An open reference design that local workshops can build and repair |
+| Research and education | A test bed for reactor optics, LED aging and dose sensing |
+| Recreational and off-grid buildings | Cabins, boats and camps on untreated supplies, with 24 V DC power |
+
+### By country or region
+
+| Country or region | Why it matters there |
+| --- | --- |
+| United States | More than 43 million people drink from private wells outside federal drinking-water regulation ([USGS](https://www.usgs.gov/mission-areas/water-resources/science/domestic-private-supply-wells)) |
+| Canada | Three to four million people, about one in eight, are served by private supplies ([CMAJ](https://www.cmaj.ca/content/182/10/1061)) |
+| Sub-Saharan Africa | Many households and clinics draw from boreholes and tanks without treatment; the region carries much of the global burden counted by WHO ([WHO](https://www.who.int/news-room/fact-sheets/detail/drinking-water)) |
+| South Asia | Shallow tube wells serve large rural populations, and a device that switches with the flow suits intermittent power and water |
+| Andean and rural Latin America | Small community systems and household wells, where a repairable, low-energy unit fits limited maintenance budgets |
+| Pacific island states | Rainwater tanks are a main household source, and mercury lamps are hard to replace and dispose of on small islands |
+
+## What sparked the idea
+
+The idea traces back to one of the first patents on ultraviolet water sterilization, filed on 7 June 1910 by Victor Henri, André Helbronner and Max von Recklinghausen ([US 1,151,267](https://patents.google.com/patent/US1151267)). Their apparatus kept a quartz mercury-vapor lamp outside the water, ran the liquid past it and lined the channel with reflecting metal "so that the rays which pass through the liquid are caused to re-traverse the same." LumaFlow keeps that arrangement, a light source behind a quartz window and a reflective channel, and swaps the mercury lamp for UV-C LEDs that switch on only when water flows.
+
 ## Problem
 
 Point-of-use disinfection often depends on mercury UV lamps that break.
 
 ## Concept
 
-Water flows up a PTFE-lined stainless tube (25 mm bore, 246 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) found that the PTFE wall absorbs about half of the light in this narrow bore, so the dose at 2 L/min (0.5 gpm) in clear water (90 %/cm UV transmittance) is only 15 to 19 mJ/cm² against the 40 mJ/cm² target. The unit draws 22.6 W while flowing and 0.21 W on standby, and the parts cost $249 against the $225 budget. The routes to close the dose and cost gaps are open decisions in the [review note](docs/REVIEW.md).
+Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 52 to 76 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 22 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. The parts cost $338 against the $225 budget; the budget figure is an open decision in the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Six 275 nm UV-C LEDs on a heat sink, cooled through a 316 stainless lower end cap into the water
-- 316 stainless reactor tube with a PTFE reflector liner and top disc; acetal upper cap shielded from UV-C
-- Fused quartz window (6 mm) between the LEDs and the water
-- Hall-effect flow sensor acting as the flow switch
-- UV-C photodiode dose monitor
+- Six 275 nm UV-C LEDs on a heat sink with a board temperature sensor, cooled through a 316 stainless lower end cap into the water
+- 316 stainless reactor tube with a high-reflectance PTFE liner (50 mm bore) and top disc; acetal upper cap shielded from UV-C
+- Fused quartz window (57 x 10 mm) between the LEDs and the water
+- Hall-effect flow sensor (15 Hz per L/min) acting as the flow switch
+- UV-C photodiode dose monitor in the tube wall at mid height
 - Controller with constant-current LED driver, normally closed shutoff valve, external 24 V adapter
+- At installation: a sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less
 
 The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is `cad/src/model.py`, with STEP and STL exports in `cad/step/` and `cad/stl/`.
 
 ## Safety
 
-> UV-C light damages eyes and skin. Interlock the housing so LEDs cannot run when open. LumaFlow is a research and educational prototype, not a certified water treatment device, and as drawn it does not reach its target dose; do not rely on it as a barrier for drinking water. See the safety section of the [design precis](docs/02-concept.md).
+> UV-C light damages eyes and skin. Interlock the housing so LEDs cannot run when open. LumaFlow is a research and educational prototype, not a certified water treatment device, and its dose is calculated, not measured; do not rely on it as a barrier for drinking water. See the safety section of the [design precis](docs/02-concept.md).
 
 ## Repository layout
 
@@ -58,4 +99,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-Part of the open hardware portfolio at [amishchadha.com](https://amishchadha.com).
+A project of the [Design Molecule](https://designmolecule.com) lab.

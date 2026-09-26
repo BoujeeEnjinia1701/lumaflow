@@ -3,7 +3,7 @@ doc_id: LMF-DDR-001
 title: LumaFlow TRL 2 review decisions
 project: LumaFlow
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's decisions on the TRL 2 review items and the items that remain open
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002); O2 and O3 decided, O1 stays open
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted for items D1 to D9; items O1 to O3 remain proposed
+- **Status:** accepted for items D1 to D9; O2 and O3 accepted in LMF-DDR-002; O1 remains proposed
 
 ## Context
 
@@ -52,13 +56,13 @@ Notes on the decided items:
 - **SwapCell.** LumaFlow is mains-powered through a 24 V adapter and uses no SwapCell pack. The portfolio decisions of 2026-09-25 on the SwapCell interface (v0.3 items: wake without CAN, charge-while-discharging mode, latch vibration rating) and on pricing shared packs once do not change the LumaFlow design or BOM.
 - **Pitch and problem lines.** The review recommended no change to the `pitch` or `problem` wording, so `project.yaml` and `README.md` keep them.
 
-*Table 2. Items that remain open (Proposed, awaiting Amish).*
+*Table 2. Items left open by this record. O2 and O3 were decided on 2026-09-25 in LMF-DDR-002; O1 stays open.*
 
 | # | Item | Why it stays open |
 | --- | --- | --- |
-| O1 | Partner that can supply real well-water UVT data and later test the reactor (a well-water association, a university lab or a water charity) | No partner was recommended; the portfolio decision is to pick co-design partners per area later |
-| O2 | End cap material (acetal or 316 stainless) | Listed as an open question at TRL 2 with no recommendation. The TRL 3 model uses a 316 lower cap and a PTFE-shielded acetal upper cap, which LMF-CAL-001 supports (F5 and R11); this is a proposal for confirmation |
-| O3 | New TRL 3 proposals: route to close R2, dose monitor position, budget after re-pricing, flow sensor pulse rate, pressure limiter as an installation requirement, thermal cut-back | Raised by LMF-CAL-001 after the decision; see `docs/REVIEW.md`, session 2026-09-25, TRL 3 |
+| O1 | Partner that can supply real well-water UVT data and later test the reactor (a well-water association, a university lab or a water charity) | Proposed, awaiting Amish. No partner was recommended; the portfolio decision is to pick co-design partners per area later |
+| O2 | End cap material (acetal or 316 stainless) | Listed as an open question at TRL 2 with no recommendation. The TRL 3 model uses a 316 lower cap and a PTFE-shielded acetal upper cap, which LMF-CAL-001 supports (F5 and R11). Decided by Amish, 2026-09-25: go with recommendation (confirm), LMF-DDR-002 E1 |
+| O3 | New TRL 3 proposals: route to close R2, dose monitor position, budget after re-pricing, flow sensor pulse rate, pressure limiter as an installation requirement, thermal cut-back | Raised by LMF-CAL-001 after the decision. Decided by Amish, 2026-09-25: go with recommendation, LMF-DDR-002 E2 to E8 (the budget figure after re-pricing stays open) |
 
 ## Consequences
 

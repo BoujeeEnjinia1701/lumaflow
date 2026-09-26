@@ -3,7 +3,7 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's decisions (LMF-DDR-001) on the first user, dose target and budget; partner stays open
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002); dose gap closed at 1.2 L/min, pressure limiter at installation, budget figure open
 ---
 
 # LumaFlow problem statement
@@ -59,7 +63,9 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 ## Constraints
 
-- Garage-buildable prototype, $225 USD or less in parts (budget raised from $200 by Amish, LMF-DDR-001 D2), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps.
+- Garage-buildable prototype, $225 USD or less in parts (budget raised from $200 by Amish, LMF-DDR-001 D2), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The re-priced 50 mm reactor costs $338.00; the budget figure is awaiting Amish.
+- A drinking-water flow of 1.2 L/min (0.32 gpm) is enough for one tap; it fills a 1 L bottle in about 50 s.
+- A sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less are part of the installation.
 - Fits under a kitchen sink and connects to a standard cold line with push-fit fittings.
 - Wetted parts must be food-contact grade; no printed plastic on the water path.
 - Only safety extra-low voltage (24 V DC) at the unit; mains stays inside a certified external adapter.
@@ -75,5 +81,5 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 ## Decisions and open questions
 
 - **First user (decided).** A well-water household with a sediment pre-filter. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D9). This sets the design water quality at 90 %/cm UVT or better.
-- **Dose target (decided).** The Class A dose level of 40 mJ/cm² is the target for clear water (90 %/cm or better), with an alarm and valve closure below it, and the 70 %/cm test condition kept visibly not met. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D1). The TRL 3 calculation (LMF-CAL-001) shows that the concept as drawn delivers only 14.7 to 19.0 mJ/cm² even in clear water; the routes to close that gap are proposals awaiting Amish in `docs/REVIEW.md`.
+- **Dose target (decided).** The Class A dose level of 40 mJ/cm² is the target for clear water (90 %/cm or better), with an alarm and valve closure below it, and the 70 %/cm test condition kept visibly not met. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D1). The first TRL 3 calculation found only 14.7 to 19.0 mJ/cm² in clear water; with the route Amish accepted on 2026-09-25 (LMF-DDR-002: 50 mm bore, high-reflectance liner, 1.2 L/min design flow) LMF-CAL-001 v0.2 gives 51.9 to 76.3 mJ/cm².
 - **Partner (open).** Which partner (a well-water association, a university lab or a water charity) could supply real water-quality data and later test the reactor? Proposed, awaiting Amish; the portfolio decision is to pick partners per area later.

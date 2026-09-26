@@ -1,4 +1,4 @@
-"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P1 (TRL 3).
+"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P2 (TRL 3, design revised by LMF-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/LMF-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -61,11 +61,12 @@ def main():
     asm = build(include_adapter=False)
     views = project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P1",
+    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P2",
               author="Amish Chadha", date=DATE, scale=None, theme="technical",
-              material="316 tube and lower cap, PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
+              material="316 tube and lower cap, high-reflectance PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
                        "PRELIMINARY, NOT FOR FABRICATION",
-              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC")])
+              revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
+                         ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -79,10 +80,11 @@ def main():
     zb = y + h
     ax_x = x + (0 - bb.min.X) * k                                  # reactor axis
     out += dim_v(x - 26, y, zb, f"{bb.size.Z:.0f} overall")
-    for i, (z, name) in enumerate([(L["z_out"], "outlet"), (L["z_in"], "inlet"), (L["z_win1"], "window")]):
+    for i, (z, name) in enumerate([(L["z_out"], "outlet"), (L["z_det"], "sensor"), (L["z_in"], "inlet"),
+                                   (L["z_win1"], "window")]):
         zy = zb - z * k
         xd = x - 5 - 7 * i
-        out += [ext(x - 0.5 if i < 2 else ax_x, zy, xd - 1, zy)]
+        out += [ext(x - 0.5 if name in ("outlet", "inlet") else ax_x, zy, xd - 1, zy)]
         out += dim_v(xd, zy, zb, f"{z:.0f} {name}")
     # right view (from +X): cap diameter
     x, y, w, h = c["right"]
@@ -96,13 +98,14 @@ def main():
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Unit {bb.size.X:.0f} W x {bb.size.Y:.0f} D x {bb.size.Z:.0f} H, adapter excluded",
         f"Channel D{P['bore_d']:.0f} x {L['channel_len']:.0f}; ports at Z {L['z_in']:.0f} and {L['z_out']:.0f}",
-        f"Tube D{P['tube_od']:.0f} x 3 wall x {P['tube_len']:.0f}, 316; PTFE liner D{P['liner_od']:.0f}",
+        f"Dose sensor D{P['det_win_d']:.0f} window in tube wall at Z {L['z_det']:.0f}, facing +X",
+        f"Tube D{P['tube_od']:.0f} x 3 wall x {P['tube_len']:.0f}, 316; high-refl. PTFE liner D{P['liner_od']:.0f}",
         f"Window D{P['win_d']:.0f} x {P['win_t']:.0f} fused silica on a D{P['aperture_d']:.0f} seat",
         f"{P['led_n']} x 275 nm LEDs on a {2 * P['led_pcr']:.0f} mm circle, {P['led_gap']} mm below window",
-        f"Caps D{P['cap_d']:.0f} x {P['cap_lo_h']:.0f}; {P['n_rod']} x M4 316 tie rods on D{2 * P['rod_pcr']:.0f}",
+        f"Caps D{P['cap_d']:.0f} x {P['cap_lo_h']:.0f}; {P['n_rod']} x M{P['rod_d']:.0f} 316 tie rods on D{2 * P['rod_pcr']:.0f}",
         "Ports 3/8 in push-fit; outlet through a 316 insert",
         f"Heat sink {P['sink_w']:.0f} x {P['sink_w']:.0f} x {P['fin_h'] + P['sink_base']:.0f}, fins down",
-        "Working pressure 8 bar; flow up; mount vertical",
+        "Working pressure 8 bar; limiter at 4 bar upstream; flow up",
         "Third-angle; front view from -Y, right view from +X",
     ], x=276, y=150, width=140)
     path = s.save(ROOT / "cad" / "drawings" / "LMF-DWG-001")

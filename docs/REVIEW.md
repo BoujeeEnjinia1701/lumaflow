@@ -39,6 +39,8 @@ Requirements not met or unverified:
 
 ### Proposed, awaiting Amish
 
+All nine items below were later decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001, D1 to D9).
+
 1. **Design water quality and dose target.** Option A: design for 90 %/cm UVT, alarm and close the valve below 40 mJ/cm², and keep R3 visibly not met. Option B: meet 40 mJ/cm² at 70 %/cm and 2 L/min with about 17 LEDs, about 40 W and about $100 more in LEDs alone. Option C: six LEDs plus a proportional valve that limits flow to about 0.7 L/min in poor water. Recommendation: A, with C as a later upgrade.
 2. **Budget.** Options: (a) raise `budget_usd` to $225; (b) drop the shutoff valve and rely on the alarm alone (about $205, still over, and weaker fail-safe); (c) find cheaper LEDs or machine the end caps in-house to reach $200. Recommendation: (a), because the valve is the fail-safe. `project.yaml` is unchanged.
 3. **Axial LED head with a flat quartz window** instead of the scaffold's quartz sleeve with LEDs around it. Recommendation: axial.
@@ -109,17 +111,17 @@ Decided by Amish, 2026-09-25, going with the recommendation: D1 design for 90 %/
 
 Still open from TRL 2 (no recommendation was made):
 
-1. Partner that can supply real well-water UVT data (O1). Portfolio rule: partners are picked per area later.
-2. End cap material (O2). The TRL 3 model uses a 316 stainless lower cap (its bore sees full UV-C, and it is the water-cooled heat path; an acetal cap would let the LED board reach 85 °C) and an acetal upper cap shielded by the PTFE liner, top disc and a 316 outlet insert. Recommendation: confirm.
+1. Partner that can supply real well-water UVT data (O1). Portfolio rule: partners are picked per area later. Still Proposed, awaiting Amish (no recommendation).
+2. End cap material (O2). Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E1). The TRL 3 model uses a 316 stainless lower cap (its bore sees full UV-C, and it is the water-cooled heat path; an acetal cap would let the LED board reach 85 °C) and an acetal upper cap shielded by the PTFE liner, top disc and a 316 outlet insert. Recommendation: confirm.
 
 New from TRL 3:
 
-3. **Route to close R2 (most important).** Options: (a) lower the design flow to about 0.6 L/min (R1 falls to a third); (b) 17 LEDs at 2 L/min (53 W, R9 fails, about $99 more); (c) a higher-reflectance liner (0.95 gives 17.3 mJ/cm², not enough alone); (d) a wider bore of about 50 mm (30.0 to 41.0 mJ/cm² at 2 L/min, window about 9.5 mm, larger parts), which can be combined with (c) and a modest flow cut. Recommendation: (d) with (c), as a TRL 3 design iteration re-run through LMF-CAL-001, keeping (a) as the fallback. Until then, D1's rule means the unit would never open its valve.
-4. **Dose monitor position (R4).** Move the photodiode from the top disc to the tube wall at mid height (about 20 times more signal at 90 %/cm and a usable signal at 70 %/cm), and keep the proportional mapping, which always under-reads. Recommendation: adopt; optionally add a second reference sensor near the LEDs to separate LED aging from water quality.
-5. **Budget (R16).** $249.00 against $225. Options: (a) raise `budget_usd` to $250; (b) cut cost (for example an acetal lower cap, which fails R10 and R11); (c) hold until the R2 route is chosen, since it changes the tube, caps and window. Recommendation: (c), then re-price. `budget_usd` stays at $225.
-6. **Flow sensor pulse rate (R5).** Choose a sensor of 15 Hz per L/min or more, halving the worst-case detection time. Recommendation: adopt.
-7. **R8 wording.** State that the 0.5 bar excludes the flow restrictor, which absorbs excess supply pressure by design; confirm the valve and sensor flow coefficients from datasheets. Recommendation: adopt.
-8. **Pressure limiter and thermal cut-back.** Make an upstream pressure-limiting valve an installation requirement (a 16 bar spike gives 8.9 MPa in the window), and add a board temperature sensor that cuts LED current above 50 °C (R10). Recommendation: adopt both.
+3. **Route to close R2 (most important).** Options: (a) lower the design flow to about 0.6 L/min (R1 falls to a third); (b) 17 LEDs at 2 L/min (53 W, R9 fails, about $99 more); (c) a higher-reflectance liner (0.95 gives 17.3 mJ/cm², not enough alone); (d) a wider bore of about 50 mm (30.0 to 41.0 mJ/cm² at 2 L/min, window about 9.5 mm, larger parts), which can be combined with (c) and a modest flow cut. Recommendation: (d) with (c), as a TRL 3 design iteration re-run through LMF-CAL-001, keeping (a) as the fallback. Until then, D1's rule means the unit would never open its valve. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E2).
+4. **Dose monitor position (R4).** Move the photodiode from the top disc to the tube wall at mid height (about 20 times more signal at 90 %/cm and a usable signal at 70 %/cm), and keep the proportional mapping, which always under-reads. Recommendation: adopt; optionally add a second reference sensor near the LEDs to separate LED aging from water quality. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E3).
+5. **Budget (R16).** $249.00 against $225. Options: (a) raise `budget_usd` to $250; (b) cut cost (for example an acetal lower cap, which fails R10 and R11); (c) hold until the R2 route is chosen, since it changes the tube, caps and window. Recommendation: (c), then re-price. `budget_usd` stays at $225. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E4).
+6. **Flow sensor pulse rate (R5).** Choose a sensor of 15 Hz per L/min or more, halving the worst-case detection time. Recommendation: adopt. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E5).
+7. **R8 wording.** State that the 0.5 bar excludes the flow restrictor, which absorbs excess supply pressure by design; confirm the valve and sensor flow coefficients from datasheets. Recommendation: adopt. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E6).
+8. **Pressure limiter and thermal cut-back.** Make an upstream pressure-limiting valve an installation requirement (a 16 bar spike gives 8.9 MPa in the window), and add a board temperature sensor that cuts LED current above 50 °C (R10). Recommendation: adopt both. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-002 E7, E8).
 
 ### Safety concerns
 
@@ -132,3 +134,57 @@ New from TRL 3:
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction; no TRL 4 work was started. The next step is to decide item 3 (route to close R2) and, if Amish wishes, run one more TRL 3 design iteration: rerun LMF-CAL-001 with the chosen bore, reflector and flow, move the dose sensor (item 4), and re-price the BOM (item 5). For reference only, TRL 4 would need: a bench reactor built from the BOM, a measured wetted PTFE reflectance and LED output at 275 nm, a lab test report (TST, `environment: lab`) with collimated-beam and flow-through biodosimetry against the dose model, pressure and leak tests of the window and caps, LED board temperature under continuous flow, flow switching timing on a firmware sketch, and build-log entries.
+
+## Session 2026-09-25: recommendations accepted
+
+Amish wrote on 2026-09-25: "i accept all your recommendations, go with them across all repos." Every open item with a recommendation is now decided by Amish, 2026-09-25: go with recommendation, recorded in `docs/decisions/0002-recommendations-accepted.md` (LMF-DDR-002 v0.1). TRL 4 remains on hold.
+
+### Decisions applied and what changed
+
+| # | Decision | Before | After |
+| --- | --- | --- | --- |
+| E1 | End caps: 316 lower, PTFE-shielded acetal upper (confirm) | Proposed | Decided; no geometry change |
+| E2 | Route to close R2: 50 mm bore with a high-reflectance liner and a modest flow cut | 25 mm bore, liner 0.80, 2.0 L/min; RED 14.7 to 19.0 mJ/cm² at 90 %/cm | 50 mm bore, liner 0.95, 1.2 L/min; RED 51.9 to 76.3 mJ/cm² (R2 met) |
+| E2 | Consequential geometry | Tube 40 mm OD, caps 60 mm, window 32 x 6 mm, sink 64 mm, M4 rods; 235 x 72 x 322 mm | Tube 65 mm, caps 90 mm, window 57 x 10 mm, sink 90 mm, M5 rods; 277 x 100 x 322 mm |
+| E3 | Dose sensor in the tube wall at mid height | Top disc; 2.4 nA at 90 %/cm, unresolved at 70 %/cm | Wall, Z = 166 mm; 16.3 nA and 0.38 nA; alarm below about 89 %/cm |
+| E4 | Budget: hold, then re-price | BOM $249.00, `budget_usd` 225 | BOM $338.00, `budget_usd` 225 (unchanged; figure now open as O4) |
+| E5 | Flow sensor 15 Hz per L/min | 0.46 s worst-case switch-on | 0.24 s (R5 met) |
+| E6 | R8 excludes the restrictor | 0.42 bar at 2.0 L/min | 0.15 bar at 1.2 L/min (R8 met, Kv assumed) |
+| E7 | Pressure limiter as an installation requirement | Assumption only | New R17: limiter at 4 bar or less; window 6.18 MPa at an 8 bar transient |
+| E8 | Thermal cut-back above 50 °C | Board 44.1 to 55.9 °C (R10 at risk) | NTC on the board; 37.1 to 44.8 °C (R10 met) |
+
+Files changed: `cad/src/model.py` and the STEP and STL exports; `cad/src/sheets.py` and LMF-DWG-001 (Rev P1 to P2); `cad/src/concept_media.py` and all of `media/` (concept sheet LMF-DWG-010 Rev P2; temporary `_views` folders deleted); `bom/bom.csv` and `bom/bom-notes.md`; `docs/04-calcs/sizing.py` and LMF-CAL-001 v0.2 (wall-sensor ray trace, new flow limits, bore study removed as no longer needed); LMF-PRB-001, LMF-PRC-001 and LMF-REQ-001 to v0.4; LMF-DDR-001 to v0.2; `project.yaml` (DDR-002 added to the evidence; `trl: 3`, `trl_target: 3`, `budget_usd: 225`); `README.md` (concept, components, safety, and new sections on concept rationale, burning platform, where it could be used and what sparked the idea); PDFs in `docs/pdf/`.
+
+### Requirement status (LMF-CAL-001 v0.2)
+
+13 met, 2 not met, 1 at risk, 1 not verifiable at TRL 3, of 17 (before: 8 met, 3 not met, 4 at risk, 1 not verifiable, of 16).
+
+| ID | Status | Value against target |
+| --- | --- | --- |
+| R3 | **Not met** (accepted by D1) | 17.4 to 21.8 mJ/cm² at 70 %/cm against 40 |
+| R16 | **Not met** | $338.00 against $225 |
+| R4 | At risk | Wall signal 16.3 nA at 90 %/cm, 0.38 nA at 70 %/cm; mapping and 1 s fail-safe need firmware and test |
+| R15 | Not verifiable at TRL 3 | Service time needs a build |
+| R1, R2, R5 to R14, R17 | Met | 1.2 L/min; RED 51.9 to 76.3 mJ/cm²; 0.24 s; window 6.18 MPa; 0.15 bar; 22.6 W and 0.21 W; board up to 44.8 °C; 277 x 100 x 322 mm; limiter at 4 bar |
+
+Notes: R2 rests on the assumed liner reflectance of 0.95 (plain PTFE gives 46.3 mJ/cm², still above 40 but inside the 20 % margin) and on the organism's response at 275 nm. The window margin at 8 bar is now 9 % (6.18 against 6.8 MPa), which is why R17 matters.
+
+### Still awaiting Amish
+
+1. **Partner with real well-water UVT data (O1).** No recommendation; stays Proposed, awaiting Amish.
+2. **Budget figure after re-pricing (O4, new).** $338.00 against $225. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost (a plain PTFE liner saves most of $45 but drops the laminar RED to 46.3 mJ/cm², inside the 20 % margin; simpler machined caps); (c) keep $225 and leave R16 visibly not met. No recommendation is recorded as a decision; `budget_usd` stays at $225.
+
+### Cross-repo actions
+
+None. LumaFlow shares no part or interface with another repo.
+
+### Safety concerns
+
+- The dose is calculated, not measured. Every document keeps the statement that LumaFlow is a research and educational prototype, not a certified water treatment device.
+- The larger window has a 9 % stress margin at 8 bar; the pressure limiter (R17) is required, not optional.
+- The new wall sensor port is a UV-C and pressure boundary; the saddle, O-ring and quartz window must seal it, and the interlock rules apply.
+- UV-C exposure, mains in a wet cabinet and heat: unchanged from the TRL 3 session, with the thermal cut-back added as a backstop.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction; `trl: 3` and `trl_target: 3` are unchanged, and no TRL 4 material was created. Decided but on hold: measuring the liner reflectance and biodosimetry (E2), firmware for the dose mapping, fail-safe and cut-back (E3, E8), and quotes or purchasing for the re-priced BOM (E4).
