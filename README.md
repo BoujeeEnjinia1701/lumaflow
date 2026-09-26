@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Water Security · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $225 USD · **Difficulty:** 2 of 5
+**Area:** Water Security · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $340 USD · **Difficulty:** 2 of 5
 
 Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
 
@@ -41,10 +41,10 @@ The gap is not confined to low-income countries. More than 43 million people in 
 | --- | --- |
 | United States | More than 43 million people drink from private wells outside federal drinking-water regulation ([USGS](https://www.usgs.gov/mission-areas/water-resources/science/domestic-private-supply-wells)) |
 | Canada | Three to four million people, about one in eight, are served by private supplies ([CMAJ](https://www.cmaj.ca/content/182/10/1061)) |
-| Sub-Saharan Africa | Many households and clinics draw from boreholes and tanks without treatment; the region carries much of the global burden counted by WHO ([WHO](https://www.who.int/news-room/fact-sheets/detail/drinking-water)) |
-| South Asia | Shallow tube wells serve large rural populations, and a device that switches with the flow suits intermittent power and water |
-| Andean and rural Latin America | Small community systems and household wells, where a repairable, low-energy unit fits limited maintenance budgets |
-| Pacific island states | Rainwater tanks are a main household source, and mercury lamps are hard to replace and dispose of on small islands |
+| Sub-Saharan Africa | The gap between urban and rural coverage of safely managed drinking water, 38 percentage points in 2022, is the widest of any region ([WHO and UNICEF JMP, 2023, p. 14](https://cdn.who.int/media/docs/default-source/wash-documents/jmp-2023_layout_v3launch_5july_low-reswhowebsite.pdf)); rural households and clinics are the users a small, flow-switched unit serves |
+| Bangladesh | In the national Multiple Indicator Cluster Survey of 2019, children in households whose drinking water carried high *E. coli* contamination were 2.28 times as likely to have diarrhea as those in low-risk households ([Khan et al., 2022](https://link.springer.com/article/10.1007/s11356-021-18460-9)) |
+| Latin America and the Caribbean | The gap between urban and rural coverage of safely managed drinking water, 27 percentage points in 2022, is second only to sub-Saharan Africa ([WHO and UNICEF JMP, 2023, p. 14](https://cdn.who.int/media/docs/default-source/wash-documents/jmp-2023_layout_v3launch_5july_low-reswhowebsite.pdf)) |
+| Pacific islands (Oceania) | At least basic drinking water reached 93 % of urban but only 51 % of rural people in 2022 ([WHO and UNICEF JMP, 2023, p. 14](https://cdn.who.int/media/docs/default-source/wash-documents/jmp-2023_layout_v3launch_5july_low-reswhowebsite.pdf)); a unit that runs on 24 V DC suits off-grid homes |
 
 ## What sparked the idea
 
@@ -56,7 +56,7 @@ Point-of-use disinfection often depends on mercury UV lamps that break.
 
 ## Concept
 
-Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 52 to 76 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 22 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. The parts cost $338 against the $225 budget; the budget figure is an open decision in the [review note](docs/REVIEW.md).
+Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 52 to 76 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 22 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. The parts cost $338 against the $340 budget that Amish approved on 2026-09-26 (see the [review note](docs/REVIEW.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -93,6 +93,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric mo
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (LMF-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `LMF-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 

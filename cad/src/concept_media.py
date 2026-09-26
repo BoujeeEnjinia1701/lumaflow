@@ -26,13 +26,13 @@ context = [Part("1 L water bottle", bottle, "#C8CDD3")]
 
 if __name__ == "__main__":
     render_all(
-        parts, project="LumaFlow", title="Inline UV-C LED reactor concept", dwg_no="LMF-DWG-010", rev="P2",
-        date="2026-09-25",
+        parts, project="LumaFlow", title="Inline UV-C LED reactor concept", dwg_no="LMF-DWG-010", rev="P3",
+        date="2026-09-26",
         key_figures=["1.2 L/min (0.32 gpm), 50 mm bore x 242 mm channel",
                      "6 x 275 nm LEDs, 0.36 W UV-C; 54 % absorbed by water",
                      "RED 52 to 76 mJ/cm² at 90 % UVT: R2 (40) met",
                      "22.6 W while flowing, 0.21 W standby (estimates)",
-                     "$338 in parts against the $225 budget"],
+                     "$338 in parts against the $340 budget"],
         scale_figure=False, context=context,
         cut_exclude=("Wall bracket", "24 V power adapter"),
         flow={"title": "power flow while water runs at 1.2 L/min (estimates from LMF-CAL-001 v0.2, W)", "unit": "W",

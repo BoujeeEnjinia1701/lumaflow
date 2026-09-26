@@ -3,9 +3,9 @@ doc_id: LMF-CAL-001
 title: LumaFlow sizing calculations
 project: LumaFlow
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,11 +17,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); rerun for the 50 mm bore, 0.95 liner, 1.2 L/min, wall dose sensor, 15 Hz per L/min flow sensor, 10 mm window, M5 rods, pressure limiter and thermal cut-back
+- version: "0.3"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget top-up approved by Amish; rerun with budget_usd $340, R16 now met
 ---
 
 # LumaFlow sizing calculations
 
-This note checks the LumaFlow design as revised by LMF-DDR-002: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow now meets thirteen of its seventeen requirements, has one at risk (R4) and misses two (R3 and R16); one cannot be verified at TRL 3. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 51.9 (laminar) to 76.3 (plug) mJ/cm², so **R2 is now met** with the 20 % margin this note requires; in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.4 to 21.8 mJ/cm² (**R3 not met**, kept visible by decision D1), and the parts cost $338.00 against the $225 budget (**R16 not met**). Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
+This note checks the LumaFlow design as revised by LMF-DDR-002: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow now meets fourteen of its seventeen requirements, has one at risk (R4) and misses one (R3); one cannot be verified at TRL 3. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 51.9 (laminar) to 76.3 (plug) mJ/cm², so **R2 is now met** with the 20 % margin this note requires; in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.4 to 21.8 mJ/cm² (**R3 not met**, kept visible by decision D1), and the parts cost $338.00 against the $340 budget approved by Amish on 2026-09-26 (**R16 met**). Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
 
 > **Safety:** These calculations concern a device meant to disinfect drinking water with UV-C light under mains pressure. They are first-principles estimates for a paper proof of concept, not a substitute for biodosimetry, datasheets or a review by a qualified engineer. A calculated dose above target is not a demonstrated dose. LumaFlow is a research and educational prototype, not a certified water treatment device. See LMF-PRC-001, Safety.
 
@@ -133,7 +137,7 @@ The 57 x 10 mm window on its 51 mm seat carries a peak stress of 6.18 MPa at 8 b
 
 The unit is 277 x 100 x 322 mm without the adapter, inside the 350 x 150 x 350 mm envelope [H1]: **R14 is met**.
 
-The 16-line BOM totals $338.00 against the `budget_usd` of $225, $113.00 over [I1]: **R16 is not met**. The largest lines are the LEDs ($54), the high-reflectance PTFE liner ($45) and the machined 316 lower cap ($42) [I2]. The rise from $249.00 comes from the larger reactor: the liner, window, caps, tube and sink all grow with the 50 mm bore.
+The 16-line BOM totals $338.00 against the `budget_usd` of $340 (raised from $225 by Amish on 2026-09-26), $2.00 under [I1]: **R16 is met**, with little margin. The largest lines are the LEDs ($54), the high-reflectance PTFE liner ($45) and the machined 316 lower cap ($42) [I2]. The rise from $249.00 comes from the larger reactor: the liner, window, caps, tube and sink all grow with the 50 mm bore.
 
 ## J. Flow limits and options
 
@@ -155,7 +159,7 @@ The 1.2 L/min design flow sits inside the 1.30 L/min limit for the 20 % margin. 
 | ID | Target | Value (tag) | Status |
 | --- | --- | --- | --- |
 | R3 | RED 40 mJ/cm² or more at 1.2 L/min, 70 %/cm | 17.4 to 21.8 mJ/cm² [B6] | **Not met** (accepted by D1) |
-| R16 | Parts cost $225 or less; no custom PCB | $338.00 [I1]; module-based electronics | **Not met** |
+| R16 | Parts cost $340 or less; no custom PCB | $338.00 [I1]; module-based electronics | Met |
 | R4 | Dose monitor; alarm and valve closed within 1 s | Wall signal 16.3 nA at 90 %/cm, 0.38 nA at 70 %/cm; alarm below about 89 %/cm [C1, C4] | At risk |
 | R15 | Window and LED head replaced in 15 min | Four tie rods and two push-fit ports; needs a build to time | Not verifiable at TRL 3 |
 | R1 | 1.2 L/min, restrictor | Restrictor; sensor range covers it [A3] | Met |
@@ -172,7 +176,7 @@ The 1.2 L/min design flow sits inside the 1.30 L/min limit for the 20 % margin. 
 | R14 | 350 x 150 x 350 mm or less | 277 x 100 x 322 mm [H1] | Met |
 | R17 | Pressure limiter at 4 bar or less upstream | Window 6.18 MPa at twice the setting [G5] | Met |
 
-Counts: 13 met, 2 not met, 1 at risk, 1 not verifiable at TRL 3 [K1].
+Counts: 14 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3 [K1].
 
 ## Numbers changed from v0.1
 
@@ -194,4 +198,4 @@ Counts: 13 met, 2 not met, 1 at risk, 1 not verifiable at TRL 3 [K1].
 | Energy | 3.1 kWh/year | 3.8 kWh/year [E3] |
 | Envelope | 235 x 72 x 322 mm | 277 x 100 x 322 mm [H1] |
 | Parts cost | $249.00 | $338.00 [I1] |
-| Requirements | 8 met, 4 at risk, 3 not met, 1 not verifiable (16) | 13 met, 1 at risk, 2 not met, 1 not verifiable (17) [K1] |
+| Requirements | 8 met, 4 at risk, 3 not met, 1 not verifiable (16) | 13 met, 1 at risk, 2 not met, 1 not verifiable (17); 14 met and 1 not met in v0.3 after the budget top-up [K1] |

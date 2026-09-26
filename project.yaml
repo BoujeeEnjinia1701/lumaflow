@@ -24,7 +24,7 @@ pitch: >-
   Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
 problem: >-
   Point-of-use disinfection often depends on mercury UV lamps that break.
-budget_usd: 225
+budget_usd: 340
 difficulty: 2  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

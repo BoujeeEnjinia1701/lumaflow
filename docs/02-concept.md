@@ -3,9 +3,9 @@ doc_id: LMF-PRC-001
 title: LumaFlow design precis
 project: LumaFlow
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); 50 mm bore with high-reflectance PTFE liner at 1.2 L/min, wall dose sensor, 15 Hz per L/min flow sensor, pressure limiter, thermal cut-back; numbers from LMF-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget top-up approved by Amish ($340); R16 met
 ---
 
 # LumaFlow design precis
@@ -33,7 +37,7 @@ revisions:
 
 LumaFlow is an inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap. Water flows up a stainless tube lined with high-reflectance PTFE, with a 50 mm bore, while six 275 nm LEDs at the bottom shine up a 242 mm water column through a quartz window. A Hall-effect flow sensor turns the LEDs on only while water runs, and a UV-C photodiode in the tube wall at mid height measures the light in the water, which lets the controller estimate the dose and close a valve if it falls too low.
 
-The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 51.9 to 76.3 mJ/cm², so **R2 is met**. At the 70 %/cm test condition it is 17.4 to 21.8 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.21 W on standby. The larger reactor costs $338.00 in parts, **$113 over the $225 budget (R16 not met)**; the budget figure is awaiting Amish.
+The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 51.9 to 76.3 mJ/cm², so **R2 is met**. At the 70 %/cm test condition it is 17.4 to 21.8 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.21 W on standby. The larger reactor costs $338.00 in parts, $2 under the $340 budget that Amish approved on 2026-09-26 (R16 met).
 
 ![Hero render](../media/hero.png)
 
@@ -140,7 +144,7 @@ The unit drops 0.15 bar at 1.2 L/min, not counting the restrictor, against 0.5 b
 
 ### Size and cost
 
-The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1]. Parts cost $338.00 against $225 [I1]; the LEDs ($54), the high-reflectance liner ($45) and the stainless lower cap ($42) are the largest lines. **R16 is not met.**
+The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1]. Parts cost $338.00 against $340 [I1]; the LEDs ($54), the high-reflectance liner ($45) and the stainless lower cap ($42) are the largest lines. R16 is met, with $2.00 of margin.
 
 ## Key design choices
 
@@ -157,7 +161,7 @@ Items marked "Decided" were decided by Amish on 2026-09-25, going with the recom
 - **External 24 V adapter (Decided, D8).** Certified adapter on a GFCI or RCD-protected outlet.
 - **End caps (Decided, LMF-DDR-002).** 316 stainless lower cap for UV-C exposure and heat, acetal upper cap shielded by the PTFE liner, top disc and a 316 outlet insert.
 - **Pressure limiter and thermal cut-back (Decided, LMF-DDR-002).** A pressure-limiting valve upstream is an installation requirement (R17); a board temperature sensor cuts LED current above 50 °C (R10).
-- **Budget (Decided, D2, and LMF-DDR-002).** `budget_usd` is $225. The recommendation to hold the budget until the dose route was chosen and then re-price has been carried out: the re-priced BOM is $338.00. The new budget figure is awaiting Amish.
+- **Budget (Decided, D2, and LMF-DDR-002).** `budget_usd` was $225. The recommendation to hold the budget until the dose route was chosen and then re-price has been carried out: the re-priced BOM is $338.00. Budget top-up to $340: decided by Amish, 2026-09-26 (LMF-DDR-002, O4); `budget_usd` is now $340.
 
 ## Safety
 
@@ -177,7 +181,7 @@ Items marked "Decided" were decided by Amish on 2026-09-25, going with the recom
 - [x] Choose a route to close R2 (decided, LMF-DDR-002: 50 mm bore, 0.95 liner, 1.2 L/min).
 - [x] Move the dose sensor to the tube wall (decided, LMF-DDR-002).
 - [x] Confirm the end cap materials (decided, LMF-DDR-002).
-- [ ] Set the budget figure for the $338.00 BOM; awaiting Amish.
+- [x] Set the budget figure for the $338.00 BOM: $340, decided by Amish, 2026-09-26.
 - [ ] Measure the wetted reflectance of the liner at 275 nm, and the organism response at 275 nm (TRL 4, on hold).
 - [ ] Confirm the flow coefficients of the sensor and valve (R8) and the water-film coefficient in the lower cap (R10).
 - [ ] Decide whether a brief LED pulse during long idle periods is worth adding to limit growth in the reactor.

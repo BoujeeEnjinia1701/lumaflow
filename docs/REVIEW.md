@@ -172,7 +172,7 @@ Notes: R2 rests on the assumed liner reflectance of 0.95 (plain PTFE gives 46.3 
 ### Still awaiting Amish
 
 1. **Partner with real well-water UVT data (O1).** No recommendation; stays Proposed, awaiting Amish.
-2. **Budget figure after re-pricing (O4, new).** $338.00 against $225. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost (a plain PTFE liner saves most of $45 but drops the laminar RED to 46.3 mJ/cm², inside the 20 % margin; simpler machined caps); (c) keep $225 and leave R16 visibly not met. No recommendation is recorded as a decision; `budget_usd` stays at $225.
+2. **Budget figure after re-pricing (O4, new).** $338.00 against $225. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost (a plain PTFE liner saves most of $45 but drops the laminar RED to 46.3 mJ/cm², inside the 20 % margin; simpler machined caps); (c) keep $225 and leave R16 visibly not met. No recommendation is recorded as a decision; `budget_usd` stays at $225. **Decided by Amish, 2026-09-26: budget top-up to $340 (option (a)); see the session below.**
 
 ### Cross-repo actions
 
@@ -188,3 +188,22 @@ None. LumaFlow shares no part or interface with another repo.
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction; `trl: 3` and `trl_target: 3` are unchanged, and no TRL 4 material was created. Decided but on hold: measuring the liner reflectance and biodosimetry (E2), firmware for the dose mapping, fail-safe and cut-back (E3, E8), and quotes or purchasing for the re-priced BOM (E4).
+
+## Session 2026-09-26: sources strengthened
+
+Sources in the README were checked against the standard of 2026-09-26 ("Fix the weaker sources"); every kept link (WHO drinking-water fact sheet, USGS domestic wells, CMAJ 2010, patent US 1,151,267) was fetched and confirms its claim.
+
+| Where | Old source | New source |
+| --- | --- | --- |
+| Region table, Sub-Saharan Africa | WHO drinking-water fact sheet, which gives no regional breakdown | WHO and UNICEF JMP, *Progress on household drinking water, sanitation and hygiene 2000-2022* (2023), p. 14: urban and rural gap in safely managed drinking water of 38 percentage points, the widest of any region |
+| Region table, South Asia | None (uncited claim about shallow tube wells) | Row replaced by Bangladesh: Khan et al., *Environmental Science and Pollution Research* (2022), MICS 2019 data, high household *E. coli* contamination linked to 2.28 times the odds of child diarrhea |
+| Region table, Andean and rural Latin America | None (uncited) | Row replaced by Latin America and the Caribbean: JMP 2023, p. 14, urban and rural gap of 27 percentage points |
+| Region table, Pacific island states | None (uncited claims about rainwater tanks and mercury lamp disposal) | Row rewritten as Pacific islands (Oceania): JMP 2023, p. 14, at least basic drinking water for 93 % of urban and 51 % of rural people in 2022 |
+
+"What sparked the idea" was already on a primary source (patent US 1,151,267 on Google Patents) and is unchanged.
+
+### Budget top-up
+
+Budget top-up to $340: decided by Amish, 2026-09-26 ("I am ok with the budget top ups"). `project.yaml` `budget_usd` is 340 (was 225). `docs/04-calcs/sizing.py` reads the budget from `project.yaml` and was re-run: BOM $338.00, $2.00 under [I1]; R16 now met. Counts: 14 met, 1 not met (R3, accepted by D1), 1 at risk (R4), 1 not verifiable at TRL 3 (R15). Open item O4 is decided.
+
+Files changed: `project.yaml`; `README.md` (budget line, cost sentence, region table); LMF-REQ-001 v0.5 (R16 target $340, met); LMF-CAL-001 v0.3; LMF-DDR-002 v0.2 (O4 decided); LMF-PRC-001 v0.5 and LMF-PRB-001 v0.5 (budget figure); `cad/src/concept_media.py` and `media/` regenerated (concept sheet LMF-DWG-010 Rev P3, key figure now "$338 in parts against the $340 budget"); PDFs in `docs/pdf/`. The margin is only $2.00, so any price rise at quoting reopens R16.

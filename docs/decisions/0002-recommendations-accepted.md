@@ -3,9 +3,9 @@ doc_id: LMF-DDR-002
 title: LumaFlow recommendations accepted
 project: LumaFlow
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); record the decided TRL 3 items, the design changes they caused and the items still open
+- version: "0.2"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget top-up approved by Amish; O4 decided ($340)
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted for items E1 to E8; items O1 and O4 remain proposed
+- **Status:** accepted for items E1 to E8; O4 decided on 2026-09-26 (budget top-up to $340); item O1 remains proposed
 
 ## Context
 
@@ -48,7 +52,7 @@ The options for each item are those listed in `docs/REVIEW.md` (TRL 3 session) a
 | # | Item | Why it stays open |
 | --- | --- | --- |
 | O1 | Partner that can supply real well-water UVT data (DDR-001 O1) | No recommendation was made; partners are picked per area later |
-| O4 | Budget figure for the $338.00 BOM | New after re-pricing. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost, for example a plain PTFE liner (46.3 mJ/cm² at 1.2 L/min, below the 20 % margin) or fewer machined parts; (c) keep $225 and leave R16 visibly not met. No decision is recorded here |
+| O4 | Budget figure for the $338.00 BOM | New after re-pricing. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost, for example a plain PTFE liner (46.3 mJ/cm² at 1.2 L/min, below the 20 % margin) or fewer machined parts; (c) keep $225 and leave R16 visibly not met. **Budget top-up to $340: decided by Amish, 2026-09-26** ("I am ok with the budget top ups"). `budget_usd` is now 340 and R16 is met ($338.00, $2.00 under; LMF-REQ-001 v0.5, LMF-CAL-001 v0.3) |
 
 *Table 3. Decided but on hold (TRL 4, on hold by Amish's instruction).*
 
@@ -63,5 +67,5 @@ The options for each item are those listed in `docs/REVIEW.md` (TRL 3 session) a
 - LMF-PRB-001 v0.4, LMF-PRC-001 v0.4, LMF-REQ-001 v0.4, LMF-CAL-001 v0.2 and LMF-DDR-001 v0.2 record these decisions.
 - `cad/src/model.py`, the STEP and STL exports, drawing LMF-DWG-001 (Rev P1 to P2), the concept sheet LMF-DWG-010 (Rev P2), all media and `bom/bom.csv` follow the new design.
 - Requirement status (LMF-CAL-001 v0.2): 13 met, 1 at risk (R4), 2 not met (R3, accepted by D1; R16), 1 not verifiable at TRL 3 (R15). Before: 8 met, 4 at risk, 3 not met, 1 not verifiable, of 16.
-- `project.yaml` keeps `trl: 3`, `trl_target: 3` and `budget_usd: 225`. The pitch is unchanged; it does not name a flow rate.
+- `project.yaml` keeps `trl: 3` and `trl_target: 3`; `budget_usd` stayed at 225 until the budget top-up to $340 (O4, decided by Amish on 2026-09-26), after which R16 is met and the count is 14 met, 1 at risk, 1 not met (R3), 1 not verifiable. The pitch is unchanged; it does not name a flow rate.
 - No other repo is affected: LumaFlow uses no SwapCell pack or shared part.
