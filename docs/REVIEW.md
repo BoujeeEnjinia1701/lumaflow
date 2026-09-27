@@ -207,3 +207,36 @@ Sources in the README were checked against the standard of 2026-09-26 ("Fix the 
 Budget top-up to $340: decided by Amish, 2026-09-26 ("I am ok with the budget top ups"). `project.yaml` `budget_usd` is 340 (was 225). `docs/04-calcs/sizing.py` reads the budget from `project.yaml` and was re-run: BOM $338.00, $2.00 under [I1]; R16 now met. Counts: 14 met, 1 not met (R3, accepted by D1), 1 at risk (R4), 1 not verifiable at TRL 3 (R15). Open item O4 is decided.
 
 Files changed: `project.yaml`; `README.md` (budget line, cost sentence, region table); LMF-REQ-001 v0.5 (R16 target $340, met); LMF-CAL-001 v0.3; LMF-DDR-002 v0.2 (O4 decided); LMF-PRC-001 v0.5 and LMF-PRB-001 v0.5 (budget figure); `cad/src/concept_media.py` and `media/` regenerated (concept sheet LMF-DWG-010 Rev P3, key figure now "$338 in parts against the $340 budget"); PDFs in `docs/pdf/`. The margin is only $2.00, so any price rise at quoting reopens R16.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session added an appearance model for photoreal renders; the renders themselves (`media/render-hero.png`, `media/render-exploded.png`) are produced later by the portfolio render pipeline.
+
+### What was done
+
+- `cad/src/product_model.py` (new): `product_parts()` returns 55 parts (37 shell, 8 internal, 1 accessory, 9 context) with colour, material, BOM line, group and explode offset. It imports `PARAMS`, `levels()` and `build_parts()` from `cad/src/model.py`, so every main dimension and interface is unchanged. It also sets `TITLE` and three `RENDER_VIEWS`: hero (with context), exploded, and a detail view without the cabinet so the unit fills the frame.
+- What it adds over the massing model:
+  - Filleted rims on both end caps, the heat sink base, the enclosure, the bracket plate and clamp rings, the flow switch and valve bodies.
+  - A wrapped product label with a wordmark and accent band on the tube, and a yellow UV-C warning label on the lower cap.
+  - Acorn nuts and washers on the tie rods; screw heads on the enclosure lid and the bracket.
+  - Enclosure split into a rear body and a front lid at a parting-line groove, with a buzzer grille, a cable gland, a status and dose bezel, a lit green status light and a lit dose bar.
+  - Flow switch with a teal sensor cap, a flow-direction arrow and a lead; solenoid valve with a coil, a connector, a core nut and a lead; push-fit collets at every port.
+  - Dose sensor split into a 316 saddle, a quartz sensor window and an amplifier housing with a lead to the enclosure.
+  - Internals for the exploded view: PTFE liner, quartz window, and the LED board with six dark LED packages, a connector and the NTC.
+  - Context: a short section of cabinet wall and floor, a chrome angle stop on the cold line, a countertop section with a stainless sink edge, and the drinking-water tap fed by the outlet line.
+- UV-C safety in the renders: the LEDs are modeled as dark, unlit packages, and no part suggests visible or exposed UV-C light. Only the status light and the dose bar are emissive.
+- `README.md`: hero image now points to `media/render-hero.png`, with an "Exploded render" link added to the links line.
+- Previews were checked with the kit's matplotlib renderer (clear parts left out).
+
+### Differences from model.py (appearance only)
+
+1. **Dose bar on the enclosure.** The concept documents name a status light and a buzzer; the appearance model adds a five-segment dose bar beside the status light. Proposed, awaiting Amish. Recommendation: keep it, since it makes the dose monitor legible to a user at a glance and costs little (a few LEDs on the controller module); record it in the requirements if accepted, otherwise remove it from `product_model.py`.
+2. **Acorn nuts on the tie rods.** The domed nuts stand about 3.6 mm above the plain nuts in `model.py` (overall height about 301 mm instead of 297 mm). Proposed, awaiting Amish. Recommendation: accept acorn nuts; they cover the rod ends and the change is within R14.
+3. **Solenoid connector and port collars.** The valve coil carries a plug-in connector that stands 7 mm in front of the model's valve envelope, and both the flow switch and the valve gain 5 mm port collars and push-fit collets at each end. Proposed, awaiting Amish. Recommendation: accept; they reflect catalog parts of the kind already in the BOM.
+4. **Adapter and power cord in the hero.** The 24 V adapter is shown only in the exploded view; in the hero the DC cord leaves the gland and enters the cabinet wall rather than running to the adapter on the floor, to keep the frame on the unit. Proposed, awaiting Amish. Recommendation: accept for the renders; the model, drawing and BOM still place the adapter on the cabinet floor.
+5. **Labels.** The product label and the UV-C warning label are not in the BOM. Proposed, awaiting Amish. Recommendation: add a labels line (a few dollars) at the next BOM revision; a UV-C warning label is good practice regardless, but note the budget margin is only $2.00.
+6. **Not modeled.** The LED supply cable from the enclosure to the LED head is left out of the appearance model for clarity.
+
+### TRL
+
+This is an appearance model only: no tolerances, no fabrication detail. `trl` stays 3 and TRL 4 remains on hold; no TRL 4 material was created.
