@@ -1,4 +1,4 @@
-"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P2 (TRL 3, design revised by LMF-DDR-002).
+"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P3 (TRL 3, design revised by LMF-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/LMF-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -21,12 +21,12 @@ DATE = "2026-09-25"
 def ortho_cells(sheet, views, names=("front", "top", "right")):
     """Repeat Sheet.add_ortho's layout arithmetic to find where each view lands (x, y, w, h)."""
     ax, ay, aw, ah = M + 10, M + 16, 245, TB_Y - M - 20
-    gap, lab = 14, 12
+    gap, lab, dl = 14, 12, 11
     dims = {n: _viewbox(Path(views[n]).read_text())[2:] for n in names}
     fw, fh = dims["front"]; tw, th = dims["top"]; rw, rh = dims["right"]
     k = sheet.scale
-    ax += (aw - (k * (max(fw, tw) + rw) + gap)) / 2
-    ay += (ah - (k * (th + max(fh, rh)) + gap + 2 * lab)) / 2
+    ax += (aw - (k * (max(fw, tw) + rw) + gap + dl)) / 2 + dl
+    ay += (ah - (k * (th + max(fh, rh)) + gap + 2 * lab + dl)) / 2 + dl
     colw = k * max(fw, tw)
     front_y = ay + k * th + lab + gap
     row_h = k * max(fh, rh)
@@ -61,30 +61,28 @@ def main():
     asm = build(include_adapter=False)
     views = project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P2",
+    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P3",
               author="Amish Chadha", date=DATE, scale=None, theme="technical",
               material="316 tube and lower cap, high-reflectance PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
                        "PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
-                         ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC")])
+                         ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC"),
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
     out = []
-    # top view: overall width and depth
-    x, y, w, h = c["top"]
-    out += dim_h(x, x + w, y - 3.5, f"{bb.size.X:.0f} overall")
-    out += dim_v(x - 4, y, y + h, f"{bb.size.Y:.0f}")
-    # front view (from -Y): overall height; port and window heights from the cabinet floor
+    # overall width, depth and height are drawn by Sheet.add_ortho; only the extra levels are added here
     x, y, w, h = c["front"]
-    zb = y + h
-    ax_x = x + (0 - bb.min.X) * k                                  # reactor axis
-    out += dim_v(x - 26, y, zb, f"{bb.size.Z:.0f} overall")
-    for i, (z, name) in enumerate([(L["z_out"], "outlet"), (L["z_det"], "sensor"), (L["z_in"], "inlet"),
-                                   (L["z_win1"], "window")]):
+    vw, vh = _viewbox(Path(views["front"]).read_text())[2:]
+    x += (w - k * (vw - 0.35)) / 2                       # left edge of the drawn geometry
+    zb = y + h - (h - k * (vh - 0.35)) / 2               # floor line of the geometry
+    ax_x = x + (0 - bb.min.X) * k                        # reactor axis
+    for i, (z, name) in enumerate([("z_out", "outlet"), ("z_det", "sensor"), ("z_in", "in"), ("z_win1", "win.")]):
+        z = L[z]
         zy = zb - z * k
-        xd = x - 5 - 7 * i
-        out += [ext(x - 0.5 if name in ("outlet", "inlet") else ax_x, zy, xd - 1, zy)]
+        xd = x - 14 - 7 * i
+        out += [ext(x - 0.5 if name in ("outlet", "in") else ax_x, zy, xd - 1, zy)]
         out += dim_v(xd, zy, zb, f"{z:.0f} {name}")
     # right view (from +X): cap diameter
     x, y, w, h = c["right"]
@@ -94,7 +92,7 @@ def main():
     out += [ext(cl, yt, cl, y - 5), ext(cr, yt, cr, y - 5)]
     out += dim_h(cl, cr, y - 4, f"D{P['cap_d']:.0f} caps")
     s._layers += out
-    s.add_svg(views["iso"], 276, 32, 140, 100, label="Isometric view", sublabel="Not to scale; adapter not shown")
+    s.add_svg(views["iso"], 276, 37, 140, 96, label="Isometric view", sublabel="Not to scale; adapter not shown")
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Unit {bb.size.X:.0f} W x {bb.size.Y:.0f} D x {bb.size.Z:.0f} H, adapter excluded",
         f"Channel D{P['bore_d']:.0f} x {L['channel_len']:.0f}; ports at Z {L['z_in']:.0f} and {L['z_out']:.0f}",
