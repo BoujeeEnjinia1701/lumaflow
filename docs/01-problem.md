@@ -3,9 +3,9 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget top-up approved by Amish ($340)
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Cost of the constructable design reported against the value-engineering target
 ---
 
 # LumaFlow problem statement
@@ -67,7 +71,7 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 ## Constraints
 
-- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The re-priced 50 mm reactor costs $338.00.
+- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The $340 figure is a value-engineering target (Amish, 2026-10-01); the constructable design of LMF-DDR-003 is estimated at $402.00, $62 over it.
 - A drinking-water flow of 1.2 L/min (0.32 gpm) is enough for one tap; it fills a 1 L bottle in about 50 s.
 - A sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less are part of the installation.
 - Fits under a kitchen sink and connects to a standard cold line with push-fit fittings.

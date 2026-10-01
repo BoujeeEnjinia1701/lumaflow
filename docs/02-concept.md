@@ -3,9 +3,9 @@ doc_id: LMF-PRC-001
 title: LumaFlow design precis
 project: LumaFlow
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget top-up approved by Amish ($340); R16 met
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: "Design made constructable (LMF-DDR-003): components 13 to 18 updated; cost reported against the value-engineering target"
 ---
 
 # LumaFlow design precis
@@ -37,7 +41,7 @@ revisions:
 
 LumaFlow is an inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap. Water flows up a stainless tube lined with high-reflectance PTFE, with a 50 mm bore, while six 275 nm LEDs at the bottom shine up a 242 mm water column through a quartz window. A Hall-effect flow sensor turns the LEDs on only while water runs, and a UV-C photodiode in the tube wall at mid height measures the light in the water, which lets the controller estimate the dose and close a valve if it falls too low.
 
-The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 51.9 to 76.3 mJ/cm², so **R2 is met**. At the 70 %/cm test condition it is 17.4 to 21.8 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.21 W on standby. The larger reactor costs $338.00 in parts, $2 under the $340 budget that Amish approved on 2026-09-26 (R16 met).
+The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 51.9 to 76.3 mJ/cm², so **R2 is met**. At the 70 %/cm test condition it is 17.4 to 21.8 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.21 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 402 (USD 62 over the target). The design was made physically buildable on 2026-10-01 (LMF-DDR-003, open for Amish's review), and the prototype build plan LMF-BLD-001 shows how to make and fit every part.
 
 ![Hero render](../media/hero.png)
 
@@ -59,7 +63,7 @@ The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bo
 
 ## Main components
 
-Numbers match the exploded view (Figure 3), `bom/bom.csv` and drawing LMF-DWG-001 Rev P2.
+Numbers match the exploded view (Figure 3), `bom/bom.csv` and drawing LMF-DWG-001 Rev P4.
 
 Table 1. Main components.
 
@@ -77,10 +81,12 @@ Table 1. Main components.
 | 10 | Controller and LED driver | Microcontroller, 350 mA constant-current driver with dimming, valve driver, NTC input, input fuse | Module-based; no custom PCB |
 | 11 | Solenoid shutoff valve | 24 V DC, normally closed, food-grade | Closes on alarm or power loss (decision D6) |
 | 12 | 24 V power adapter | Certified external adapter, 30 W | The only part at mains voltage (decision D8) |
-| 13 | Electronics enclosure | Printed PETG, lid interlock, status light, buzzer | Dry side only |
-| 14 | Wall bracket | Backplate with two clamp rings and an enclosure shelf | Holds the reactor vertical (decision D7) |
-| 15 | Fittings and outlet insert | 3/8 in push-fit, tee to the cold line, 1.2 L/min restrictor, 316 outlet insert | Restrictor enforces R1 |
-| 16 | Tie rods and hardware | Four M5 316 rods on a 78 mm circle | 664 N each at 8 bar (G7) |
+| 13 | Electronics enclosure | Printed PETG body and lid, lid interlock, status light, buzzer, back screwed to the bracket plate | Dry side only |
+| 14 | Wall bracket | 6 mm aluminium plate with two printed saddles for the flow sensor and valve | Holds the reactor vertical (decision D7) |
+| 15 | Fittings, stem adaptors and outlet sleeve | 3/8 in push-fit, stainless stem adaptors in 1/4 BSPP ports, tee to the cold line, 1.2 L/min restrictor, 316 outlet sleeve | Restrictor enforces R1 |
+| 16 | Tie rods and hardware | Four M5 316 studs on an 80 mm circle, threaded into the lower cap | 664 N each at 8 bar (G7) |
+| 17 | Window retaining ring and seals | 316 ring under the window, EPDM window gasket, two EPDM face O-rings at the tube ends | Added by LMF-DDR-003 |
+| 18 | Pipe clamps | Two rubber-lined 65 mm clamps on M8 studs | Added by LMF-DDR-003 |
 
 Not in the BOM, but required at installation: a 5 µm sediment pre-filter and a pressure-limiting valve set at 4 bar (58 psi) or less (R17).
 
@@ -144,7 +150,7 @@ The unit drops 0.15 bar at 1.2 L/min, not counting the restrictor, against 0.5 b
 
 ### Size and cost
 
-The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1]. Parts cost $338.00 against $340 [I1]; the LEDs ($54), the high-reflectance liner ($45) and the stainless lower cap ($42) are the largest lines. R16 is met, with $2.00 of margin.
+The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1]. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 402 (USD 62 over the target) [I1]; the LEDs ($54), the stainless lower cap ($48) and the high-reflectance liner ($45) are the largest lines.
 
 ## Key design choices
 

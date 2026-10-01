@@ -1,4 +1,5 @@
-"""LumaFlow sizing calculations for LMF-CAL-001 v0.2 (TRL 3, design as revised by LMF-DDR-002).
+"""LumaFlow sizing calculations for LMF-CAL-001 v0.4 (TRL 3, design as revised by LMF-DDR-002 and made
+constructable by LMF-DDR-003).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md, each tagged [A1], [B2] ...
@@ -405,6 +406,11 @@ F_end = p * math.pi * (P["tube_od"] / 2) ** 2
 A_S = {4.0: 8.78, 5.0: 14.2, 6.0: 20.1}[P["rod_d"]]
 show("G7", f"End load on each cap {F_end:.0f} N (seal at the tube OD); per M{P['rod_d']:.0f} rod {F_end/P['n_rod']:.0f} N, "
      f"{F_end/P['n_rod']/A_S:.0f} MPa in the {A_S} mm2 stress area")
+a_r = P["liner_top_od"] / 2 + 0.1
+roof = lambda t: 0.75 * p * a_r ** 2 / t ** 2      # clamped circular plate, uniform pressure, edge stress
+show("G8", f"Acetal roof of the upper cap over the {2*a_r:.1f} mm liner pocket at 8 bar (clamped edge): "
+     f"{roof(L['roof_t']):.1f} MPa at {L['roof_t']:.0f} mm (the 3 mm roof of the concept: "
+     f"{0.75*p*(P['liner_od']/2+0.2)**2/3.0**2:.0f} MPa); acetal long-term design stress taken as 10 MPa", roof(L["roof_t"]))
 
 # ---------------------------------------------------------------- H size
 head("H. Size (R14)")
@@ -418,8 +424,8 @@ rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
 total = sum(float(r["qty"]) * float(r["unit_cost_usd"]) for r in rows)
 budget = float(yaml.safe_load((ROOT / "project.yaml").read_text())["budget_usd"])
 top = sorted(rows, key=lambda r: -float(r["qty"]) * float(r["unit_cost_usd"]))[:3]
-show("I1", f"BOM {len(rows)} lines, total ${total:.2f} against budget_usd ${budget:.0f} "
-     f"({'under' if total <= budget else 'over'} by ${abs(budget-total):.2f})", total)
+show("I1", f"BOM {len(rows)} lines, estimated cost ${total:.2f} against the value-engineering target (budget_usd) "
+     f"${budget:.0f}: ${abs(budget-total):.2f} {'under' if total <= budget else 'over'} the target", total)
 show("I2", "Largest lines: " + "; ".join(f"{r['item']} ${float(r['qty'])*float(r['unit_cost_usd']):.0f}" for r in top))
 
 # ---------------------------------------------------------------- J options
@@ -462,7 +468,8 @@ status = [
     ("R13", "24 V DC only at the unit", "Certified adapter, fuse", "Met"),
     ("R14", "<= 350 x 150 x 350 mm", f"{dims[0]:.0f} x {dims[1]:.0f} x {dims[2]:.0f} mm", "Met"),
     ("R15", "Service in 15 min", "Needs a build to time", "Not verifiable at TRL 3"),
-    ("R16", f"<= ${budget:.0f}", f"${total:.0f}", "Met" if total <= budget else "Not met"),
+    ("R16", f"value-engineering target ${budget:.0f}", f"${total:.0f}",
+     "Under target" if total <= budget else f"Over target by ${total-budget:.0f}"),
     ("R17", "Pressure limiter <= 4 bar upstream (installation)", f"window {OUT['G5']:.2f} MPa at twice the setting",
      "Met" if OUT["G5"] <= 6.8 else "Not met"),
 ]

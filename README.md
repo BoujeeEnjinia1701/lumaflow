@@ -2,13 +2,13 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352085.svg)](https://zenodo.org/badge/latestdoi/1386352085) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/lumaflow/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/lumaflow)
 
-**Area:** Water Security · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $340 USD · **Difficulty:** 2 of 5
+**Area:** Water Security · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** $340 USD · **Difficulty:** 2 of 5
 
 Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.
 
 ![LumaFlow: under-sink UV-C LED water disinfection reactor for a drinking-water tap, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/LMF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/LMF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -56,7 +56,7 @@ Point-of-use disinfection often depends on mercury UV lamps that break.
 
 ## Concept
 
-Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 52 to 76 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 22 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. The parts cost $338 against the $340 budget that Amish approved on 2026-09-26 (see the [review note](docs/REVIEW.md)).
+Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 52 to 76 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 22 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 402 (USD 62 over the target; see the [design decisions register](docs/06-design-decisions.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -71,6 +71,12 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - At installation: a sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less
 
 The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is `cad/src/model.py`, with STEP and STL exports in `cad/step/` and `cad/stl/`.
+
+## Building the prototype
+
+![LumaFlow prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
+
+The [prototype build plan](docs/05-build-plan.md) (LMF-BLD-001) shows, in pictures, how to make each of the 21 components and put them together in sixteen steps; nothing has been built yet. The made parts are a drilled aluminium bracket plate with printed saddles, a machined stainless lower end cap, a stainless window retaining ring, a drilled heat sink and spreader ring, tie rod studs, the stainless tube with a welded sensor boss, the PTFE liner, a machined acetal upper end cap, a photodiode holder and a printed enclosure; the rest is bought. Writing the plan made the design buildable: the window now goes in from below and is clamped by a ring, the tube ends seal on O-rings, the tie rods are studs in the lower cap, the upper cap's roof is thicker, the ports are threaded and the bracket holds the reactor in two pipe clamps (LMF-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
 
 ## Safety
 

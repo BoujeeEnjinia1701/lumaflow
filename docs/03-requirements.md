@@ -3,9 +3,9 @@ doc_id: LMF-REQ-001
 title: LumaFlow requirements
 project: LumaFlow
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,11 +29,15 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget top-up approved by Amish; R16 target $340, now met (LMF-CAL-001 v0.3)
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Rerun for the constructable design (LMF-DDR-003); R16 reported against the value-engineering target; R15 note
 ---
 
 # LumaFlow requirements
 
-These are the requirements for the concept, checked by calculation at TRL 3 in LMF-CAL-001 v0.3. The status column reports that note; bracketed tags such as [B5] point to the line of `docs/04-calcs/sizing.py` that carries the number. One requirement is **not met**: R3 (dose at the 70 %/cm test condition, accepted as not met by decision D1). R16 (cost) is met after the budget top-up to $340 that Amish approved on 2026-09-26. One is at risk: R4. The dose targets (R2, R3) and the budget (R16) follow Amish's decisions in LMF-DDR-001; R1, R8, R10 and the new R17 follow the recommendations Amish accepted on 2026-09-25 (LMF-DDR-002).
+These are the requirements for the concept, checked by calculation at TRL 3 in LMF-CAL-001 v0.4, for the constructable design of LMF-DDR-003. The status column reports that note; bracketed tags such as [B5] point to the line of `docs/04-calcs/sizing.py` that carries the number. One requirement is **not met**: R3 (dose at the 70 %/cm test condition, accepted as not met by decision D1). R16 (cost) is reported against its value-engineering target: the constructable design is estimated at USD 402, USD 62 over the USD 340 target. One is at risk: R4. The dose targets (R2, R3) and the budget (R16) follow Amish's decisions in LMF-DDR-001; R1, R8, R10 and the new R17 follow the recommendations Amish accepted on 2026-09-25 (LMF-DDR-002).
 
 Table 1. Requirements and status at TRL 3.
 
@@ -53,8 +57,8 @@ Table 1. Requirements and status at TRL 3.
 | R12 | Contain the UV-C light | No UV-C outside the unit in normal use; LEDs cannot run with the LED head or enclosure lid removed | Met by design | Design review of interlock and light path |
 | R13 | Electrical safety | Only 24 V DC at the unit; mains confined to a certified external adapter; fuse on the 24 V input | Met by design | Design review |
 | R14 | Fit under a kitchen sink | Envelope 350 x 150 x 350 mm (13.8 x 5.9 x 13.8 in) or less, excluding the adapter | Met (277 x 100 x 322 mm) [H1] | Parametric model |
-| R15 | Easy service | Window and LED head replaceable with hand tools in 15 min or less; status LED shows run, fault and service due | Not verifiable at TRL 3 (four tie rods and two push-fit ports; needs a build to time) | Timed service on a build |
-| R16 | Low cost and buildable | Parts cost $340 or less per unit (redefined from $200 by decision D2, then from $225 by the budget top-up approved by Amish on 2026-09-26); no custom PCB for the first build | Met ($338.00 after re-pricing the 50 mm reactor, $2.00 under) [I1] | Priced BOM |
+| R15 | Easy service | Window and LED head replaceable with hand tools in 15 min or less; status LED shows run, fault and service due | Not verifiable at TRL 3 (LED head off on four screws from below and window out after six ring screws, with no plumbing disturbed; needs a build to time) | Timed service on a build |
+| R16 | Low cost and buildable | Value-engineering target of USD 340 per unit in parts (`budget_usd`, a hypothetical control target, not a limit; set from $200 by decision D2, then $225, then $340 by the top-up Amish approved on 2026-09-26); no custom PCB for the first build | Over the value-engineering target by USD 62 (estimated cost of the constructable design USD 402; the concept was $338.00) [I1] | Priced BOM |
 | R17 | Pressure protection (installation) | A pressure-limiting valve upstream of the unit, set at 4 bar (58 psi) or less, so that transients stay within the 8 bar window rating (new, LMF-DDR-002) | Met (window 3.09 MPa at 4 bar, 6.18 MPa at a transient of twice the setting) [G5] | Plate stress calculation; installation instructions |
 
 ## Assumptions
@@ -64,4 +68,4 @@ Table 1. Requirements and status at TRL 3.
 - **Liner reflectance.** R2 rests on a wetted reflectance of 0.95 for the high-reflectance PTFE liner, which must be measured; plain PTFE (0.80) would give 46.3 mJ/cm², still above 40 (LMF-CAL-001, B8).
 - **Pressure.** The pressure-limiting valve (R17) is part of the installation, like the sediment pre-filter, and is not in the LumaFlow BOM.
 - **Demand.** 10 to 20 L per household per day, drawn in about 20 short draws.
-- R3 is kept as stated so that the gap stays visible. R16 was raised to $340 by the budget top-up Amish approved on 2026-09-26 (LMF-DDR-002, O4); the margin is only $2.00, so any price rise reopens it.
+- R3 is kept as stated so that the gap stays visible. The R16 figure of $340 is a value-engineering target (Amish, 2026-10-01); the cost drivers and savings worth trying are in the design decisions register, LMF-DEC-001.

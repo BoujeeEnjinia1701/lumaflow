@@ -3,9 +3,9 @@ doc_id: LMF-CAL-001
 title: LumaFlow sizing calculations
 project: LumaFlow
 doc_type: Calculation
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,17 +21,21 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget top-up approved by Amish; rerun with budget_usd $340, R16 now met
+- version: "0.4"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Rerun for the constructable design (LMF-DDR-003); new G8 for the upper cap roof; cost reported against the value-engineering target
 ---
 
 # LumaFlow sizing calculations
 
-This note checks the LumaFlow design as revised by LMF-DDR-002: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow now meets fourteen of its seventeen requirements, has one at risk (R4) and misses one (R3); one cannot be verified at TRL 3. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 51.9 (laminar) to 76.3 (plug) mJ/cm², so **R2 is now met** with the 20 % margin this note requires; in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.4 to 21.8 mJ/cm² (**R3 not met**, kept visible by decision D1), and the parts cost $338.00 against the $340 budget approved by Amish on 2026-09-26 (**R16 met**). Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
+This note checks the LumaFlow design as revised by LMF-DDR-002 and made constructable by LMF-DDR-003: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow meets thirteen of its seventeen requirements, has one at risk (R4) and misses one (R3); one cannot be verified at TRL 3, and the cost (R16) is over its value-engineering target. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 51.9 (laminar) to 76.3 (plug) mJ/cm², so **R2 is now met** with the 20 % margin this note requires; in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.4 to 21.8 mJ/cm² (**R3 not met**, kept visible by decision D1). Value-engineering target: USD 340. Estimated cost of the constructable design: USD 402 (USD 62 over the target) [I1]. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
 
 > **Safety:** These calculations concern a device meant to disinfect drinking water with UV-C light under mains pressure. They are first-principles estimates for a paper proof of concept, not a substitute for biodosimetry, datasheets or a review by a qualified engineer. A calculated dose above target is not a demonstrated dose. LumaFlow is a research and educational prototype, not a certified water treatment device. See LMF-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in LMF-REQ-001 v0.4 against the design in LMF-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and part volumes, so the dimensions used here are the ones in the STEP files and in drawing LMF-DWG-001 Rev P2. It reads prices from `bom/bom.csv` and the budget from `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py` (about 20 s; it runs the ray trace eight times).
+The note checks every requirement in LMF-REQ-001 v0.6 against the design in LMF-PRC-001 v0.6 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and part volumes, so the dimensions used here are the ones in the STEP files and in drawing LMF-DWG-001 Rev P4. It reads prices from `bom/bom.csv` and the value-engineering target (`budget_usd`) from `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py` (about 20 s; it runs the ray trace eight times).
 
 Status rule for the dose: the laminar-flow RED is the design value, because the laminar profile is the more pessimistic of the two limits and the real profile lies between them [A5]. **Met** needs the laminar RED to clear the target by 20 %.
 
@@ -111,9 +115,9 @@ At 15 L/day and 1.2 L/min the LEDs run 14.2 min/day (86 h/year); the unit uses 1
 
 ## F. Thermal (R10)
 
-The LEDs turn 12.66 W into heat. The larger 90 x 90 mm finned sink rejects it to cabinet air through 2.46 K/W; the sink, spreader ring, lower cap and board store 802 J/K [F1]. The water path through the spreader ring and the 316 stainless lower cap is 1.55 K/W and carries 9.0 W of the 12.7 W into the water, which warms by 0.11 K [F2].
+The LEDs turn 12.66 W into heat. The larger 90 x 90 mm finned sink rejects it to cabinet air through 2.46 K/W; the sink, spreader ring, lower cap and board store 781 J/K [F1]. The water path through the spreader ring and the 316 stainless lower cap is 1.55 K/W and carries 9.0 W of the 12.7 W into the water, which warms by 0.11 K [F2].
 
-With continuous flow the LED board settles at 44.8, 40.3 or 37.1 °C for water-film coefficients of 150, 300 or 600 W/(m²·K) [F3], below 50 °C in every case; the LED junctions sit near 61 °C [F4]. The board temperature sensor and the cut-back of LED current above 50 °C (decision in LMF-DDR-002) are a backstop for the uncertain film coefficient: **R10 is met**. An acetal lower cap, with no water path, would settle at 63 °C and pass 50 °C after 31.4 min of flow [F5], which supports the 316 lower cap (LMF-DDR-002 confirms it). If the LEDs stuck on with no flow, the board would head for 53 °C, where the cut-back would act; the 5 s run-on adds only 0.08 K [F6].
+With continuous flow the LED board settles at 44.8, 40.3 or 37.1 °C for water-film coefficients of 150, 300 or 600 W/(m²·K) [F3], below 50 °C in every case; the LED junctions sit near 61 °C [F4]. The board temperature sensor and the cut-back of LED current above 50 °C (decision in LMF-DDR-002) are a backstop for the uncertain film coefficient: **R10 is met**. An acetal lower cap, with no water path, would settle at 63 °C and pass 50 °C after 30.5 min of flow [F5], which supports the 316 lower cap (LMF-DDR-002 confirms it). If the LEDs stuck on with no flow, the board would head for 53 °C, where the cut-back would act; the 5 s run-on adds only 0.08 K [F6].
 
 ## G. Pressure drop, window and structure (R7, R8, R17)
 
@@ -131,13 +135,13 @@ With continuous flow the LED board settles at 44.8, 40.3 or 37.1 °C for water-f
 
 R8 is now worded to exclude the flow restrictor, which absorbs excess supply pressure by design. The unit drops 0.15 bar against 0.5 bar [G2]; with a Kv 0.5 sensor and a Kv 0.4 valve it would be 0.08 bar, and at the minimum supply of 2 bar, 1.85 bar remains for the restrictor and faucet [G3]. The margin covers the assumed flow coefficients, so **R8 is met**; the coefficients are still to be confirmed from the datasheets of the parts chosen.
 
-The 57 x 10 mm window on its 51 mm seat carries a peak stress of 6.18 MPa at 8 bar, inside the 6.8 MPa design stress [G4]: **R7 is met**, with a 9 % margin (v0.1: 4.46 MPa on a 26 mm seat). Unprotected, a 16 bar water-hammer spike would raise it to 12.4 MPa. With the pressure limiter set at 4 bar the window carries 3.09 MPa static, and a transient doubling to 8 bar gives 6.18 MPa [G5]: **R17 is met** as an installation requirement. The 8 mm sensor window sees 1.69 MPa and the tube hoop stress is 8.3 MPa [G6]. Each cap carries an end load of 2,655 N; four M5 316 rods take 664 N each, 47 MPa in the thread [G7].
+The 57 x 10 mm window on its 51 mm seat carries a peak stress of 6.18 MPa at 8 bar, inside the 6.8 MPa design stress [G4]: **R7 is met**, with a 9 % margin (v0.1: 4.46 MPa on a 26 mm seat). Unprotected, a 16 bar water-hammer spike would raise it to 12.4 MPa. With the pressure limiter set at 4 bar the window carries 3.09 MPa static, and a transient doubling to 8 bar gives 6.18 MPa [G5]: **R17 is met** as an installation requirement. The 8 mm sensor window sees 1.69 MPa and the tube hoop stress is 8.3 MPa [G6]. Each cap carries an end load of 2,655 N; four M5 316 studs, threaded 12 mm into the stainless lower cap, take 664 N each, 47 MPa in the thread [G7]. The acetal upper cap closes the channel above the PTFE top disc; its roof over the 56.2 mm liner pocket is 13 mm thick and carries 2.8 MPa at 8 bar with a clamped edge, against a long-term design stress of 10 MPa taken for acetal [G8]. The 3 mm roof of the concept model would have carried about 59 MPa, near the short-term strength of acetal, which is why LMF-DDR-003 made the cap 40 mm tall.
 
 ## H. Size and I. Cost (R14, R16)
 
 The unit is 277 x 100 x 322 mm without the adapter, inside the 350 x 150 x 350 mm envelope [H1]: **R14 is met**.
 
-The 16-line BOM totals $338.00 against the `budget_usd` of $340 (raised from $225 by Amish on 2026-09-26), $2.00 under [I1]: **R16 is met**, with little margin. The largest lines are the LEDs ($54), the high-reflectance PTFE liner ($45) and the machined 316 lower cap ($42) [I2]. The rise from $249.00 comes from the larger reactor: the liner, window, caps, tube and sink all grow with the 50 mm bore.
+Value-engineering target: USD 340 (`budget_usd`, a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 402 (USD 62 over the target), from the 18-line BOM [I1]. The largest lines are the LEDs ($54), the machined 316 lower cap ($48) and the high-reflectance PTFE liner ($45) [I2]. The concept BOM was $338.00; making the design buildable (LMF-DDR-003) added the welded sensor boss, the window retaining ring and seals, the threaded ports with stem adaptors, the drilled bracket plate and saddles, the pipe clamps and more fixings. R16 is reported against the target, not as a failure; savings worth trying are listed in the design decisions register (LMF-DEC-001).
 
 ## J. Flow limits and options
 
@@ -154,14 +158,14 @@ The 1.2 L/min design flow sits inside the 1.30 L/min limit for the 20 % margin. 
 
 ## K. Requirement status
 
-*Table 6. Requirement status at TRL 3 (LMF-REQ-001 v0.4). Not met items first.*
+*Table 6. Requirement status at TRL 3 (LMF-REQ-001 v0.6). Not met items first.*
 
 | ID | Target | Value (tag) | Status |
 | --- | --- | --- | --- |
 | R3 | RED 40 mJ/cm² or more at 1.2 L/min, 70 %/cm | 17.4 to 21.8 mJ/cm² [B6] | **Not met** (accepted by D1) |
-| R16 | Parts cost $340 or less; no custom PCB | $338.00 [I1]; module-based electronics | Met |
+| R16 | Value-engineering target USD 340; no custom PCB | $402.00 [I1]; module-based electronics | Over the target by USD 62 |
 | R4 | Dose monitor; alarm and valve closed within 1 s | Wall signal 16.3 nA at 90 %/cm, 0.38 nA at 70 %/cm; alarm below about 89 %/cm [C1, C4] | At risk |
-| R15 | Window and LED head replaced in 15 min | Four tie rods and two push-fit ports; needs a build to time | Not verifiable at TRL 3 |
+| R15 | Window and LED head replaced in 15 min | LED head off on four screws from below, window out after six ring screws, no plumbing disturbed; needs a build to time | Not verifiable at TRL 3 |
 | R1 | 1.2 L/min, restrictor | Restrictor; sensor range covers it [A3] | Met |
 | R2 | RED 40 mJ/cm² or more at 1.2 L/min, 90 %/cm | 51.9 (laminar) to 76.3 (plug) mJ/cm² [B5] | Met |
 | R5 | LEDs on within 0.5 s above 0.3 L/min; 5 s run-on | 0.24 s worst case [D2] | Met |
@@ -170,13 +174,13 @@ The 1.2 L/min design flow sits inside the 1.30 L/min limit for the 20 % margin. 
 | R8 | 0.5 bar or less at 1.2 L/min, excluding the restrictor | 0.15 bar, on assumed Kv [G2] | Met |
 | R9 | 25 W flowing, 0.5 W standby | 22.6 W, 0.21 W [E1, E2] | Met |
 | R10 | LED board 50 °C or less; cut-back above 50 °C | 37.1 to 44.8 °C steady [F3] | Met |
-| R11 | Food-contact wetted parts; no UV-C on plastics but PTFE | 316 lower cap; PTFE liner, top disc and 316 insert shield the acetal upper cap | Met |
-| R12 | No UV-C outside the unit; interlocks | Metal and PTFE light path; sensor window sealed by the photodiode saddle; interlock by design | Met |
+| R11 | Food-contact wetted parts; no UV-C on plastics but PTFE | 316 lower cap; PTFE liner, top disc and 316 outlet sleeve shield the acetal upper cap; EPDM gasket and O-rings | Met |
+| R12 | No UV-C outside the unit; interlocks | Metal and PTFE light path; sensor window sealed in the welded boss by the photodiode holder; interlock by design | Met |
 | R13 | 24 V DC only at the unit | Certified adapter and input fuse | Met |
 | R14 | 350 x 150 x 350 mm or less | 277 x 100 x 322 mm [H1] | Met |
 | R17 | Pressure limiter at 4 bar or less upstream | Window 6.18 MPa at twice the setting [G5] | Met |
 
-Counts: 14 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3 [K1].
+Counts: 13 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3, and R16 over its value-engineering target by USD 62 [K1].
 
 ## Numbers changed from v0.1
 
@@ -199,3 +203,13 @@ Counts: 14 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3 [K1].
 | Envelope | 235 x 72 x 322 mm | 277 x 100 x 322 mm [H1] |
 | Parts cost | $249.00 | $338.00 [I1] |
 | Requirements | 8 met, 4 at risk, 3 not met, 1 not verifiable (16) | 13 met, 1 at risk, 2 not met, 1 not verifiable (17); 14 met and 1 not met in v0.3 after the budget top-up [K1] |
+
+*Table 8. v0.3 against v0.4 (constructable design, LMF-DDR-003). Every other number is unchanged.*
+
+| Quantity | v0.3 | v0.4 |
+| --- | --- | --- |
+| Heat capacity of sink, ring, cap and board | 802 J/K | 781 J/K [F1] |
+| Acetal lower cap case: time to 50 °C | 31.4 min | 30.5 min [F5] |
+| Upper cap roof stress at 8 bar | not checked (3 mm roof, about 59 MPa) | 2.8 MPa, 13 mm roof [G8] |
+| Estimated cost | $338.00, 16 lines | $402.00, 18 lines [I1] |
+| R16 | Met | Over the value-engineering target by USD 62 [K1] |

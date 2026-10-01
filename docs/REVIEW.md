@@ -246,3 +246,60 @@ This is an appearance model only: no tolerances, no fabrication detail. `trl` st
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: design for construction and illustrated build plan (BLD-001)
+
+Run under kit 1.7.0 `/build-plan` with Amish's instructions of 2026-09-30 ("fix the design assumptions to match and be physically feasible as you draw the illustrations"; outstanding decisions go in a separate register) and of 2026-10-01 (budgets are value-engineering targets). This cloud copy has no git, so nothing was committed or pushed. TRL cap respected: no PCB layout, firmware, purchasing list, test plan or build log; the controller is bought modules wired at block level.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` replaced by `.kit/CLAUDE.md`.
+- `cad/src/model.py`: constructable model with every fixing and seal, `positions()` for shared hole positions, and 324 build123d constructability checks (`python cad/src/model.py --check`: no overlaps, every joint touching, listed clearances, removal paths for the window and the LED head). All 324 pass. STEP and STL regenerated in `cad/step/` and `cad/stl/`.
+- `docs/decisions/0003-design-for-construction.md` (LMF-DDR-003, Draft): every change and its reason, "made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review".
+- `docs/05-build-plan.md` (LMF-BLD-001 v0.1): plain English, components in build order with making sketches, numbered steps, joint close-ups and checks; 16 assembly steps with pictures; first checks; safety stops; tools. No cost section and no open decisions.
+- `docs/06-design-decisions.md` (LMF-DEC-001 v0.1): 10 open decisions, 8 items to confirm when parts are bought, a Value engineering section, and the decisions made with Amish's words.
+- `cad/src/build_plan_media.py` (new): overview, 11 making sketches LMF-DWG-101 to 111, two layouts (bracket plate holes, end cap sections), 7 joint close-ups, 16 step pictures and the block wiring diagram, all in `docs/05-build-plan/` and `cad/drawings/`.
+- `docs/04-calcs/sizing.py` re-run: new G8 (upper cap roof), cost against the value-engineering target. LMF-CAL-001 v0.4, LMF-REQ-001 v0.6, LMF-PRC-001 v0.6 and LMF-PRB-001 v0.6 updated. `bom/bom.csv` lines respecified and lines 17 and 18 added; `bom/bom-notes.md` rewritten.
+- Drawing LMF-DWG-001 Rev P4 (`cad/src/sheets.py`); concept media regenerated (`cad/src/concept_media.py`, concept sheet LMF-DWG-010 Rev P4).
+- `project.yaml`: `design_state: constructable`; LMF-DDR-003, the build plan, the register, the overview picture and `build_plan_media.py` added to `trl_evidence`; `budget_usd` unchanged at 340. README: links to the build plan and the register, "Building the prototype" section, cost sentence reworded to the value-engineering target.
+
+### Design changes made for construction (LMF-DDR-003)
+
+1. **Window (P1):** the pocket trapped the 57 mm window between a 50 mm bore and a 51 mm seat and had no seal. Now it is open from below; the window is clamped against a 1 mm EPDM gasket by a 316 retaining ring (72 x 51 x 2 mm, six M3 countersunk screws). Open span, window height and LED gap unchanged.
+2. **Tie rods (P2):** they ended on the sink with nothing below them. Now M5 studs are threaded 12 mm into the lower cap, with acorn nuts on the upper cap; pitch circle 78 to 80 mm to clear the pipe clamps.
+3. **LED head (P3):** four M4 screws from below in the fin gaps into the lower cap; board on three M3 screws; cable slot in the spreader ring.
+4. **Tube ends (P4):** tube 204 mm, seated 2 mm into each cap on a face O-ring; 59 mm spigot in the lower cap; liner's top turned down to 56 mm for the upper groove.
+5. **Upper cap (P5):** 30 to 40 mm tall; the roof over the liner is 13 mm (2.8 MPa at 8 bar) instead of 3 mm (about 59 MPa).
+6. **Ports (P6):** 20 mm bosses tapped 1/4 BSPP with stainless push-fit stem adaptors that plug straight into the flow sensor and valve.
+7. **Outlet sleeve (P7):** the 316 insert overlapped the liner by 0.1 mm; now a 17 mm sleeve ending at the liner.
+8. **Sensor (P8):** the clamp-on saddle had no clamp; now a 316 boss TIG-welded to the tube, with a 10 x 3 mm window on a washer pressed by an M12 x 1 photodiode holder.
+9. **Bracket (P9):** closed printed rings and an unfixed shelf replaced by a 6 mm aluminium plate, two rubber-lined pipe clamps on M8 studs, the enclosure screwed to the plate (27 mm further back) and two printed saddles for the flow sensor and valve.
+10. **Enclosure (P10):** body and screw-on lid for the lid interlock.
+11. **Floor gap (P11):** 25 mm of air under the fins; the adapter stays on the floor.
+
+### Key results
+
+- Constructability checks: 324 of 324 pass.
+- Envelope unchanged: 277 x 100 x 322 mm (R14 met). Dose, dose monitor, power, pressure drop and window stress unchanged.
+- Value-engineering target: USD 340. Estimated cost of the constructable design: USD 402 (USD 62 over the target); the concept was $338.00.
+- Requirement status: 13 met, 1 not met (R3, accepted by D1), 1 at risk (R4), 1 not verifiable at TRL 3 (R15), and R16 over its value-engineering target by USD 62.
+
+### Proposed, awaiting Amish
+
+All listed in `docs/06-design-decisions.md`. New this session: accept LMF-DDR-003 (recommendation: accept); how the LEDs are stopped when the LED head is off (recommendation: a loop wire in the head's plug); what the window bears on (recommendation: lapped stainless ring for the first prototype). Carried over: O1 partner (no recommendation), the five appearance-model items of 2026-09-26, and the idle LED pulse question.
+
+### Stale, to regenerate on Amish's Mac
+
+- `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png` and `media/social-preview.png` still show the concept: closed bracket rings and shelf, a 30 mm upper cap, the clamp-on sensor saddle, and the enclosure further forward. The design changed visibly, so they are stale.
+- `cad/src/product_model.py` (the appearance model) still builds the concept bracket, caps and saddle from its own geometry, and with the new 80 mm stud circle it now stops with a geometry error (a fillet on the cap); it needs updating to the constructable design before the renders are redone.
+
+### Safety concerns
+
+- UV-C: the build plan holds LED power until the reactor is closed, the lid switch is proven and everyone nearby wears UV-C eyewear; the LED head interlock is still an open decision.
+- Pressure: an 8 bar leak test of the reactor alone comes before any wiring; the window bears on a lapped ring, and the pressure limiter (R17) stays an installation requirement.
+- The window stress margin at 8 bar is still 9 % (6.18 against 6.8 MPa); the thicker upper cap roof removes a weak point the concept had.
+- LumaFlow stays a research and educational prototype, not a certified water treatment device; the plan says so in its safety box and stop S6.
+
+### Recommended next step
+
+Amish reviews LMF-DDR-003 and open decisions 1 to 3 in the register. TRL 4 stays on hold; the build plan is ready for it when Amish lifts the cap.

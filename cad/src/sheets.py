@@ -1,4 +1,4 @@
-"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P3 (TRL 3, design revised by LMF-DDR-002).
+"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P4 (TRL 3, design made constructable by LMF-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/LMF-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -61,13 +61,14 @@ def main():
     asm = build(include_adapter=False)
     views = project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P3",
-              author="Amish Chadha", date=DATE, scale=None, theme="technical",
+    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P4",
+              author="Amish Chadha", date="2026-10-01", scale=None, theme="technical",
               material="316 tube and lower cap, high-reflectance PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
                        "PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
                          ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC"),
-                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
+                         ("P4", "Design for construction (LMF-DDR-003)", "2026-10-01", "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -100,10 +101,11 @@ def main():
         f"Tube D{P['tube_od']:.0f} x 3 wall x {P['tube_len']:.0f}, 316; high-refl. PTFE liner D{P['liner_od']:.0f}",
         f"Window D{P['win_d']:.0f} x {P['win_t']:.0f} fused silica on a D{P['aperture_d']:.0f} seat",
         f"{P['led_n']} x 275 nm LEDs on a {2 * P['led_pcr']:.0f} mm circle, {P['led_gap']} mm below window",
-        f"Caps D{P['cap_d']:.0f} x {P['cap_lo_h']:.0f}; {P['n_rod']} x M{P['rod_d']:.0f} 316 tie rods on D{2 * P['rod_pcr']:.0f}",
-        "Ports 3/8 in push-fit; outlet through a 316 insert",
+        f"Caps D{P['cap_d']:.0f} x {P['cap_lo_h']:.0f} (316) and x {P['cap_hi_h']:.0f} (acetal); {P['n_rod']} x M{P['rod_d']:.0f} studs on D{2 * P['rod_pcr']:.0f}",
+        "Ports 1/4 BSPP with push-fit stem adaptors; 316 outlet sleeve",
         f"Heat sink {P['sink_w']:.0f} x {P['sink_w']:.0f} x {P['fin_h'] + P['sink_base']:.0f}, fins down",
         "Working pressure 8 bar; limiter at 4 bar upstream; flow up",
+        "Window from below on a 316 ring; tube ends on face O-rings",
         "Third-angle; front view from -Y, right view from +X",
     ], x=276, y=150, width=140)
     path = s.save(ROOT / "cad" / "drawings" / "LMF-DWG-001")
