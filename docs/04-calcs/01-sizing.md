@@ -3,9 +3,9 @@ doc_id: LMF-CAL-001
 title: LumaFlow sizing calculations
 project: LumaFlow
 doc_type: Calculation
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Rerun for the constructable design (LMF-DDR-003); new G8 for the upper cap roof; cost reported against the value-engineering target
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Requirement table: R12 interlock wording and R18 added after the 2026-10-02 decisions (LMF-DEC-001); no figure changed. The window seat washer (A2, option b) is not yet re-run in section B"
 ---
 
 # LumaFlow sizing calculations
@@ -175,10 +179,11 @@ The 1.2 L/min design flow sits inside the 1.30 L/min limit for the 20 % margin. 
 | R9 | 25 W flowing, 0.5 W standby | 22.6 W, 0.21 W [E1, E2] | Met |
 | R10 | LED board 50 °C or less; cut-back above 50 °C | 37.1 to 44.8 °C steady [F3] | Met |
 | R11 | Food-contact wetted parts; no UV-C on plastics but PTFE | 316 lower cap; PTFE liner, top disc and 316 outlet sleeve shield the acetal upper cap; EPDM gasket and O-rings | Met |
-| R12 | No UV-C outside the unit; interlocks | Metal and PTFE light path; sensor window sealed in the welded boss by the photodiode holder; interlock by design | Met |
+| R12 | No UV-C outside the unit; interlocks | Metal and PTFE light path; sensor window sealed in the welded boss by the photodiode holder; interlock by design (lid reed switch; LED head loop wire decided 2026-10-02, LMF-DEC-001) | Met |
 | R13 | 24 V DC only at the unit | Certified adapter and input fuse | Met |
 | R14 | 350 x 150 x 350 mm or less | 277 x 100 x 322 mm [H1] | Met |
 | R17 | Pressure limiter at 4 bar or less upstream | Window 6.18 MPa at twice the setting [G5] | Met |
+| R18 | Five-segment UV level bar (new, LMF-DEC-001) | Not calculated; not yet in the model | Not verifiable at TRL 3 |
 
 Counts: 13 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3, and R16 over its value-engineering target by USD 62 [K1].
 

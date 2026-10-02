@@ -3,9 +3,9 @@ doc_id: LMF-PRC-001
 title: LumaFlow design precis
 project: LumaFlow
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: "Design made constructable (LMF-DDR-003): components 13 to 18 updated; cost reported against the value-engineering target"
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "UV level bar, labels, idle pulse and partner as decided on 2026-10-02 (LMF-DEC-001)"
 ---
 
 # LumaFlow design precis
@@ -81,7 +85,7 @@ Table 1. Main components.
 | 10 | Controller and LED driver | Microcontroller, 350 mA constant-current driver with dimming, valve driver, NTC input, input fuse | Module-based; no custom PCB |
 | 11 | Solenoid shutoff valve | 24 V DC, normally closed, food-grade | Closes on alarm or power loss (decision D6) |
 | 12 | 24 V power adapter | Certified external adapter, 30 W | The only part at mains voltage (decision D8) |
-| 13 | Electronics enclosure | Printed PETG body and lid, lid interlock, status light, buzzer, back screwed to the bracket plate | Dry side only |
+| 13 | Electronics enclosure | Printed PETG body and lid, lid interlock, status light, buzzer, back screwed to the bracket plate | Dry side only. A five-segment UV level bar on the lid (R18) and UV-C warning labels inside the lid and on the lower cap were decided on 2026-10-02 (LMF-DEC-001) |
 | 14 | Wall bracket | 6 mm aluminium plate with two printed saddles for the flow sensor and valve | Holds the reactor vertical (decision D7) |
 | 15 | Fittings, stem adaptors and outlet sleeve | 3/8 in push-fit, stainless stem adaptors in 1/4 BSPP ports, tee to the cold line, 1.2 L/min restrictor, 316 outlet sleeve | Restrictor enforces R1 |
 | 16 | Tie rods and hardware | Four M5 316 studs on an 80 mm circle, threaded into the lower cap | 664 N each at 8 bar (G7) |
@@ -190,7 +194,7 @@ Items marked "Decided" were decided by Amish on 2026-09-25, going with the recom
 - [x] Set the budget figure for the $338.00 BOM: $340, decided by Amish, 2026-09-26.
 - [ ] Measure the wetted reflectance of the liner at 275 nm, and the organism response at 275 nm (TRL 4, on hold).
 - [ ] Confirm the flow coefficients of the sensor and valve (R8) and the water-film coefficient in the lower cap (R10).
-- [ ] Decide whether a brief LED pulse during long idle periods is worth adding to limit growth in the reactor.
-- [ ] Find a partner with real well-water UVT data (LMF-DDR-001 O1); awaiting Amish.
+- [x] Idle LED pulse: a firmware rule runs the LEDs for about 10 s every 4 h of idle, with both interlocks and the valve logic unchanged; plate counts at TRL 4 check its effect. Decided by Amish, 2026-10-02 (LMF-DEC-001).
+- [ ] Partner with real well-water UVT data: a university extension programme for private well owners, with the Texas A&M AgriLife Extension Texas Well Owner Network as the first candidate to approach. Decided by Amish, 2026-10-02 (LMF-DEC-001).
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [LMF-DWG-001](../cad/drawings/LMF-DWG-001.pdf).

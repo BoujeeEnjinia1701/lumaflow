@@ -3,9 +3,9 @@ doc_id: LMF-DDR-003
 title: LumaFlow design for construction
 project: LumaFlow
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction and open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Accepted by Amish with one exception: the window seat takes a 0.5 mm PTFE washer (A2, option b); A1 decided as (a)"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. Made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The items in Table 3 are Proposed, awaiting Amish.
+- **Status:** accepted with one exception. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the items in Table 3, decided as recommended on 2026-10-02 and recorded in the design decisions register (LMF-DEC-001). The exception: the window seat of P1 is not metal to glass; a 0.5 mm PTFE washer goes under the window (A2, option b), and the optical check is re-run for the 0.5 mm larger LED gap. A1 is decided as (a), with the LED cable routed so it is too short for the head to come off while still plugged in.
 
 ## Context
 
@@ -53,15 +57,16 @@ The changes keep what LumaFlow does: the same 50 mm bore and 242 mm water column
 | Drawings | LMF-DWG-001 Rev P4; concept sheet LMF-DWG-010 Rev P4; making sketches LMF-DWG-101 to 111 added. | Follows the model. |
 | Documents | LMF-REQ-001 v0.6 (R15 note, R16 wording), LMF-PRC-001 v0.6 (components 13 to 18, cost), LMF-PRB-001 v0.6 (cost line). No requirement changed status other than R16, which is now reported as over its value-engineering target. | Follows the model and Amish's 2026-10-01 instruction on budgets. |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Items proposed for Amish, decided by Amish on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | R12 says the LEDs cannot run with the LED head removed, but the concept has no mechanism for this; now that the head comes off on four screws, it matters. This touches the safety case. | (a) a loop wire in the LED head's plug, so the head cannot come off without unplugging it, which opens a loop the controller watches and cuts the LED supply; (b) a microswitch pressed by the sink base; (c) rely on the procedure and the lid interlock alone. | (a): one more wire pair, no moving part. |
-| A2 | The window bears on the lapped stainless ring, metal to glass, as on the concept's seat. A thin PTFE washer under it would spread the load but lift the window 0.5 mm, which changes the LED gap and needs the ray trace re-run. | (a) metal to glass on a lapped ring, as modelled; (b) add a 0.5 mm PTFE washer and re-run LMF-CAL-001 section B. | (a) for the first prototype; look at the window edge after the TRL 4 pressure test. |
+| A1 | R12 says the LEDs cannot run with the LED head removed, but the concept has no mechanism for this; now that the head comes off on four screws, it matters. This touches the safety case. | (a) a loop wire in the LED head's plug, so the head cannot come off without unplugging it, which opens a loop the controller watches and cuts the LED supply; (b) a microswitch pressed by the sink base; (c) rely on the procedure and the lid interlock alone. | (a): one more wire pair, no moving part. Decided by Amish, 2026-10-02: (a), with the LED cable routed so it is too short for the head to come off while still plugged in. |
+| A2 | The window bears on the lapped stainless ring, metal to glass, as on the concept's seat. A thin PTFE washer under it would spread the load but lift the window 0.5 mm, which changes the LED gap and needs the ray trace re-run. | (a) metal to glass on a lapped ring, as modelled; (b) add a 0.5 mm PTFE washer and re-run LMF-CAL-001 section B. | At first (a) for the first prototype. Decided by Amish, 2026-10-02, on the later recommendation: (b), the 0.5 mm PTFE washer with LMF-CAL-001 section B re-run for the larger LED gap; back to metal on glass only if a TRL 4 pressure test on that seat shows no edge chipping. The model, build plan and calculation still show (a) until they are updated. |
 
 ## Consequences
 
+- With the record accepted on 2026-10-02, the window seat changes to a 0.5 mm PTFE washer (A2, option b) and the LED head gets a loop wire in its plug (A1). Neither is yet in the model, the build plan or LMF-CAL-001; both are follow-up actions in `docs/REVIEW.md`.
 - `design_state: constructable` in `project.yaml`. The build plan LMF-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
 - Requirement status: 13 met, 1 not met (R3, accepted by D1), 1 at risk (R4), 1 not verifiable at TRL 3 (R15), and R16 over its value-engineering target by USD 62 (LMF-CAL-001 v0.4).
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept: closed bracket rings, a 30 mm upper cap, the clamp-on sensor saddle and the shelf-mounted enclosure. They need updating on Amish's Mac, where Blender is.

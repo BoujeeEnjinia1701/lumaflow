@@ -3,9 +3,9 @@ doc_id: LMF-REQ-001
 title: LumaFlow requirements
 project: LumaFlow
 doc_type: Requirements
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Rerun for the constructable design (LMF-DDR-003); R16 reported against the value-engineering target; R15 note
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "R12 status names the LED head loop wire; R18 added for the five-segment UV level bar (LMF-DEC-001, 2026-10-02)"
 ---
 
 # LumaFlow requirements
@@ -54,12 +58,13 @@ Table 1. Requirements and status at TRL 3.
 | R9 | Low energy use | 25 W or less while water flows; 0.5 W or less on standby | Met (22.6 W and 0.21 W) [E1, E2] | Power budget calculation |
 | R10 | Keep the LEDs cool | LED board 50 °C or less with 30 °C cabinet air and 25 °C water, including the 5 s run-on; a board temperature sensor cuts LED current above 50 °C | Met (37.1 to 44.8 °C over the film-coefficient range) [F3] | Thermal calculation; cut-back reviewed as a firmware rule |
 | R11 | Food-safe wetted parts | Every wetted material food-contact grade (316 stainless steel, PTFE, fused quartz, EPDM or silicone O-rings, acetal); no UV-C on any plastic other than PTFE | Met by design (316 lower cap; PTFE liner, top disc and 316 insert shield the acetal upper cap) | Material review of the model |
-| R12 | Contain the UV-C light | No UV-C outside the unit in normal use; LEDs cannot run with the LED head or enclosure lid removed | Met by design | Design review of interlock and light path |
+| R12 | Contain the UV-C light | No UV-C outside the unit in normal use; LEDs cannot run with the LED head or enclosure lid removed | Met by design: lid reed switch, and a loop wire in the LED head's plug with a cable too short for the head to come off while still plugged in (decided 2026-10-02, LMF-DEC-001; not yet in the model or build plan) | Design review of interlock and light path |
 | R13 | Electrical safety | Only 24 V DC at the unit; mains confined to a certified external adapter; fuse on the 24 V input | Met by design | Design review |
 | R14 | Fit under a kitchen sink | Envelope 350 x 150 x 350 mm (13.8 x 5.9 x 13.8 in) or less, excluding the adapter | Met (277 x 100 x 322 mm) [H1] | Parametric model |
 | R15 | Easy service | Window and LED head replaceable with hand tools in 15 min or less; status LED shows run, fault and service due | Not verifiable at TRL 3 (LED head off on four screws from below and window out after six ring screws, with no plumbing disturbed; needs a build to time) | Timed service on a build |
 | R16 | Low cost and buildable | Value-engineering target of USD 340 per unit in parts (`budget_usd`, a hypothetical control target, not a limit; set from $200 by decision D2, then $225, then $340 by the top-up Amish approved on 2026-09-26); no custom PCB for the first build | Over the value-engineering target by USD 62 (estimated cost of the constructable design USD 402; the concept was $338.00) [I1] | Priced BOM |
 | R17 | Pressure protection (installation) | A pressure-limiting valve upstream of the unit, set at 4 bar (58 psi) or less, so that transients stay within the 8 bar window rating (new, LMF-DDR-002) | Met (window 3.09 MPa at 4 bar, 6.18 MPa at a transient of twice the setting) [G5] | Plate stress calculation; installation instructions |
+| R18 | Show UV level at a glance | A five-segment bar on the enclosure lid showing UV level relative to the alarm threshold, read from the wall sensor; labelled as UV level, not as a dose in units (new, decided by Amish on 2026-10-02, LMF-DEC-001) | Not verifiable at TRL 3; not yet in the model or BOM | Design review; later bench check against the wall sensor reading |
 
 ## Assumptions
 

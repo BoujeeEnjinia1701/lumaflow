@@ -3,9 +3,9 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Cost of the constructable design reported against the value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Partner as decided on 2026-10-02 (LMF-DEC-001)"
 ---
 
 # LumaFlow problem statement
@@ -90,4 +94,4 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 - **First user (decided).** A well-water household with a sediment pre-filter. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D9). This sets the design water quality at 90 %/cm UVT or better.
 - **Dose target (decided).** The Class A dose level of 40 mJ/cm² is the target for clear water (90 %/cm or better), with an alarm and valve closure below it, and the 70 %/cm test condition kept visibly not met. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D1). The first TRL 3 calculation found only 14.7 to 19.0 mJ/cm² in clear water; with the route Amish accepted on 2026-09-25 (LMF-DDR-002: 50 mm bore, high-reflectance liner, 1.2 L/min design flow) LMF-CAL-001 v0.2 gives 51.9 to 76.3 mJ/cm².
-- **Partner (open).** Which partner (a well-water association, a university lab or a water charity) could supply real water-quality data and later test the reactor? Proposed, awaiting Amish; the portfolio decision is to pick partners per area later.
+- **Partner (decided).** A university extension programme for private well owners, which already samples household wells and can measure UV transmittance on real samples; the Texas A&M AgriLife Extension Texas Well Owner Network is the first candidate to approach. Decided by Amish, 2026-10-02 (LMF-DEC-001).

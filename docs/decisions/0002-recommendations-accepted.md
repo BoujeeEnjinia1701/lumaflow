@@ -3,9 +3,9 @@ doc_id: LMF-DDR-002
 title: LumaFlow recommendations accepted
 project: LumaFlow
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget top-up approved by Amish; O4 decided ($340)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "O1 decided by Amish as recommended (LMF-DEC-001)"
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted for items E1 to E8; O4 decided on 2026-09-26 (budget top-up to $340); item O1 remains proposed
+- **Status:** accepted for items E1 to E8; O4 decided on 2026-09-26 (budget top-up to $340); item O1 decided by Amish on 2026-10-02: "i approve your recommendations for all 555 open decisions." (LMF-DEC-001)
 
 ## Context
 
@@ -47,11 +51,11 @@ The options for each item are those listed in `docs/REVIEW.md` (TRL 3 session) a
 | E7 | Pressure limiter | An upstream pressure-limiting valve is an installation requirement | New R17 (limiter at 4 bar or less). Window 3.09 MPa at 4 bar and 6.18 MPa at a transient of twice the setting, against 6.8 MPa. Installation part, not in the BOM, like the sediment pre-filter |
 | E8 | Thermal cut-back | A board temperature sensor that cuts LED current above 50 °C | NTC on the LED board (BOM line 4) and a dimming input on the driver (line 10); R10 restated. Board 44.1 to 55.9 °C became 37.1 to 44.8 °C with the larger sink and cap; R10 at risk became met. The cut-back is a firmware rule, documented only |
 
-*Table 2. Items still open (Proposed, awaiting Amish).*
+*Table 2. Items left open on 2026-09-25, since decided.*
 
 | # | Item | Why it stays open |
 | --- | --- | --- |
-| O1 | Partner that can supply real well-water UVT data (DDR-001 O1) | No recommendation was made; partners are picked per area later |
+| O1 | Partner that can supply real well-water UVT data (DDR-001 O1) | No recommendation was made on 2026-09-25. Decided by Amish, 2026-10-02, as later recommended: a university extension programme for private well owners, with the Texas A&M AgriLife Extension Texas Well Owner Network as the first candidate to approach (LMF-DEC-001) |
 | O4 | Budget figure for the $338.00 BOM | New after re-pricing. Options: (a) raise `budget_usd` to about $340; (b) keep $225 and cut cost, for example a plain PTFE liner (46.3 mJ/cm² at 1.2 L/min, below the 20 % margin) or fewer machined parts; (c) keep $225 and leave R16 visibly not met. **Budget top-up to $340: decided by Amish, 2026-09-26** ("I am ok with the budget top ups"). `budget_usd` is now 340 and R16 is met ($338.00, $2.00 under; LMF-REQ-001 v0.5, LMF-CAL-001 v0.3) |
 
 *Table 3. Decided but on hold (TRL 4, on hold by Amish's instruction).*

@@ -303,3 +303,52 @@ All listed in `docs/06-design-decisions.md`. New this session: accept LMF-DDR-00
 ### Recommended next step
 
 Amish reviews LMF-DDR-003 and open decisions 1 to 3 in the register. TRL 4 stays on hold; the build plan is ready for it when Amish lifts the cap.
+
+## Session 2026-10-02: open decisions decided
+
+Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." The recommendations written for this repo's open decisions are recorded as decided.
+
+### Decisions recorded
+
+10 decisions, moved from "Open decisions" to "Decisions made" in the register (LMF-DEC-001 v0.2):
+
+1. Design for construction P1 to P11 accepted as made, except the window seat of P1, which decision 3 changes (LMF-DDR-003 accepted with that exception).
+2. LED head interlock (R12): a loop wire in the LED head's plug, with the LED cable too short for the head to come off while still plugged in.
+3. Window seat: a 0.5 mm PTFE washer under the window, with the optical check re-run for the 0.5 mm larger LED gap; metal on glass only if a TRL 4 pressure test shows no edge chipping. This reverses the register's earlier recommendation (a).
+4. Partner: a university extension programme for private well owners; the Texas A&M AgriLife Extension Texas Well Owner Network is the first candidate to approach.
+5. Five-segment bar kept and added to the requirements as R18, labelled as UV level relative to the alarm threshold, not as a dose.
+6. Acorn nuts on the tie rods (already in the design).
+7. Solenoid connector and port collars accepted as drawn.
+8. Hero render shows the cord entering the cabinet wall; the adapter stays in the model and BOM.
+9. A labels line in the BOM now: UV-C warning labels on the lower cap and inside the enclosure lid, and the product label.
+10. Idle pulse: the LEDs run for about 10 s every 4 h of idle, interlocks and valve logic unchanged; plate counts at TRL 4.
+
+### Documents changed
+
+- `docs/06-design-decisions.md`: LMF-DEC-001 v0.2
+- `docs/decisions/0001-trl2-review-decisions.md`: LMF-DDR-001 v0.3
+- `docs/decisions/0002-recommendations-accepted.md`: LMF-DDR-002 v0.3
+- `docs/decisions/0003-design-for-construction.md`: LMF-DDR-003 v0.2 (accepted with the window seat exception; status kept Draft)
+- `docs/01-problem.md`: LMF-PRB-001 v0.7 (partner)
+- `docs/02-concept.md`: LMF-PRC-001 v0.7 (enclosure, idle pulse, partner)
+- `docs/03-requirements.md`: LMF-REQ-001 v0.7 (R12 status; R18 added)
+- `docs/04-calcs/01-sizing.md`: LMF-CAL-001 v0.5 (requirement table; no figure changed)
+- `README.md` and `bom/bom-notes.md` (not controlled)
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2: add the loop wire pair to the LED head plug and set the LED cable length in the model, the wiring section of the build plan (section 3.12.1) and its pictures, and add a first check that removing the LED head stops the LEDs (model, pictures).
+2. Decision 3: add the 0.5 mm PTFE washer under the window in the model (lower cap stack, P1), the window stack section of the build plan (section 3.5, step 3 no longer laps the seat for metal to glass) and its pictures (model, pictures).
+3. Decision 3: re-run LMF-CAL-001 section B (ray trace and dose) and the window stress for the 0.5 mm larger LED gap (calculations).
+4. Decision 3: add the PTFE washer to BOM line 17 (BOM).
+5. Decision 4: approach the Texas A&M AgriLife Extension Texas Well Owner Network; nothing is agreed (docs).
+6. Decision 5: replace the single status light pipe in the enclosure lid with a five-segment bar in the model and BOM line 13, and add R18 to `docs/04-calcs/sizing.py` at its next run (model, BOM, calculations).
+7. Decision 8: re-render the hero on Amish's Mac with the cord entering the cabinet wall (pictures).
+8. Decision 9: add a labels line to the BOM (UV-C warning label on the lower cap and inside the enclosure lid, and the product label) and show the labels in the build plan pictures (BOM, pictures).
+9. Decision 10: write the idle pulse rule into the firmware notes when firmware is written at TRL 4, and add the about 6 h a year of LED time to the LED life estimate (calculations).
+
+### Points found in the review
+
+- The value-engineering note offers a plain PTFE liner as a saving, but it drops the dose to 46.3 mJ/cm2 and puts R2 at risk, so it is not a like-for-like saving.
+- Cost is $402 against the $340 target, $62 (18 percent) over, and the labels line (item 9) adds a few dollars more.
+- The 2026-09-26 review note says the budget margin is only $2.00; that predates the constructable design and is now out of date.

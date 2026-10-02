@@ -3,9 +3,9 @@ doc_id: LMF-DDR-001
 title: LumaFlow TRL 2 review decisions
 project: LumaFlow
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); O2 and O3 decided, O1 stays open
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "O1 decided by Amish as recommended (LMF-DEC-001)"
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted for items D1 to D9; O2 and O3 accepted in LMF-DDR-002; O1 remains proposed
+- **Status:** accepted for items D1 to D9; O2 and O3 accepted in LMF-DDR-002; O1 decided by Amish on 2026-10-02: "i approve your recommendations for all 555 open decisions." (LMF-DEC-001)
 
 ## Context
 
@@ -60,7 +64,7 @@ Notes on the decided items:
 
 | # | Item | Why it stays open |
 | --- | --- | --- |
-| O1 | Partner that can supply real well-water UVT data and later test the reactor (a well-water association, a university lab or a water charity) | Proposed, awaiting Amish. No partner was recommended; the portfolio decision is to pick co-design partners per area later |
+| O1 | Partner that can supply real well-water UVT data and later test the reactor (a well-water association, a university lab or a water charity) | No partner was recommended at TRL 2. Decided by Amish, 2026-10-02, as later recommended: a university extension programme for private well owners, with the Texas A&M AgriLife Extension Texas Well Owner Network as the first candidate to approach (LMF-DEC-001) |
 | O2 | End cap material (acetal or 316 stainless) | Listed as an open question at TRL 2 with no recommendation. The TRL 3 model uses a 316 lower cap and a PTFE-shielded acetal upper cap, which LMF-CAL-001 supports (F5 and R11). Decided by Amish, 2026-09-25: go with recommendation (confirm), LMF-DDR-002 E1 |
 | O3 | New TRL 3 proposals: route to close R2, dose monitor position, budget after re-pricing, flow sensor pulse rate, pressure limiter as an installation requirement, thermal cut-back | Raised by LMF-CAL-001 after the decision. Decided by Amish, 2026-09-25: go with recommendation, LMF-DDR-002 E2 to E8 (the budget figure after re-pricing stays open) |
 
@@ -68,4 +72,4 @@ Notes on the decided items:
 
 - LMF-PRB-001, LMF-PRC-001 and LMF-REQ-001 are revised to v0.3 to show the decisions: the design choices D1 and D3 to D8 are no longer "proposed", the first user is named, R16 carries the $225 target, and the numbers are replaced by those of LMF-CAL-001.
 - `project.yaml` carries `budget_usd: 225`.
-- The partner question (O1) stays open in LMF-PRB-001.
+- The partner question (O1) stayed open in LMF-PRB-001 until Amish decided it on 2026-10-02 (LMF-DEC-001).

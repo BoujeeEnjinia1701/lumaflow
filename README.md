@@ -80,7 +80,7 @@ The [prototype build plan](docs/05-build-plan.md) (LMF-BLD-001) shows, in pictur
 
 ## Safety
 
-> UV-C light damages eyes and skin. Interlock the housing so LEDs cannot run when open. LumaFlow is a research and educational prototype, not a certified water treatment device, and its dose is calculated, not measured; do not rely on it as a barrier for drinking water. See the safety section of the [design precis](docs/02-concept.md).
+> UV-C light damages eyes and skin. Interlock the housing and the LED head so LEDs cannot run when either is open, and keep the UV-C warning labels in place. LumaFlow is a research and educational prototype, not a certified water treatment device, and its dose is calculated, not measured; do not rely on it as a barrier for drinking water. See the safety section of the [design precis](docs/02-concept.md).
 
 ## Repository layout
 
