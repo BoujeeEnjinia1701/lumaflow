@@ -1,5 +1,6 @@
-"""LumaFlow sizing calculations for LMF-CAL-001 v0.4 (TRL 3, design as revised by LMF-DDR-002 and made
-constructable by LMF-DDR-003).
+"""LumaFlow sizing calculations for LMF-CAL-001 v0.6 (TRL 3, design as revised by LMF-DDR-002, made
+constructable by LMF-DDR-003 and carried forward by the decisions of 2026-10-02 in LMF-DEC-001: PTFE
+window washer, LED head interlock loop, five-segment UV level bar (R18), labels and the idle LED pulse).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md, each tagged [A1], [B2] ...
@@ -7,7 +8,7 @@ Geometry comes from cad/src/model.py (PARAMS, levels() and part volumes); prices
 
 Sections: A flow and hydraulics, B optics and UV-C dose (Monte Carlo ray trace), C dose monitor,
 D flow switching and run-on, E power and energy, F thermal, G pressure and structure,
-H size, I cost, J options, K requirement status.
+H size and mass, I cost, J options, K requirement status.
 All values are first-principles estimates for a paper proof of concept.
 """
 import csv
@@ -46,6 +47,7 @@ N_LED, I_LED, V_LED, PO_LED = P["led_n"], 0.350, 6.2, 0.060   # A, V, W optical 
 ETA_DRV, P_VALVE, P_CTRL, ETA_AD = 0.90, 4.8, 0.6, 0.88
 P_SENSE_SB, P_MCU_SB, P_AD_NL, ETA_AD_LIGHT = 0.075, 0.005, 0.10, 0.70
 DRAWS, L_DAY, RUNON = 20, 15.0, 5.0
+PULSE_S, PULSE_EVERY_H = 10.0, 4.0   # idle LED pulse: about 10 s every 4 h of idle (decided 2026-10-02)
 N_QUARTZ, N_WATER = 1.496, 1.372  # refractive indices near 275 nm
 R_PTFE, R_STEEL, R_BOTTOM = 0.95, 0.30, 0.10   # wetted diffuse reflectances (assumed); 0.95 high-reflectance PTFE
 D10 = 20.0                        # challenge organism, mJ/cm2 per log (MS2-like), taken as valid at 275 nm
@@ -116,7 +118,7 @@ def trace(uvt, r_ptfe=R_PTFE, n=NPHOT, seed=1):
     # emission: Lambertian from six LED points on a ring, below the window
     k = rng.integers(0, N_LED, n)
     ang = 2 * np.pi * k / N_LED
-    z_led = -(P["win_t"] + P["led_gap"]) / 10
+    z_led = -(P["win_t"] + L["led_gap"]) / 10                  # 1.3 mm gap with the PTFE washer (2026-10-02)
     pos = np.stack([P["led_pcr"] / 10 * np.cos(ang), P["led_pcr"] / 10 * np.sin(ang), np.full(n, z_led)], 1)
     d = lambert(n, rng, np.tile([0, 0, 1.0], (n, 1)))
     # air gap to the window underside; the seat shoulder blocks r > aperture
@@ -276,6 +278,15 @@ uvt_claim = float(np.interp(math.log(S_age), np.log(sig), uvts))
 red_claim = float(np.interp(uvt_claim, uvts, reds))
 show("C5", f"Aged LEDs at 70 % output in 90 %/cm water: true RED {0.7*RED90_l:.1f}; a mapping that blames UVT would read "
      f"UVT {uvt_claim*100:.1f} %/cm and claim RED {red_claim:.1f}; the proportional mapping reads {0.7*RED90_l:.1f}")
+# R18: five-segment UV level bar, wall signal relative to the alarm threshold (not a dose in units)
+BAR = [1.0, 1.1, 1.2, 1.3, 1.5]              # segment k lights when S >= BAR[k] x S_alarm
+s_rel90 = 1 / thr                            # signal at 90 %/cm with rated LEDs, relative to the alarm threshold
+n90 = sum(s_rel90 >= b for b in BAR)
+outs = [float(np.interp(math.log(b * thr * S[0.90]), np.log(sig), uvts)) for b in BAR]
+show("C6", f"UV level bar (R18): segments light at {', '.join(f'{b:.1f}' for b in BAR)} x the alarm signal; with rated LEDs "
+     f"it shows {n90} of 5 at 90 %/cm ({s_rel90:.2f} x alarm) and 5 above about {outs[4]*100:.1f} %/cm; the last segment goes out "
+     f"at {outs[0]*100:.1f} %/cm, where the alarm trips; segment k goes out as LEDs age to "
+     + ", ".join(f"{b*thr*100:.0f}" for b in BAR) + " % of output in 90 %/cm water", n90)
 
 # ---------------------------------------------------------------- D flow switching and run-on
 head("D. Flow switching and run-on")
@@ -310,9 +321,17 @@ show("E2", f"Standby from mains {P_sb:.2f} W (flow sensor {P_SENSE_SB*1e3:.0f} m
 t_day = L_DAY / Q_LPM * 60 + DRAWS * RUNON
 e_day = P_ac * t_day / 3600 + P_sb * (24 - t_day / 3600)
 show("E3", f"On-time {t_day/60:.1f} min/day ({t_day/3600*365:.0f} h/year); energy {e_day:.1f} Wh/day, {e_day*365/1000:.1f} kWh/year")
-show("E4", f"Years to 10,000 h of LED on-time at this use: {10000/(t_day/3600*365):.0f}")
+t_pulse = (24 - t_day / 3600) / PULSE_EVERY_H * PULSE_S          # s/day of idle pulses
+P_pulse = (P_led / ETA_DRV + P_CTRL) / ETA_AD                     # valve stays shut during a pulse
+e_pulse = P_pulse * t_pulse / 3600
+led_h_year = (t_day + t_pulse) / 3600 * 365
+show("E4", f"LED on-time {led_h_year:.0f} h/year with the idle pulses ({t_day/3600*365:.0f} h flowing, "
+     f"{t_pulse/3600*365:.1f} h pulsing); years to 10,000 h: {10000/led_h_year:.0f}", 10000 / led_h_year)
 show("E5", f"For comparison, a tap-scale mercury unit drawing 13 to 22 W all day (VIQUA VT1, VT4, S2Q-PA): "
      f"{13*8.76:.0f} to {22*8.76:.0f} kWh/year")
+show("E6", f"Idle LED pulse ({PULSE_S:.0f} s every {PULSE_EVERY_H:.0f} h of idle, valve shut): {t_pulse:.0f} s/day, "
+     f"{t_pulse/3600*365:.1f} h/year of LED time; {P_pulse:.1f} W from mains while pulsing, {e_pulse:.2f} Wh/day "
+     f"({(e_day+e_pulse)*365/1000:.1f} kWh/year in all)", t_pulse)
 
 # ---------------------------------------------------------------- F thermal
 head("F. Thermal (R10)")
@@ -369,6 +388,7 @@ t85 = -tau_nf * math.log(1 - (85 - 20 - T_AIR) / (Ts_nf - T_AIR)) if Ts_nf - T_A
 t65 = f"reaching 65 degC board after {t85/60:.1f} min" if math.isfinite(t85) else "never reaching 65 degC"
 show("F6", f"Fault, LEDs stuck on with no flow: board heads for {Ts_nf + Q_h*R_bs:.0f} degC (junction +{P_EACH*R_JB:.0f} K), "
      f"{t65}; run-on of 5 s adds {Q_h*RUNON/C:.2f} K", Ts_nf + Q_h * R_bs)
+show("F7", f"Idle pulse with still water: {PULSE_S:.0f} s of LED heat warms the head by {Q_h*PULSE_S/C:.2f} K")
 
 # ---------------------------------------------------------------- G pressure and structure
 head("G. Pressure drop (R8), window and structure (R7)")
@@ -418,6 +438,19 @@ bb = build(include_adapter=False).bounding_box()
 show("H1", f"Unit without the adapter {bb.size.X:.0f} x {bb.size.Y:.0f} x {bb.size.Z:.0f} mm against 350 x 150 x 350 mm",
      (bb.size.X, bb.size.Y, bb.size.Z))
 
+# mass: made parts from model volumes and densities (kg/m3); bought parts at typical catalogue masses (kg)
+RHO_PART = {"tube": 7990, "liner": 2150, "window": 2200, "board": 2700, "sink": 2700, "cap_lo": 7990,
+            "cap_hi": 1410, "rods": 7990, "retainer": 7990, "washer": 2150, "gasket": 1150, "orings": 1150,
+            "ret_screws": 7990, "head_screws": 7990, "board_screws": 7990, "bracket": 2700, "saddles": 1270 * 0.5,
+            "encl": 1270 * 0.6, "lid": 1270 * 0.6, "bar": 1200, "label_cap": 1400, "label_lid": 1400, "label_prod": 1400}
+M_BOUGHT = {"flow": 0.06, "valve": 0.20, "pd": 0.04, "ctrl": 0.06, "clamps": 0.18, "fittings": 0.12, "led_cable": 0.02}
+mass = {k: s_.volume * 1e-9 * RHO_PART[k] for k, s_ in parts.items() if k in RHO_PART}
+mass.update(M_BOUGHT)
+m_dry = sum(mass.values())
+m_top = sorted(mass.items(), key=lambda kv: -kv[1])[:3]
+show("H2", f"Mass of the unit without the adapter: {m_dry:.2f} kg dry, {m_dry + V_ch*RHO:.2f} kg full of water; "
+     "heaviest: " + ", ".join(f"{k} {v:.2f} kg" for k, v in m_top) + "; adapter about 0.2 kg on the floor", m_dry)
+
 # ---------------------------------------------------------------- I cost
 head("I. Cost (R16)")
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
@@ -446,6 +479,8 @@ show("J4", f"Option C (R3): flow at which six LEDs give 40 mJ/cm2 at 70 %/cm (la
 
 # ---------------------------------------------------------------- K requirement status
 head("K. Requirement status")
+from model import led_cable_route  # noqa: E402
+led_clear = led_cable_route()["clear"]
 dims = OUT["H1"]
 status = [
     ("R1", f"{Q_LPM} L/min, restrictor", f"{Q_LPM} L/min restrictor; sensor range 0.3 to 6 L/min", "Met"),
@@ -464,7 +499,8 @@ status = [
     ("R10", "Board <= 50 degC; cut-back above 50 degC", f"{res_T[600][0]:.0f} to {res_T[150][0]:.0f} degC steady",
      "Met" if res_T[150][0] <= 50 else ("At risk" if Tb <= 50 else "Not met")),
     ("R11", "Food-contact wetted parts; no UV-C on plastics but PTFE", "316 lower cap; PTFE shields acetal", "Met"),
-    ("R12", "No UV-C outside; interlocks", "Metal and PTFE light path; interlock by design", "Met"),
+    ("R12", "No UV-C outside; interlocks", f"Metal and PTFE light path; lid reed switch; LED head loop in a "
+     f"{P['led_cable_len']:.0f} mm cable, {led_clear - P['led_cable_len']:.0f} mm short of letting the head clear the cap", "Met"),
     ("R13", "24 V DC only at the unit", "Certified adapter, fuse", "Met"),
     ("R14", "<= 350 x 150 x 350 mm", f"{dims[0]:.0f} x {dims[1]:.0f} x {dims[2]:.0f} mm", "Met"),
     ("R15", "Service in 15 min", "Needs a build to time", "Not verifiable at TRL 3"),
@@ -472,6 +508,8 @@ status = [
      "Under target" if total <= budget else f"Over target by ${total-budget:.0f}"),
     ("R17", "Pressure limiter <= 4 bar upstream (installation)", f"window {OUT['G5']:.2f} MPa at twice the setting",
      "Met" if OUT["G5"] <= 6.8 else "Not met"),
+    ("R18", "Five-segment UV level bar relative to the alarm threshold", f"{OUT['C6']} of 5 segments at 90 %/cm; last "
+     "segment out at the alarm", "Met" if OUT["C6"] >= 1 and P["bar_n"] == 5 else "Not met"),
 ]
 for rid, tgt, val, st in status:
     print(f"  {rid:4s} {st:24s} {val}  (target: {tgt})")

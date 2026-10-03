@@ -3,9 +3,9 @@ doc_id: LMF-BLD-001
 title: LumaFlow prototype build plan
 project: LumaFlow
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan with pictures by component and step; design made constructable (LMF-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Decisions of 2026-10-02 carried in: PTFE window washer, LED head cable and plug with interlock loop, five-segment UV level bar, labels; first checks for the interlock and the bar; pictures regenerated"
 ---
 
 # LumaFlow prototype build plan
@@ -25,28 +29,31 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is one LumaFlow unit hung on a plate under a kitchen sink: a stainless tube, lined with white PTFE, standing upright between two round end caps, with six UV-C LEDs on a finned heat sink under a quartz window at the bottom, a light sensor in the tube wall, a flow sensor on the way in, a shutoff valve on the way out and a small printed box for the electronics. Water flows up the tube while the LEDs shine up it. Figure 1 shows the 21 components in the order you make or fit them. Eleven are made: the bracket plate, two printed saddles, the stainless lower end cap, the window retaining ring, the drilled heat sink and its spreader ring, four tie rod studs, the tube with its welded sensor boss, the PTFE liner, the acetal upper end cap, the photodiode holder and the printed enclosure. The two caps, the tube boss and the holder need a machine shop with a lathe, a mill and a TIG welder; the rest is sawing, drilling, tapping and 3D printing. Everything else is bought: the window, LEDs, seals, pipe clamps, push-fit fittings, flow sensor, valve, controller modules and the 24 V adapter. The parts cost about $402 from the bill of materials.
+The prototype is one LumaFlow unit hung on a plate under a kitchen sink: a stainless tube, lined with white PTFE, standing upright between two round end caps, with six UV-C LEDs on a finned heat sink under a quartz window at the bottom, a light sensor in the tube wall, a flow sensor on the way in, a shutoff valve on the way out and a small printed box for the electronics. Water flows up the tube while the LEDs shine up it. Figure 1 shows the 25 components in the order you make or fit them. Eleven are made: the bracket plate, two printed saddles, the stainless lower end cap, the window retaining ring, the drilled heat sink and its spreader ring, four tie rod studs, the tube with its welded sensor boss, the PTFE liner, the acetal upper end cap, the photodiode holder and the printed enclosure. The two caps, the tube boss and the holder need a machine shop with a lathe, a mill and a TIG welder; the rest is sawing, drilling, tapping and 3D printing. Everything else is bought: the window, the PTFE window washer, LEDs, the LED head cable and plug, seals, labels, pipe clamps, push-fit fittings, flow sensor, valve, controller modules and the 24 V adapter. The parts cost about $416 from the bill of materials.
 
-> **Safety:** LumaFlow makes UV-C light, which burns the eyes and skin within seconds to minutes and cannot be seen. Never power the LEDs unless the LED head is on the cap, the reactor is closed and the enclosure lid is shut, and wear UV-C blocking eyewear and cover your skin for any bench work with the LEDs. The reactor holds mains water pressure next to electronics: leak test it before any wiring is connected (section 6). Only the certified adapter sees mains voltage; it plugs into a GFCI or RCD-protected outlet. LumaFlow is a research and educational prototype, not a certified water treatment device; do not drink water from it or rely on it as a barrier.
+> **Safety:** LumaFlow makes UV-C light, which burns the eyes and skin within seconds to minutes and cannot be seen. Never power the LEDs unless the LED head is on the cap and plugged in, the reactor is closed and the enclosure lid is shut, and wear UV-C blocking eyewear and cover your skin for any bench work with the LEDs. The reactor holds mains water pressure next to electronics: leak test it before any wiring is connected (section 6). Only the certified adapter sees mains voltage; it plugs into a GFCI or RCD-protected outlet. LumaFlow is a research and educational prototype, not a certified water treatment device; do not drink water from it or rely on it as a barrier.
 
 ## 2. What changed to make it buildable
 
-The concept showed what the reactor does; some of its parts could not be fitted, fixed, sealed or made as drawn. Each change below keeps what the reactor does (the same water column, LEDs, window, sensor position, flow and size), and all of them are recorded in decision record LMF-DDR-003, open for Amish's review.
+The concept showed what the reactor does; some of its parts could not be fitted, fixed, sealed or made as drawn. Each change below keeps what the reactor does (the same water column, LEDs, window, sensor position, flow and size), and all of them are recorded in decision record LMF-DDR-003, which Amish accepted on 2026-10-02 with the window seat changed to a PTFE washer. The last three rows were decided by Amish on 2026-10-02.
 
 *Table 1. Changes from the concept.*
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
-| Quartz window | Trapped in a pocket narrower above and below than the window; no seal | Pocket open from below; the window goes in from below onto a rubber gasket and is held by a stainless ring with six screws (Figure 10) | It can be fitted and taken out, and it seals |
+| Quartz window | Trapped in a pocket narrower above and below than the window; no seal | Pocket open from below; the window goes in from below onto a rubber gasket and is held, on a thin PTFE washer, by a stainless ring with six screws (Figure 10) | It can be fitted and taken out, it seals, and the quartz never bears on bare metal |
 | Tie rods | Ending on top of the heat sink with nothing to hold them | Studs screwed into the stainless lower cap, nuts on the upper cap (Figures 15 and 18) | The rods hold the caps together on their own |
 | LED head | No fixing; no way out for the LED cable | Four screws from below between the fins into the lower cap; a slot for the cable (Figure 12) | The head comes off for service without opening the water side |
 | Tube ends | Butted on flat cap faces, no seal or location | Each end sits 2 mm into a seat on a rubber O-ring; a spigot locates the lower end (Figure 15) | Sealed and located at both ends |
 | Upper end cap | 30 mm tall with a 3 mm plastic roof over the water | 40 mm tall with a 13 mm roof (Figure 18) | The 3 mm roof would have been stressed near its breaking point at full pressure |
-| Water ports | Plain holes, no thread; 10 mm stubs of tube to the sensor and valve | Threaded ports with stainless stem adaptors that plug straight into the sensor and valve (Figure 23) | Bought fittings, nothing to kink |
+| Water ports | Plain holes, no thread; 10 mm stubs of tube to the sensor and valve | Threaded ports with stainless stem adaptors that plug straight into the sensor and valve (Figure 25) | Bought fittings, nothing to kink |
 | Light sensor mount | A saddle with no clamp; an unsealed window rod | A boss welded to the tube; a small window pressed onto a washer by a screwed holder (Figure 20) | One sealed, welded joint on the pressure wall |
 | Wall bracket | Closed rings that only fit before the caps went on; a shelf with no fixing; no wall holes | A drilled aluminium plate, two bought pipe clamps that open, the enclosure screwed to the plate, two saddles for the sensor and valve (Figures 2 to 6) | Every joint is a screw into a tapped hole, and the reactor lifts out after opening two clamps |
 | Enclosure | One closed box | A body and a screw-on lid that works the lid switch (Figure 21) | The lid interlock needs a lid |
 | Height above the floor | Heat sink fins on the cabinet floor | 25 mm of air under the fins | The fins need free air to cool |
+| LED head interlock | Named but not shown | A short cable from the LED head to a plug under the enclosure; two of its wires form a loop that the controller watches (Figure 24) | Unplugging the head stops the LEDs, and the cable is too short for the head to come off while plugged in |
+| Status display | One status light in the lid | A five-segment UV level bar in the lid (Figure 22) | Shows the UV level against the alarm point at a glance; it is not a dose reading |
+| Labels | None | UV-C warning labels on the lower cap and inside the lid; a product label on the enclosure side | Warn anyone who opens the unit, and name it |
 
 ## 3. Making the components
 
@@ -128,7 +135,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 1. Turn the bar to 90 mm across and 30 mm long, faces square.
 2. Bottom face: a recess 72.4 across and 2 deep for the retaining ring.
-3. Window pocket: 58 across, from the recess up to 13 from the bottom face. Leave a fine, flat finish on the shoulder at the top of the pocket; the gasket seals on it.
+3. Window pocket: 58 across, from the recess up to 13.5 from the bottom face. Leave a fine, flat finish on the shoulder at the top of the pocket; the gasket seals on it.
 4. Bore: 50 across, from the shoulder through the top face.
 5. Top face: a groove from 59 to 65.5 across and 2 deep for the tube end, leaving a 59 mm spigot inside it; in the floor of that groove, an O-ring groove from 60 to 64.8 across and 1.3 deep.
 6. Inlet boss: on the left side, a boss 20 across standing out to 55 from the centre, centred 19 up. Tap it 1/4 BSPP, 11 deep, then drill 7 mm through into the bore.
@@ -137,34 +144,34 @@ Make and check each component before the assembly step that needs it. Sizes are 
 9. Bottom face: four M4 tapped holes, 10 deep, 16.3 either side of the centre line and 36 to the front and back.
 10. Deburr, clean and passivate.
 
-**How it fits the parts next to it.** The window and its ring fit from below (section 3.5); the LED head screws to the bottom face (section 3.6); the tube sits in the top seat (section 3.8). The stainless bore around the bottom 18 mm of the water carries most of the LED heat into the water.
+**How it fits the parts next to it.** The window and its ring fit from below (section 3.5); the LED head screws to the bottom face (section 3.6); the tube sits in the top seat (section 3.8). The stainless bore around the bottom 17.5 mm of the water carries most of the LED heat into the water.
 
 **Check before moving on.** The window drops into its pocket by hand; a 59 mm tube end slides over the spigot.
 
-### 3.5 Window retaining ring, with the window and gasket
+### 3.5 Window retaining ring, with the window, washer and gasket
 
 ![Figure 9. Making sketch of the retaining ring](../cad/drawings/LMF-DWG-104.png)
 
 *Figure 9. Retaining ring making sketch (LMF-DWG-104).*
 
-**What it is and what it is made from.** A flat stainless ring that holds the quartz window up against its gasket. 316 stainless sheet 2 mm, laser cut, 72 across outside and 51 across inside. The window (bought) is UV-grade fused silica, 57 across and 10 thick, both faces polished; the gasket (bought or cut) is food-grade EPDM, 57 across outside, 50 inside, 1 thick.
+**What it is and what it is made from.** A flat stainless ring that holds the quartz window up against its gasket. 316 stainless sheet 2 mm, laser cut, 72 across outside and 51 across inside. The window (bought) is UV-grade fused silica, 57 across and 10 thick, both faces polished; the gasket (bought or cut) is food-grade EPDM, 57 across outside, 50 inside, 1 thick; the washer (cut) is food-grade PTFE sheet, 57 across outside, 51 inside, 0.5 thick.
 
 **How to make it.**
 
 1. Laser cut the ring with six 3.4 mm holes on a 65 mm circle, every 60° starting at 30°.
 2. Countersink the six holes on the bottom face so M3 countersunk screws sit flush.
-3. Lap the top face flat on fine abrasive paper on glass: the window sits on it, metal to glass, and must bear evenly.
+3. Check the top face is flat and flatten it if the cut left it bowed. The window never touches the metal: the PTFE washer lies between them and spreads the load.
 4. Break the inside edge by 0.3 mm and passivate.
 
 **How it fits the parts next to it.**
 
 ![Figure 10. Joint 1: the window, clamped from below](05-build-plan/joint-01.png)
 
-*Figure 10. Cut through the centre: gasket above the window, ring below it, LEDs 0.8 mm under the window. Water pressure pushes the window down onto the ring.*
+*Figure 10. Cut through the centre: gasket above the window, PTFE washer and ring below it, LEDs 1.3 mm under the window. Water pressure pushes the window down onto the washer and the ring.*
 
-With the cap upside down, the gasket goes into the pocket against the shoulder, then the window, then the ring, flush with the cap's bottom face. Six M3 x 8 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. The ring's 51 mm opening is the window's free span used in the stress calculation: do not open it out.
+With the cap upside down, the gasket goes into the pocket against the shoulder, then the window, then the washer, then the ring, flush with the cap's bottom face. Six M3 x 8 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. The ring's 51 mm opening, and the washer's, is the window's free span used in the stress calculation: do not open either out.
 
-**Check before moving on.** The ring is flat within 0.05 mm across a straight edge; the window sits on it with no gap you can see against a light.
+**Check before moving on.** The ring is flat within 0.1 mm across a straight edge; the window sits evenly on the washer with no gap you can see against a light.
 
 ### 3.6 Heat sink, spreader ring and LED board
 
@@ -180,7 +187,8 @@ With the cap upside down, the gasket goes into the pocket against the shoulder, 
 2. Sink: three M3 tapped holes, 5 deep, on a 38 mm circle at 30°, 150° and 270°, for the LED board.
 3. Ring: cut from 3 mm aluminium plate, 90 across with a 45 hole; cut an 8 mm slot from the hole to the edge on the right side for the LED cable; drill four 4.5 mm holes matching the sink.
 4. Deburr everything.
-5. Fit the LED board in the ring's hole on a thermal pad, with three M3 x 10 low-head screws, its cable out through the slot (assembly step 5).
+5. Make up the LED head cable: six wires of 0.25 mm², about 95 mm from the edge of the board to a 6-pin plug, laid flat where they pass through the slot and sleeved as one round cable beyond it. Two wires carry the LED string, two the board's thermistor, and two form the interlock loop: they are joined to each other at the board, so the loop is complete only while the plug is in and the cable is whole. Keep the length: it is what stops the head coming off while plugged in.
+6. Fit the LED board in the ring's hole on a thermal pad, with three M3 x 10 low-head screws, its cable out through the slot (assembly step 5).
 
 **How it fits the parts next to it.**
 
@@ -317,18 +325,24 @@ The washer and window drop into the boss's seat, the holder screws in by hand an
 **How to make it.**
 
 1. Print the body back face down: four 4.4 mm holes in the back, 8 in from each side and from the top and bottom; an 8 mm hole in the left side, 20 up from the bottom, for the cable gland.
-2. Inside, add bosses with M3 heat-set inserts for the modules and a pocket for the lid reed switch near the front top corner.
-3. Print the lid, 60 x 130 x 2.5, with a 24 x 12 light pipe window near the top and a pocket for the magnet; four M3 screws hold it to the body.
+2. In the floor, a 12 mm hole for the LED head's socket, 8 in from the left side and 15 behind the lid's front face.
+3. Inside, add bosses with M3 heat-set inserts for the modules and a pocket for the lid reed switch near the front top corner.
+4. Print the lid, 60 x 130 x 2.5, with five windows for the UV level bar, each 6 wide and 8 tall, 2 apart, centred across the lid and 22 to 30 below its top edge, and a pocket for the magnet; four M3 screws hold it to the body. Print five segments in clear PETG to fit the windows, standing 1 mm proud of the front; the bar's five LEDs sit behind them.
+5. Stick the UV-C warning label inside the lid (Figure 22) and the product label on the right side of the body.
 
-**How it fits the parts next to it.** The back sits flat on the bracket plate, held by four M4 x 10 pan-head screws from inside into the plate's tapped holes. Closing the lid brings the magnet to the reed switch, which closes the LED supply.
+![Figure 22. The lid from inside: UV level bar and UV-C label](05-build-plan/joint-09.png)
+
+*Figure 22. The lid seen from inside: the five bar segments in their windows and the UV-C warning label on the inside face.*
+
+**How it fits the parts next to it.** The back sits flat on the bracket plate, held by four M4 x 10 pan-head screws from inside into the plate's tapped holes. The LED head's socket is screwed into the floor hole from inside. Closing the lid brings the magnet to the reed switch, which closes the LED supply.
 
 **Check before moving on.** With a meter on the reed switch, it closes when the lid is on and opens when the lid is lifted 5 mm.
 
 #### 3.12.1 Wiring
 
-![Figure 22. Block-level wiring](05-build-plan/wiring.png)
+![Figure 23. Block-level wiring](05-build-plan/wiring.png)
 
-*Figure 22. Block-level wiring with wire sizes. No circuit board is laid out at this stage; bought modules stand in for the controller board.*
+*Figure 23. Block-level wiring with wire sizes. No circuit board is laid out at this stage; bought modules stand in for the controller board.*
 
 The controller in the bill of materials is module based. Buy modules that meet this specification:
 
@@ -336,9 +350,10 @@ The controller in the bill of materials is module based. Buy modules that meet t
 
 | Module | What to buy |
 | --- | --- |
-| Controller | Small microcontroller board with a pulse input, an analog input for the sensor amplifier, a thermistor input, two outputs for drivers and a lid switch input, run from a 24 V to 5 V converter |
+| Controller | Small microcontroller board with a pulse input, an analog input for the sensor amplifier, a thermistor input, a lid switch input, an input for the LED head's interlock loop, outputs for the drivers and five outputs for the UV level bar, run from a 24 V to 5 V converter |
 | LED driver | 350 mA constant-current boost driver for a six-LED string of about 37 V, up to 40 V out from the 24 V input, with a dimming input |
-| Valve and buzzer drivers | Logic-level MOSFET module with a flyback diode for the 24 V valve; small buzzer and status LED |
+| Valve and display drivers | Logic-level MOSFET module with a flyback diode for the 24 V valve; small buzzer; a five-LED bar module behind the lid's five segments |
+| LED head plug and socket | 6-pin circular plug and panel socket about 12 mm across, rated for the LED current |
 | Fuse | 1.6 A fuse on the 24 V input |
 
 Wire it like this, with stranded copper and a ferrule on every screw terminal:
@@ -346,13 +361,19 @@ Wire it like this, with stranded copper and a ferrule on every screw terminal:
 1. Adapter to the input fuse: 0.75 mm² (18 AWG).
 2. Fuse to the controller's 24 V input and to the valve driver: 0.5 mm² (20 AWG).
 3. Fuse to the LED driver through the lid reed switch: 0.5 mm².
-4. LED driver to the LED head's plug: 0.5 mm², through the gland, along the slot in the spreader ring.
-5. LED board thermistor to the controller: 0.25 mm² (24 AWG), in the same cable as the LED supply.
-6. Sensor amplifier to the controller: three-core screened cable, screen grounded at the controller only.
-7. Flow sensor to the controller: 0.25 mm², three-way.
-8. Valve driver to the valve: 0.5 mm², two-way.
+4. LED driver to the LED head's socket in the enclosure floor: 0.5 mm². The head's own cable (section 3.6) is six wires of 0.25 mm² (24 AWG) from the socket to the board.
+5. LED board thermistor to the controller: 0.25 mm², through the same socket.
+6. Interlock loop: the two loop pins of the socket to the controller's interlock input, 0.25 mm². The controller keeps the LED driver off unless the loop is complete, so pulling the plug stops the LEDs.
+7. Sensor amplifier to the controller: three-core screened cable through the gland, screen grounded at the controller only.
+8. Flow sensor to the controller: 0.25 mm², three-way, through the gland.
+9. Valve driver to the valve: 0.5 mm², two-way, through the gland.
+10. UV level bar module to the controller's five bar outputs, short leads inside the lid.
 
-**Check before moving on.** Every wire continues end to end; with the adapter unplugged and the lid off, the LED driver's input reads open.
+![Figure 24. Joint 8: LED head cable and plug](05-build-plan/joint-08.png)
+
+*Figure 24. The LED head's cable runs from the slot in the spreader ring to its plug under the enclosure. It reaches the socket with a little slack, but it is about 39 mm too short for the head to slide clear of the cap while the plug is in.*
+
+**Check before moving on.** Every wire continues end to end; with the adapter unplugged and the lid off, the LED driver's input reads open; the two loop pins of the LED head's plug read a closed circuit, and open as soon as the plug is pulled.
 
 ### 3.13 Bought components
 
@@ -363,16 +384,18 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Heat sink (line 5).** Aluminium, 90 x 90 x 30, nine fins, gaps of 7.5 mm or more so an M4 socket head fits.
 - **Flow sensor (line 8).** Food-grade Hall-effect sensor, 3/8 in push-fit port at each end, flat back, 0.3 to 6 L/min, 15 pulses per second per L/min or more.
 - **Photodiode and amplifier (line 9).** SiC UV-C photodiode in a TO-46 can with a transimpedance amplifier.
-- **Controller and drivers (line 10).** As Table 2.
+- **Controller, drivers, LED head plug and socket (line 10).** As Table 2.
+- **UV level bar (line 13).** A five-LED bar module behind the five printed segments of the lid.
 - **Valve (line 11).** 24 V DC, normally closed, food-grade, 3/8 in push-fit port at each end, flat base, about 0.2 A.
 - **Adapter (line 12).** Certified external 24 V DC, 1.25 A adapter, no-load draw 0.1 W or less.
 - **Fittings (line 15).** Two stainless push-fit stem adaptors, 1/4 BSPP male to a 3/8 in stem, with bonded sealing washers; 1 m food-grade 3/8 in tube; cold-line tee; 1.2 L/min flow restrictor.
 
-![Figure 23. Joint 6: inlet port, flow sensor and saddle](05-build-plan/joint-06.png)
+![Figure 25. Joint 6: inlet port, flow sensor and saddle](05-build-plan/joint-06.png)
 
-*Figure 23. The stem adaptor screws into the lower cap's boss; its stem pushes into the flow sensor's port; the saddle and a cable tie steady the sensor. The outlet and valve are the same at the top.*
+*Figure 25. The stem adaptor screws into the lower cap's boss; its stem pushes into the flow sensor's port; the saddle and a cable tie steady the sensor. The outlet and valve are the same at the top.*
 
-- **Seals (line 17).** Food-grade EPDM: the window gasket (section 3.5) and two O-rings about 61 inside diameter, 1.78 section.
+- **Seals and window washer (line 17).** Food-grade EPDM: the window gasket (section 3.5) and two O-rings about 61 inside diameter, 1.78 section. Food-grade PTFE sheet 0.5 mm for the window washer.
+- **Labels (line 19).** Two UV-C warning labels with the optical radiation warning sign and the words "UV-C: do not look into the reactor; disconnect power before removing the LED head"; one product label with the name, the 24 V DC rating and "research and educational prototype, not a certified water treatment device".
 - **Pipe clamps (line 18).** As section 3.3.
 - **Fixings (line 16).** Stainless: four M5 acorn nuts and washers; six M3 x 8 countersunk; four M4 x 16 socket head; three M3 x 10 low head; four M4 x 10 pan head; four M4 x 10 countersunk; two M8 x 20 studs; four wall screws; food-grade silicone grease, thermal pads and paste, medium threadlocker, cable ties.
 
@@ -398,17 +421,17 @@ Studs into the M8 holes with threadlocker, clamps onto the studs, left open. Scr
 
 Stand the cap upside down on a clean cloth (the picture shows it upright, seen from below). Gloves on. The gasket goes against the shoulder, then the window, polished faces clean.
 
-### Step 4: retaining ring under the window
+### Step 4: PTFE washer, retaining ring and cap label
 
 ![Step 4](05-build-plan/step-04.png)
 
-Six M3 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. Do not overtighten: quartz cracks under uneven load.
+The PTFE washer on the window, then the ring on the washer. Six M3 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. Do not overtighten: quartz cracks under uneven load. Wipe the front of the cap clean and stick on the UV-C warning label, centred on the front of the cap.
 
-### Step 5: LED board onto the heat sink
+### Step 5: LED board and its cable onto the heat sink
 
 ![Step 5](05-build-plan/step-05.png)
 
-Thermal pad on the sink, ring on the pad, board in the ring's hole on its own pad, three M3 screws; the cable leaves through the slot on the right.
+Thermal pad on the sink, ring on the pad, board in the ring's hole on its own pad, three M3 screws; the flat part of the cable leaves through the slot on the right.
 
 ### Step 6: LED head onto the lower cap
 
@@ -456,13 +479,13 @@ Lift the reactor into the open clamps, boss to the right, so the fins have at le
 
 ![Step 13](05-build-plan/step-13.png)
 
-Controller modules already on their bosses. Four M4 screws from inside the enclosure into the plate.
+Controller modules and the LED head socket already fitted, product label on the right side. Four M4 screws from inside the enclosure into the plate.
 
-### Step 14: wire up, then close the lid
+### Step 14: plug in the LED head, wire up, close the lid
 
 ![Step 14](05-build-plan/step-14.png)
 
-Wire as Figure 22, the LED and sensor leads through the gland. Lid on with four M3 screws. **Hold point:** safety stop S3.
+Push the LED head's plug up into its socket under the enclosure and screw its collar home. Wire as Figure 23, the sensor, flow sensor and valve leads through the gland. Lid on with four M3 screws, the bar segments at the top. **Hold point:** safety stop S3.
 
 ### Step 15: flow sensor and valve onto the stems and saddles
 
@@ -487,9 +510,11 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Pressure and leaks | R7, R17 | Reactor alone, ports plugged except one, filled with water and pressed to 8 bar with a hand pump for 10 minutes, LEDs unpowered | No drop on the gauge and no water at the window, tube ends or sensor boss |
 | Flow | R1 | Measure the time to fill a 1 L jug at the faucet | 1.2 L/min, give or take 10 % (about 50 s) |
 | Pressure drop | R8 | Gauges before the flow sensor and after the valve, restrictor out of the line | 0.5 bar or less at 1.2 L/min |
-| Switch on and run-on | R5 | Open the faucet slowly; watch the status light and time it | LEDs on within 0.5 s of flow above 0.3 L/min; off 5 s after flow stops |
+| Switch on and run-on | R5 | Open the faucet slowly; watch the UV level bar and time it | LEDs on within 0.5 s of flow above 0.3 L/min; off 5 s after flow stops |
 | Valve fails closed | R4 | Unplug the adapter with the faucet open | Flow stops at once |
 | Lid interlock | R12 | Lift the lid with water flowing | LED driver input goes dead; valve closes; buzzer sounds |
+| LED head interlock | R12 | Eyewear on. With water flowing and the LEDs on, pull the LED head's plug from its socket. Then, with the plug back in, the water off and the adapter unplugged, take out the four head screws and try to slide the head clear of the cap | Removing the plug stops the LEDs at once, the valve closes and the buzzer sounds; the cable stops the head before it is clear of the cap |
+| UV level bar | R18 | With clear water flowing, add a little instant coffee to the supply | The bar loses segments as the sensor reading falls, and the last one goes out as the alarm trips |
 | No UV-C outside | R12 | UV-C indicator card at every joint, the gland and the sensor boss with the LEDs on | No card shows any change |
 | Board temperature | R10 | Thermistor reading after 10 minutes of flow at 25 °C water | 50 °C or less |
 | Power | R9 | Plug-in power meter, flowing and idle | 25 W or less flowing; 0.5 W or less on standby |
@@ -503,7 +528,7 @@ Stop at each point. Carry on only when everything listed is true.
 
 - **S1. Before any part goes on the water.** Every wetted part is food-contact grade: 316 stainless, PTFE, fused quartz, EPDM, acetal. No printed plastic touches the water. Parts cleaned with mild detergent and rinsed.
 - **S2. Before anything electrical is connected.** The reactor passes the 8 bar leak test of section 5, with nothing electrical within reach of a spray. The window shows no chip or crack under a bright lamp.
-- **S3. Before the LEDs are first powered.** The reactor is closed: LED head on, both caps and the sensor holder in. The enclosure lid is shut and the lid switch tested open and closed with a meter. Everyone nearby wears UV-C blocking eyewear; no one looks at the window, boss or ports. Water is flowing, so the LEDs are cooled.
+- **S3. Before the LEDs are first powered.** The reactor is closed: LED head on and plugged in, both caps and the sensor holder in. The enclosure lid is shut and the lid switch tested open and closed with a meter. Everyone nearby wears UV-C blocking eyewear; no one looks at the window, boss or ports. Water is flowing, so the LEDs are cooled.
 - **S4. Before mains is involved.** Only the certified adapter plugs into the mains, into a GFCI or RCD-protected outlet above any likely water level; no mains wiring is part of this build.
 - **S5. Before the unit is left running.** The pressure-limiting valve is fitted upstream and set at 4 bar or less; the lid interlock, the valve's fail-closed check and the board temperature check of section 5 all pass. Never bypass the valve or the interlock.
 - **S6. Always.** LumaFlow is a research and educational prototype, not a certified water treatment device. Do not drink water from it or rely on it as a barrier; its dose is calculated, not measured.
@@ -520,10 +545,10 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 324 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 500 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/LMF-DWG-101` to `LMF-DWG-111`.
-- General arrangement: `cad/drawings/LMF-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (LMF-CAL-001 v0.4) and `docs/04-calcs/sizing.py`; window stress [G4], end load [G7], upper cap roof [G8], thermal [F1] to [F3], size [H1], cost [I1].
+- General arrangement: `cad/drawings/LMF-DWG-001.pdf`, Rev P5.
+- Calculations: `docs/04-calcs/01-sizing.md` (LMF-CAL-001 v0.6) and `docs/04-calcs/sizing.py`; window stress [G4], end load [G7], upper cap roof [G8], thermal [F1] to [F3], size and mass [H1, H2], cost [I1], UV level bar [C6]; LED head cable length from the model's interlock check.
 - Bill of materials: `bom/bom.csv` and `bom/bom-notes.md`.
-- Decisions: `docs/decisions/0003-design-for-construction.md` (LMF-DDR-003), with LMF-DDR-001 and LMF-DDR-002; open items in `docs/06-design-decisions.md` (LMF-DEC-001).
-- Requirements: `docs/03-requirements.md` (LMF-REQ-001 v0.6).
+- Decisions: `docs/decisions/0003-design-for-construction.md` (LMF-DDR-003), with LMF-DDR-001 and LMF-DDR-002; the register `docs/06-design-decisions.md` (LMF-DEC-001).
+- Requirements: `docs/03-requirements.md` (LMF-REQ-001 v0.8).

@@ -3,7 +3,7 @@ doc_id: LMF-DEC-001
 title: LumaFlow design decisions register
 project: LumaFlow
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Amish approved the recommendations for open decisions 1 to 10 (LMF-DDR-003 accepted with the window seat changed); moved to decisions made; To confirm item 8 and Value engineering updated"
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Approved follow-ups carried out: Value engineering repriced (USD 416) with the washer, interlock plug, UV level bar and labels; To confirm items 7 and 9 updated"
 ---
 
 # LumaFlow design decisions register
@@ -37,17 +41,18 @@ None. All open decisions were decided on 2026-10-02.
 | 4 | The LED board's output bin at 275 nm and its mounting holes (three on a 38 mm circle) | The dose rests on 60 mW per LED; the board screws to the sink | LMF-CAL-001 [B1]; BOM line 4 |
 | 5 | The pipe clamp's band and rubber are 3 mm thick or less in total | The tie rods pass 2 mm outside the clamp | LMF-DDR-003, P2 |
 | 6 | The stem adaptors are 1/4 BSPP male with a 3/8 in stem, stainless, food-contact | The cap ports are tapped 1/4 BSPP | LMF-DDR-003, P6 |
-| 7 | The PTFE liner supplier's reflectance data at 275 nm, wetted | R2 rests on 0.95; plain PTFE gives 46.3 mJ/cm² | LMF-CAL-001 [B8] |
+| 7 | The PTFE liner supplier's reflectance data at 275 nm, wetted | R2 rests on 0.95; plain PTFE gives 45.2 mJ/cm² | LMF-CAL-001 [B8] |
 | 8 | Seal materials are food-contact EPDM, the O-ring size (about 61 mm inside, 1.78 mm section) is stocked, and a 0.5 mm food-contact PTFE washer for the window seat (decided 2026-10-02) | Wetted parts (R11) | LMF-DDR-003, P1 and P4; this register, 2026-10-02 |
+| 9 | The LED head plug and socket are 6-pin, about 12 mm across (GX12 class), and fit the 12 mm hole in the enclosure floor; the LED bar module fits behind the five 6 x 8 mm segments in the lid | The interlock loop (R12) and the UV level bar (R18) | This register, 2026-10-02; BOM lines 10 and 13 |
 
 ## Value engineering
 
-Value-engineering target: USD 340 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 402 (USD 62 over the target). Main cost drivers and savings worth trying:
+Value-engineering target: USD 340 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 416 (USD 76 over the target). Main cost drivers and savings worth trying:
 
 - The largest lines are the six UV-C LEDs (USD 54), the machined 316 lower cap (USD 48), the high-reflectance PTFE liner (USD 45), the tube with its welded sensor boss (USD 38) and the quartz window (USD 32).
 - Making the design constructable added USD 64: the welded sensor boss (USD 12 more on the tube line), the retaining ring and seals (USD 12), the threaded ports and stem adaptors (USD 10 more on fittings), the drilled bracket plate and saddles (USD 10 more), the pipe clamps (USD 8), more machining on both caps (USD 9), more fixings (USD 4) and drilling of the heat sink (USD 1), less USD 2 on the sensor line.
-- Savings worth trying: a plain PTFE liner instead of the high-reflectance grade (most of USD 45, but the laminar dose falls to 46.3 mJ/cm², inside the 20 % margin, so R2 would be at risk); a clamp-on saddle with a band clamp instead of the welded boss (about USD 10); one machine shop quote for both caps, the tube boss and the holder together; LED prices at quantity, which fall fastest of all the lines.
-- Decided on 2026-10-02 and not yet priced: the labels line (UV-C warning labels and the product label, a few dollars), the PTFE window washer and the five-segment UV level bar.
+- Savings worth trying: a plain PTFE liner instead of the high-reflectance grade (most of USD 45, but the laminar dose falls to 45.2 mJ/cm², inside the 20 % margin, so R2 would be at risk); a clamp-on saddle with a band clamp instead of the welded boss (about USD 10); one machine shop quote for both caps, the tube boss and the holder together; LED prices at quantity, which fall fastest of all the lines.
+- The decisions of 2026-10-02 added USD 14, now priced in the BOM: the PTFE window washer (USD 2), the LED head plug, socket and interlock-loop cable (USD 4), the five-segment UV level bar (USD 3) and the labels line (USD 5). Labels printed in-house on vinyl would save most of their USD 5.
 
 ## Decisions made
 

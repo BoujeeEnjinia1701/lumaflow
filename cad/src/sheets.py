@@ -1,4 +1,5 @@
-"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P4 (TRL 3, design made constructable by LMF-DDR-003).
+"""LumaFlow general arrangement sheet LMF-DWG-001, Rev P5 (TRL 3, design made constructable by LMF-DDR-003,
+with the decisions of 2026-10-02 carried in).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/LMF-DWG-001.svg, .pdf and .png from the parametric model in cad/src/model.py
@@ -61,14 +62,15 @@ def main():
     asm = build(include_adapter=False)
     views = project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P4",
-              author="Amish Chadha", date="2026-10-01", scale=None, theme="technical",
+    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P5",
+              author="Amish Chadha", date="2026-10-02", scale=None, theme="technical",
               material="316 tube and lower cap, high-reflectance PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
                        "PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
                          ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC"),
                          ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
-                         ("P4", "Design for construction (LMF-DDR-003)", "2026-10-01", "AC")])
+                         ("P4", "Design for construction (LMF-DDR-003)", "2026-10-01", "AC"),
+                         ("P5", "PTFE window washer, LED head plug, UV level bar, labels", "2026-10-02", "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -93,19 +95,20 @@ def main():
     out += [ext(cl, yt, cl, y - 5), ext(cr, yt, cr, y - 5)]
     out += dim_h(cl, cr, y - 4, f"D{P['cap_d']:.0f} caps")
     s._layers += out
-    s.add_svg(views["iso"], 276, 37, 140, 96, label="Isometric view", sublabel="Not to scale; adapter not shown")
+    s.add_svg(views["iso"], 276, 50, 140, 86, label="Isometric view", sublabel="Not to scale; adapter not shown")
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"Unit {bb.size.X:.0f} W x {bb.size.Y:.0f} D x {bb.size.Z:.0f} H, adapter excluded",
         f"Channel D{P['bore_d']:.0f} x {L['channel_len']:.0f}; ports at Z {L['z_in']:.0f} and {L['z_out']:.0f}",
         f"Dose sensor D{P['det_win_d']:.0f} window in tube wall at Z {L['z_det']:.0f}, facing +X",
         f"Tube D{P['tube_od']:.0f} x 3 wall x {P['tube_len']:.0f}, 316; high-refl. PTFE liner D{P['liner_od']:.0f}",
         f"Window D{P['win_d']:.0f} x {P['win_t']:.0f} fused silica on a D{P['aperture_d']:.0f} seat",
-        f"{P['led_n']} x 275 nm LEDs on a {2 * P['led_pcr']:.0f} mm circle, {P['led_gap']} mm below window",
+        f"{P['led_n']} x 275 nm LEDs on a {2 * P['led_pcr']:.0f} mm circle, {L['led_gap']:.1f} mm below window",
         f"Caps D{P['cap_d']:.0f} x {P['cap_lo_h']:.0f} (316) and x {P['cap_hi_h']:.0f} (acetal); {P['n_rod']} x M{P['rod_d']:.0f} studs on D{2 * P['rod_pcr']:.0f}",
         "Ports 1/4 BSPP with push-fit stem adaptors; 316 outlet sleeve",
         f"Heat sink {P['sink_w']:.0f} x {P['sink_w']:.0f} x {P['fin_h'] + P['sink_base']:.0f}, fins down",
         "Working pressure 8 bar; limiter at 4 bar upstream; flow up",
-        "Window from below on a 316 ring; tube ends on face O-rings",
+        "Window from below on a 0.5 PTFE washer and 316 ring; tube ends on face O-rings",
+        "LED head plug with interlock loop under the enclosure; 5-segment UV level bar in the lid",
         "Third-angle; front view from -Y, right view from +X",
     ], x=276, y=150, width=140)
     path = s.save(ROOT / "cad" / "drawings" / "LMF-DWG-001")

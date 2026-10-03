@@ -3,7 +3,7 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Partner as decided on 2026-10-02 (LMF-DEC-001)"
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Cost of the constructable design with the 2026-10-02 decisions carried in (USD 416); partner approach status"
 ---
 
 # LumaFlow problem statement
@@ -75,7 +79,7 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 ## Constraints
 
-- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The $340 figure is a value-engineering target (Amish, 2026-10-01); the constructable design of LMF-DDR-003 is estimated at $402.00, $62 over it.
+- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The $340 figure is a value-engineering target (Amish, 2026-10-01); the constructable design of LMF-DDR-003, with the decisions of 2026-10-02 carried in, is estimated at $416.00, $76 over it.
 - A drinking-water flow of 1.2 L/min (0.32 gpm) is enough for one tap; it fills a 1 L bottle in about 50 s.
 - A sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less are part of the installation.
 - Fits under a kitchen sink and connects to a standard cold line with push-fit fittings.
@@ -94,4 +98,4 @@ Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar 
 
 - **First user (decided).** A well-water household with a sediment pre-filter. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D9). This sets the design water quality at 90 %/cm UVT or better.
 - **Dose target (decided).** The Class A dose level of 40 mJ/cm² is the target for clear water (90 %/cm or better), with an alarm and valve closure below it, and the 70 %/cm test condition kept visibly not met. Decided by Amish, 2026-09-25: go with recommendation (LMF-DDR-001 D1). The first TRL 3 calculation found only 14.7 to 19.0 mJ/cm² in clear water; with the route Amish accepted on 2026-09-25 (LMF-DDR-002: 50 mm bore, high-reflectance liner, 1.2 L/min design flow) LMF-CAL-001 v0.2 gives 51.9 to 76.3 mJ/cm².
-- **Partner (decided).** A university extension programme for private well owners, which already samples household wells and can measure UV transmittance on real samples; the Texas A&M AgriLife Extension Texas Well Owner Network is the first candidate to approach. Decided by Amish, 2026-10-02 (LMF-DEC-001).
+- **Partner (decided).** A university extension programme for private well owners, which already samples household wells and can measure UV transmittance on real samples; the Texas A&M AgriLife Extension Texas Well Owner Network is the first candidate to approach. Decided by Amish, 2026-10-02 (LMF-DEC-001). No approach has been made yet and nothing is agreed; a draft first message for Amish to send is in the review note (2026-10-02).

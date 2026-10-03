@@ -23,7 +23,7 @@ from model import PARAMS as P, build_parts, levels, positions  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 L = levels(P)
 H = positions(P)
 C = {k: (n, s, bom, col, ex) for k, n, s, bom, col, ex in build_parts(P)}
@@ -68,9 +68,12 @@ ORDER = [
     ("cap_lo", "Lower end cap, 316", (0, 0, -40)),
     ("gasket", "Window gasket", (0, 0, -70)),
     ("window", "Quartz window", (0, 0, -100)),
-    ("retainer", "Retaining ring and six M3 screws", (0, 0, -130)),
-    ("board", "UV-C LED board and three M3 screws", (0, 0, -165)),
-    ("sink", "Heat sink, spreader ring, four M4 screws", (0, 0, -210)),
+    ("washer", "PTFE window washer", (0, 0, -118)),
+    ("retainer", "Retaining ring and six M3 screws", (0, 0, -138)),
+    ("label_cap", "UV-C warning label, lower cap", (0, -60, -40)),
+    ("board", "UV-C LED board and three M3 screws", (0, 0, -170)),
+    ("led_cable", "LED head cable and plug", (40, -60, -175)),
+    ("sink", "Heat sink, spreader ring, four M4 screws", (0, 0, -215)),
     ("rods", "Tie rod studs (4), washers, acorn nuts", (0, 0, 120)),
     ("orings", "Face O-rings (2)", (0, 0, 0)),
     ("tube", "Reactor tube with welded sensor boss", (0, 0, 40)),
@@ -79,7 +82,8 @@ ORDER = [
     ("fittings", "Stem adaptors, outlet sleeve, lines", (-60, 0, 0)),
     ("pd", "Sensor window and photodiode holder", (30, -110, 0)),
     ("encl", "Enclosure body with controller", (90, 0, 0)),
-    ("lid", "Enclosure lid", (90, -90, 0)),
+    ("label_prod", "Product label", (150, -150, -60)),
+    ("lid", "Lid, UV level bar, UV-C label", (90, -90, 0)),
     ("flow", "Flow sensor", (-90, 0, 0)),
     ("valve", "Solenoid valve", (-90, 0, 0)),
     ("adapter", "24 V adapter", (60, 0, 0)),
@@ -97,6 +101,8 @@ def overview():
             sh = shape("retainer", "ret_screws")
         elif k == "encl":
             sh = shape("encl", "ctrl")
+        elif k == "lid":
+            sh = shape("lid", "bar", "label_lid")
         else:
             sh = None
         p = part(k, name, explode=off, sh=sh)
@@ -114,8 +120,15 @@ def overview():
 # ----------------------------------------------------------------- making sketches
 def sheets(only=None):
     from build123d import Pos
-    base = dict(project="LumaFlow", date=DATE)
+    P2 = {103: "Window pocket to 13.5 for the PTFE washer", 104: "PTFE washer under the window; no lapping",
+          105: "LED head cable through the slot", 111: "UV level bar, LED head socket, labels"}
     out = []
+
+    def B(n):   # rev P2 for the sheets the 2026-10-02 decisions changed; the others stay P1 of 2026-10-01
+        first = ("P1", "Making sketch for the prototype build plan", "2026-10-01", "AC")
+        if n in P2:
+            return dict(project="LumaFlow", date=DATE, rev="P2", revisions=[first, ("P2", P2[n], DATE, "AC")])
+        return dict(project="LumaFlow", date="2026-10-01", rev="P1", revisions=[first])
     want = lambda n: only is None or str(n) in only  # noqa: E731
     G = lambda k: Part(C[k][0], C[k][1], "#D1D5DB", None, (0, 0, 0), 1.0)  # noqa: E731
     reactor = [G(k) for k in ("tube", "cap_lo", "cap_hi", "sink", "rods")]
@@ -138,7 +151,7 @@ def sheets(only=None):
                    "Deburr every hole on both faces.",
                    "Check: lay the saddles and the enclosure on it and look through",
                    "  each hole; the holes line up without forcing a screw."],
-            view_shape=C["bracket"][1], inset_view=(18, -62), **base))
+            view_shape=C["bracket"][1], inset_view=(18, -62), **B(101)))
 
     if want(102):
         sd = win(C["saddles"][1], -200, 0, 0, 60, 20, 90)
@@ -159,7 +172,7 @@ def sheets(only=None):
                    "The saddle only steadies the body; the stem adaptor carries",
                    "  the water connection.",
                    "Check: the front face is square to the back face."],
-            view_shape=Pos(87, -31.5, -L["z_in"]) * sd, inset_view=(18, -120), **base))
+            view_shape=Pos(87, -31.5, -L["z_in"]) * sd, inset_view=(18, -120), **B(102)))
 
     if want(103):
         cap = C["cap_lo"][1]
@@ -169,8 +182,8 @@ def sheets(only=None):
             material="316 stainless round bar 95 mm; machine shop (lathe and mill)",
             notes=["Turn to 90 dia x 30. Bottom face (LED side) down in the views.",
                    "From the bottom: recess 72.4 dia x 2 deep for the retaining ring;",
-                   "  window pocket 58 dia up to 13 from the bottom; shoulder there;",
-                   "  50 mm bore from 13 up to the top face. Fine finish on the shoulder.",
+                   "  window pocket 58 dia up to 13.5 from the bottom; shoulder there;",
+                   "  50 mm bore from 13.5 up to the top face. Fine finish on the shoulder.",
                    "Top face: tube seat, a groove 59 to 65.5 dia, 2 deep, leaving a",
                    "  59 dia spigot that the tube slides over; O-ring groove 60 to",
                    "  64.8 dia, 1.3 deep, in the floor of the seat.",
@@ -181,27 +194,28 @@ def sheets(only=None):
                    "Bottom face: four M4 tapped 10 deep at 16.3 and 36 from the axis.",
                    "Section picture: cap-sections.png in the build plan.",
                    "Check: the window drops into the pocket by hand."],
-            view_shape=Pos(0, 0, -L["z_board1"]) * cap, inset_view=(-25, -60), **base))
+            view_shape=Pos(0, 0, -L["z_board1"]) * cap, inset_view=(-25, -60), **B(103)))
 
     if want(104):
         out.append(bv.component_sheet(
-            part("retainer", sh=shape("retainer")), [G("cap_lo"), G("window")],
+            part("retainer", sh=shape("retainer")), [G("cap_lo"), G("window"), G("washer")],
             dwg_no="LMF-DWG-104", title="LumaFlow window retaining ring: making sketch",
             material="316 stainless sheet 2 mm; laser cut",
             notes=["Laser cut a ring 72 outside dia, 51 inside dia, from 2 mm 316.",
                    "Six 3.4 mm holes on a 65 dia circle, every 60 deg starting at",
                    "  30 deg; countersink them 90 deg on the bottom (LED) face so",
                    "  M3 countersunk screws sit flush.",
-                   "Lap the top face flat on fine paper on glass: the quartz window",
-                   "  sits on it, metal to glass, and must bear evenly.",
+                   "Flatten the top face if the cut left it bowed. The window does",
+                   "  not touch it: a 0.5 mm PTFE washer, 57 outside and 51 inside,",
+                   "  lies between the ring and the window.",
                    "Break the inside edge 0.3 mm. Passivate.",
                    "Fit: it sits in the 72.4 recess in the cap's bottom face, flush",
                    "  with that face. Six M3 x 8 screws into the cap, tightened",
                    "  evenly in a cross pattern to about 0.5 N m.",
                    "The 51 mm bore is the window's open span used in the stress",
                    "  calculation; do not open it out.",
-                   "Check: flat within 0.05 mm across a straight edge."],
-            view_shape=Pos(0, 0, -L["z_board1"]) * C["retainer"][1], inset_view=(-40, -60), **base))
+                   "Check: flat within 0.1 mm across a straight edge."],
+            view_shape=Pos(0, 0, -L["z_board1"]) * C["retainer"][1], inset_view=(-40, -60), **B(104)))
 
     if want(105):
         out.append(bv.component_sheet(
@@ -219,9 +233,10 @@ def sheets(only=None):
                    "  the enclosure) for the LED cable; drill four 4.5 mm holes",
                    "  matching the sink. Deburr.",
                    "Fit: thermal pad, ring on the sink base, LED board in the ring's",
-                   "  hole; the stack bolts to the cap with four M4 x 16 screws.",
+                   "  hole, its flat cable out through the slot; the stack bolts to",
+                   "  the cap with four M4 x 16 screws.",
                    "Check: ring and board tops level within 0.1 mm."],
-            view_shape=C["sink"][1], inset_view=(-25, -60), **base))
+            view_shape=C["sink"][1], inset_view=(-25, -60), **B(105)))
 
     if want(106):
         out.append(bv.component_sheet(
@@ -241,7 +256,7 @@ def sheets(only=None):
                    "  the liner slides in.",
                    "Check: the liner slides through by hand; the boss axis is",
                    "  square to the tube axis."],
-            view_shape=Pos(0, 0, -L["z_tube0"]) * C["tube"][1], inset_view=(18, -40), **base))
+            view_shape=Pos(0, 0, -L["z_tube0"]) * C["tube"][1], inset_view=(18, -40), **B(106)))
 
     if want(107):
         out.append(bv.component_sheet(
@@ -260,7 +275,7 @@ def sheets(only=None):
                    "  lined up with the boss; its bottom end sits on the lower",
                    "  cap's spigot, its turned top in the upper cap's pocket.",
                    "Check: look through the boss: the 8 mm hole is centred."],
-            view_shape=Pos(0, 0, -L["z_cap0"]) * C["liner"][1], inset_view=(18, -40), **base))
+            view_shape=Pos(0, 0, -L["z_cap0"]) * C["liner"][1], inset_view=(18, -40), **B(107)))
 
     if want(108):
         out.append(bv.component_sheet(
@@ -278,7 +293,7 @@ def sheets(only=None):
                    "  bore from the thread end until it meets the liner.",
                    "Four 5.4 mm holes on an 80 circle, at 45 deg, for the studs.",
                    "Check: the liner's turned top enters the pocket by hand."],
-            view_shape=Pos(0, 0, -L["z_cap1"]) * C["cap_hi"][1], inset_view=(18, -60), **base))
+            view_shape=Pos(0, 0, -L["z_cap1"]) * C["cap_hi"][1], inset_view=(18, -60), **B(108)))
 
     if want(109):
         from build123d import Cylinder, Rot
@@ -300,7 +315,7 @@ def sheets(only=None):
                    "  2 N m. Do not over-tighten: the upper cap is acetal.",
                    "Check: all four studs stand 246 above the lower cap's top face."],
             view_shape=Rot(0, 90, 0) * Cylinder(P["rod_d"] / 2, 258),
-            inset_view=(18, -60), **base))
+            inset_view=(18, -60), **B(109)))
 
     if want(110):
         holder = win(C["pd"][1], rt + 5, rt + 30, -12, 12, zd - 12, zd + 12)
@@ -319,11 +334,11 @@ def sheets(only=None):
                    "  outer end; its lead runs to the enclosure gland.",
                    "Screw in by hand, then a quarter turn with a spanner.",
                    "Check: no light leaks round the nose when held to a lamp."],
-            view_shape=Pos(-rt, 0, -zd) * holder, inset_view=(18, -40), **base))
+            view_shape=Pos(-rt, 0, -zd) * holder, inset_view=(18, -40), **B(110)))
 
     if want(111):
         out.append(bv.component_sheet(
-            part("encl", sh=shape("encl", "lid")), [G("bracket"), G("tube"), G("pd")],
+            part("encl", sh=shape("encl", "lid", "bar")), [G("bracket"), G("tube"), G("pd"), G("led_cable")],
             dwg_no="LMF-DWG-111", title="LumaFlow electronics enclosure: making sketch",
             material="PETG, 3D printed, 4 walls, 30 % infill",
             notes=["Body: a box 60 wide x 44 deep x 130 tall outside, walls 2.5,",
@@ -331,14 +346,17 @@ def sheets(only=None):
                    "Back face: four 4.4 mm holes, 8 in from each side and from",
                    "  the top and bottom, for M4 screws into the bracket plate.",
                    "Left side: 8 mm hole for the cable gland, 20 up from the bottom.",
+                   "Floor: 12 mm hole for the LED head socket, 8 in from the left",
+                   "  side and 15 behind the lid's front face.",
                    "Inside: bosses with M3 heat-set inserts for the modules, and a",
                    "  pocket for the lid reed switch near the front top corner.",
-                   "Lid: 60 x 130 x 2.5 with a light pipe window 24 x 12 near the",
-                   "  top; magnet for the reed switch; four M3 screws to the body.",
-                   "Fit: back flat on the plate, screws from inside; the lid faces",
-                   "  the front of the cabinet.",
+                   "Lid: 60 x 130 x 2.5. UV level bar: five windows 6 wide x 8 tall,",
+                   "  2 apart, centred across, 22 to 30 below the top; print the",
+                   "  segments in clear PETG. Magnet; four M3 screws to the body.",
+                   "Labels: UV-C warning label inside the lid, product label on",
+                   "  the right side.",
                    "Check: the lid closes the reed switch; opening it opens it."],
-            view_shape=C["encl"][1] + C["lid"][1], inset_view=(18, -62), **base))
+            view_shape=C["encl"][1] + C["lid"][1] + C["bar"][1], inset_view=(18, -62), **B(111)))
     return out
 
 
@@ -423,10 +441,10 @@ def layouts():
     fig.text(0.03, 0.948, "Cut on the reactor axis, seen from the front; the port is on the left. Sizes in mm, heights from the cap's "
              "bottom face. Grey: the cap. Blue: the parts that sit in it.", fontsize=8.5, color=MUT, va="top")
     specs = [("cap_lo", "Lower end cap, 316 stainless, LED side down (30 tall)", L["z_board1"], P["cap_lo_h"],
-              ["window", "gasket", "retainer", "tube", "liner", "orings", "fittings"],
+              ["window", "washer", "gasket", "retainer", "tube", "liner", "orings", "fittings"],
               [("72.4 dia x 2 deep: retaining ring recess", (35.5, 1.0), -1),
-               ("58 dia window pocket, from 2 up to 13 up", (29, 7), 5),
-               ("shoulder at 13 up; 50 dia bore above it", (25, 15), 11),
+               ("58 dia window pocket, from 2 up to 13.5 up", (29, 7), 5),
+               ("shoulder at 13.5 up; 50 dia bore above it", (25, 15), 11),
                ("O-ring groove 60 to 64.8 dia, 1.3 deep", (31.2, 27.3), 17),
                ("tube seat 59 to 65.5 dia, 2 deep;", (32.6, 29.3), 23),
                ("  the 59 dia spigot inside it", (29.2, 29.6), 27)],
@@ -473,14 +491,19 @@ def joints(only=None):
     def jp(k, name, box, color=None):
         return Part(name, W(k, *box), color or C[k][3], None, (0, 0, 0), 1.0)
 
+    if only:                     # draw only the listed joints: skip bv.joint for the others
+        real = bv.joint
+        bv.joint = lambda parts, path, *a, **k: real(parts, path, *a, **k) if any(f"joint-{int(n):02d}" in str(path) for n in only) else path
+
     # 01 window clamp, cut on the axis
     b = (-52, 52, 0, 60, 18, 72)
     out.append(bv.joint([jp("cap_lo", "Lower end cap", b), jp("gasket", "Gasket, EPDM 1 mm", b, "#111827"),
-                         jp("window", "Quartz window", b), jp("retainer", "Retaining ring", b),
+                         jp("window", "Quartz window", b), jp("washer", "PTFE washer, 0.5 mm", b, "#B45309"),
+                         jp("retainer", "Retaining ring", b),
                          jp("board", "LED board", b),
                          jp("sink", "Spreader ring and sink base", b), jp("liner", "PTFE liner", b), jp("tube", "Tube", b)],
                         OUT / "joint-01.png", "Joint 1: the window, clamped from below (cut on the axis)",
-                        subtitle="Gasket above the window, ring below it; water pressure pushes the window onto the ring",
+                        subtitle="Gasket above the window, PTFE washer and ring below it; water pressure pushes it onto the washer",
                         elev=2, azim=-90, size=(8, 6)))
     # 02 LED head from below
     b = (-50, 50, -50, 50, 14, 42)
@@ -526,6 +549,29 @@ def joints(only=None):
                         OUT / "joint-07.png", "Joint 7: pipe clamp on the tube (lower clamp)",
                         subtitle="The stud screws into the plate; the clamp opens to let the reactor in and out",
                         elev=30, azim=-15, size=(8, 6)))
+    # 08 LED head cable and plug (interlock loop)
+    b = (-50, 130, -50, 50, 0, 125)
+    out.append(bv.joint([jp("sink", "LED head", b), jp("cap_lo", "Lower end cap", b),
+                         jp("led_cable", "Cable and plug, interlock loop inside", b, "#B45309"),
+                         jp("encl", "Enclosure floor and socket", (55, 130, 0, 55, 95, 125))],
+                        OUT / "joint-08.png", "Joint 8: LED head cable and plug",
+                        subtitle="The 95 mm cable reaches the socket but is too short for the head to come clear while plugged in",
+                        elev=12, azim=-60, size=(8, 6)))
+    # 09 lid from inside: UV level bar segments and the UV-C warning label
+    EX0, EX1, EY0, EY1, EZ0, EZ1 = P["encl"]
+    b = (EX0 - 1, EX1 + 1, EY0 - 2, EY0 + 4, EZ0 - 1, EZ1 + 1)
+    import numpy as np
+    keep = bv._anchor
+    # anchor each leader at the part's lowest corner, so the lid's leader lands on bare lid, not on the bar
+    bv._anchor = lambda v: v[np.argmin(v[:, 2] - 0.01 * v[:, 0])]
+    out.append(bv.joint([jp("lid", "Enclosure lid", b), jp("bar", "Five UV level bar segments", b, "#0F766E"),
+                         jp("label_lid", "UV-C warning label", b, "#B45309")],
+                        OUT / "joint-09.png", "Joint 9: enclosure lid, seen from inside",
+                        subtitle="Bar segments pressed into the five windows; UV-C warning label on the inside face",
+                        elev=10, azim=75, size=(8, 6)))
+    bv._anchor = keep
+    if only:
+        bv.joint = real
     return out
 
 
@@ -558,17 +604,19 @@ def steps(only=None):
        "gasket and window into the lower cap, from below",
        "Cap upside down on a clean cloth in real life; shown upright. Gloves on: no fingerprints on the window",
        elev=-28, azim=-60)
-    st(4, [cap, part("gasket"), part("window")], [part("retainer", "Retaining ring and six M3 screws", sh=shape("retainer", "ret_screws"), explode=(0, 0, -60))],
-       "retaining ring under the window",
-       "Six M3 countersunk screws, tightened evenly in a cross pattern to about 0.5 N m", elev=-28, azim=-60, label_done=False)
-    st(5, [part("sink")], [part("board", "LED board and three M3 screws", sh=shape("board", "board_screws"), explode=(0, 0, 50))],
-       "LED board onto the heat sink",
-       "Thermal pad under the board; cable out through the ring's slot toward the right", elev=30, azim=-60, label_done=True)
-    lo = [cap, part("gasket"), part("window"), part("retainer", sh=shape("retainer", "ret_screws"))]
-    st(6, lo, [part("sink", "LED head and four M4 screws", sh=shape("sink", "board", "board_screws", "head_screws"), explode=(0, 0, -70))],
+    st(4, [cap, part("gasket"), part("window")], [part("washer", "PTFE washer", explode=(0, 0, -35)),
+                                                   part("retainer", "Retaining ring and six M3 screws", sh=shape("retainer", "ret_screws"), explode=(0, 0, -70)),
+                                                   part("label_cap", "UV-C warning label", explode=(0, -40, 0))],
+       "PTFE washer, retaining ring and cap label",
+       "Washer on the window, ring on the washer, six M3 screws evenly to about 0.5 N m; UV-C label on the front", elev=-28, azim=-60, label_done=False)
+    st(5, [part("sink")], [part("board", "LED board, cable and three M3 screws", sh=shape("board", "board_screws", "led_cable"), explode=(0, 0, 50))],
+       "LED board and its cable onto the heat sink",
+       "Thermal pad under the board; the flat cable out through the ring's slot toward the right", elev=30, azim=-60, label_done=True)
+    lo = [cap, part("gasket"), part("window"), part("washer"), part("retainer", sh=shape("retainer", "ret_screws")), part("label_cap")]
+    st(6, lo, [part("sink", "LED head, cable and four M4 screws", sh=shape("sink", "board", "board_screws", "head_screws", "led_cable"), explode=(0, 0, -70))],
        "LED head onto the lower cap",
        "Four M4 x 16 screws from below, in the fin gaps. Hold point: no light leak at the joint", elev=-25, azim=-60, label_done=False)
-    head = part("sink", sh=shape("sink", "board", "board_screws", "head_screws"))
+    head = part("sink", sh=shape("sink", "board", "board_screws", "head_screws", "led_cable"))
     lo2 = lo + [head]
     lo_ring = win(C["orings"][1], -40, 40, -40, 40, 50, 70)
     hi_ring = win(C["orings"][1], -40, 40, -40, 40, 255, 275)
@@ -599,20 +647,33 @@ def steps(only=None):
        elev=20, azim=-40, label_done=False)
     unit = reactor2 + [part("pd")]
     base = [plate, part("saddles"), part("clamps")]
-    st(12, base, [Part("Reactor assembly", shape("tube", "liner", "cap_lo", "cap_hi", "rods", "sink", "board", "pd", "retainer"), "#7B8794",
+    st(12, base, [Part("Reactor assembly", shape("tube", "liner", "cap_lo", "cap_hi", "rods", "sink", "board", "pd", "retainer", "led_cable", "label_cap"), "#7B8794",
                        None, (0, -120, 0), 1.0)] + [Part("Adaptors", adapt, C["fittings"][3], None, (0, -120, 0), 1.0)],
        "reactor into the pipe clamps",
        "Lift the reactor into the open clamps, boss to the right, fins at least 25 mm above the floor; close the clamps",
        context=[flr()], elev=18, azim=-62, label_done=False)
     mounted = base + [Part("Reactor", shape("tube", "cap_lo", "cap_hi", "rods", "sink", "pd"), "#D1D5DB", None, (0, 0, 0), 1.0),
-                      Part("Adaptors", adapt, "#D1D5DB", None, (0, 0, 0), 1.0)]
-    st(13, mounted, [part("encl", "Enclosure body with controller", sh=shape("encl", "ctrl"), explode=(60, -40, 0))],
+                      Part("Adaptors", adapt, "#D1D5DB", None, (0, 0, 0), 1.0), Part("UV-C label", C["label_cap"][1], "#D1D5DB", None, (0, 0, 0), 1.0)]
+    st(13, mounted + [Part("LED cable", C["led_cable"][1], "#D1D5DB", None, (0, 0, 0), 1.0)],
+       [part("encl", "Enclosure body with controller", sh=shape("encl", "ctrl"), explode=(60, -40, 0)),
+        part("label_prod", "Product label", color="#F59E0B", explode=(60, -40, 0))],
        "enclosure onto the plate",
-       "Four M4 screws from inside into the plate; controller modules already on their bosses", elev=18, azim=-62, label_done=False)
-    st(14, mounted + [part("encl", sh=shape("encl", "ctrl"))], [part("lid", "Enclosure lid", explode=(60, -50, 0))],
-       "wire up, then close the lid",
-       "Wire as the wiring diagram; LED and sensor leads through the gland. Lid with four M3 screws", elev=18, azim=-62, label_done=False)
-    boxed = mounted + [part("encl", sh=shape("encl", "lid", "ctrl"))]
+       "Four M4 screws from inside into the plate; modules on their bosses; product label on the right side", elev=18, azim=-62, label_done=False)
+    encl_done = part("encl", sh=shape("encl", "ctrl", "label_prod"))
+    EZ0 = P["encl"][4]
+    plug = win(C["led_cable"][1], 55, 90, 5, 35, EZ0 - P["led_plug_h"] - 0.1, EZ0 + 0.1)
+    lead = win(C["led_cable"][1], 0, 90, -10, 35, 0, EZ0 - P["led_plug_h"] - 0.1)
+    import numpy as np
+    keep = bv._anchor
+    bv._anchor = lambda v: v[np.argmin(v[:, 2] - 0.01 * v[:, 0])]     # leaders to each part's lowest corner
+    st(14, mounted + [encl_done, Part("LED cable", lead, "#D1D5DB", None, (0, 0, 0), 1.0)],
+       [Part("LED head plug into its socket", plug, "#B45309", None, (0, 0, -20), 1.0),
+        part("lid", "Lid with UV-C label inside", sh=shape("lid", "label_lid"), explode=(60, -50, 0)),
+        part("bar", "UV level bar segments", explode=(60, -50, 0))],
+       "plug in the LED head, wire up, close the lid",
+       "LED head plug into the socket under the enclosure; wire as the wiring diagram; lid with four M3 screws", elev=18, azim=-62, label_done=False)
+    bv._anchor = keep
+    boxed = mounted + [part("encl", sh=shape("encl", "lid", "bar", "ctrl", "label_prod", "led_cable"))]
     st(15, boxed, [part("flow", "Flow sensor", explode=(-60, 0, 0)), part("valve", "Solenoid valve", explode=(-60, 0, 0))],
        "flow sensor and valve onto the stems and saddles",
        "Push each onto its adaptor stem until it stops, arrows pointing up the water path; one cable tie each",
@@ -658,10 +719,10 @@ def wiring():
     RED, BLU, GRY = "#B91C1C", "#1D4ED8", "#6B7280"
     blk(2, 46, 14, 11, "24 V adapter", "certified, 30 W,\non a GFCI or RCD\noutlet", "#4B5563")
     blk(24, 46, 14, 11, "Input fuse", "1.6 A on the\n24 V bus", "#7C3AED")
-    blk(48, 46, 22, 11, "Controller module", "microcontroller; inputs for\nflow, sensor, NTC, lid", "#15803D")
+    blk(48, 46, 22, 11, "Controller module", "microcontroller; inputs for\nflow, sensor, NTC, lid,\nLED head loop", "#15803D")
     blk(24, 24, 16, 12, "LED driver", "350 mA constant\ncurrent, dimming in;\nfed through the\nlid reed switch", "#15803D")
-    blk(48, 24, 22, 12, "Valve and buzzer drivers", "MOSFET for the valve,\nbuzzer, status light", "#15803D")
-    blk(88, 48, 28, 9, "LED head", "6 LEDs in series, NTC on the board;\n4-way plug", "#7C3AED")
+    blk(48, 24, 22, 12, "Valve and display drivers", "MOSFET for the valve,\nbuzzer, five-segment\nUV level bar", "#15803D")
+    blk(88, 48, 28, 9, "LED head", "6 LEDs in series, NTC on the board;\n6-pin plug under the enclosure", "#7C3AED")
     blk(88, 35, 28, 9, "Dose sensor amplifier", "photodiode in the boss;\n3-way: 5 V, 0 V, signal", "#D4A017")
     blk(88, 22, 13, 9, "Flow sensor", "3-way: 5 V,\n0 V, pulse", "#0F766E")
     blk(103, 22, 13, 9, "Valve", "24 V, 0.2 A,\nnormally closed", "#C2410C")
@@ -670,14 +731,15 @@ def wiring():
     wire([(31, 46), (31, 36)], RED); lab(31.6, 41, "24 V via the\nreed switch", RED)
     wire([(48, 48), (44, 48), (44, 30), (40, 30)], GRY, 1.2); lab(44.6, 38, "dim", GRY)
     wire([(59, 46), (59, 36)], GRY, 1.2); lab(59.6, 41, "gate signals", GRY)
-    wire([(70, 54), (88, 54)], GRY, 1.2); lab(79, 55.8, "NTC, 0.25 mm²", GRY, "center")
+    wire([(70, 54.6), (88, 54.6)], GRY, 1.2); wire([(70, 52.4), (88, 52.4)], "#B45309", 1.4)
+    lab(79, 57.6, "NTC, 0.25 mm²", GRY, "center"); lab(79, 51.0, "interlock loop, 0.25 mm²", "#B45309", "center")
     wire([(70, 49.5), (80, 49.5), (80, 39.5), (88, 39.5)], BLU, 1.4); lab(80.6, 44.5, "sensor,\nscreened", BLU)
     wire([(70, 27), (88, 27)], BLU, 1.4); lab(79, 28.8, "pulse, 0.25 mm²", BLU, "center")
     wire([(66, 24), (66, 20), (109.5, 20), (109.5, 22)], RED); lab(76, 21.6, "valve, 0.5 mm²", RED)
     wire([(32, 24), (32, 17), (118, 17), (118, 52.5), (116, 52.5)], RED); lab(52, 15.4, "LED string, 0.5 mm²", RED)
-    ax.text(2, 8.6, "Safety: the LEDs are powered only through the lid reed switch; never run them with the LED head off the cap or the lid open.",
+    ax.text(2, 8.6, "Safety: the LEDs run only with the lid reed switch closed and the LED head's loop complete; unplugging the head stops them.",
             fontsize=7.6, color="#B45309", fontweight="bold")
-    ax.text(2, 5.4, "Red: power. Blue: signal. Grey: sensing and control. Everything at the unit is 24 V DC or less; "
+    ax.text(2, 5.4, "Red: power. Blue: signal. Grey: sensing and control. Amber: interlock loop, two cores in the LED head cable joined on the LED board. 24 V DC or less; "
             "mains stays in the certified adapter.", fontsize=7.2, color=MUT)
     out = OUT / "wiring.png"
     OUT.mkdir(parents=True, exist_ok=True)
@@ -688,7 +750,7 @@ def wiring():
 if __name__ == "__main__":
     args = sys.argv[1:] or ["overview", "sheets", "layouts", "joints", "steps", "wiring"]
     fns = {"overview": overview, "sheets": sheets, "layouts": layouts, "joints": joints, "steps": steps, "wiring": wiring}
-    if args[0] in ("sheets", "steps") and len(args) > 1:
+    if args[0] in ("sheets", "steps", "joints") and len(args) > 1:
         print(fns[args[0]](only=args[1:]))
     else:
         for w in args:

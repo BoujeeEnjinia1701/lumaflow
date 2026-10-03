@@ -288,11 +288,6 @@ Run under kit 1.7.0 `/build-plan` with Amish's instructions of 2026-09-30 ("fix 
 
 All listed in `docs/06-design-decisions.md`. New this session: accept LMF-DDR-003 (recommendation: accept); how the LEDs are stopped when the LED head is off (recommendation: a loop wire in the head's plug); what the window bears on (recommendation: lapped stainless ring for the first prototype). Carried over: O1 partner (no recommendation), the five appearance-model items of 2026-09-26, and the idle LED pulse question.
 
-### Stale, to regenerate on Amish's Mac
-
-- `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png` and `media/social-preview.png` still show the concept: closed bracket rings and shelf, a 30 mm upper cap, the clamp-on sensor saddle, and the enclosure further forward. The design changed visibly, so they are stale.
-- `cad/src/product_model.py` (the appearance model) still builds the concept bracket, caps and saddle from its own geometry, and with the new 80 mm stud circle it now stops with a geometry error (a fillet on the cap); it needs updating to the constructable design before the renders are redone.
-
 ### Safety concerns
 
 - UV-C: the build plan holds LED power until the reactor is closed, the lid switch is proven and everyone nearby wears UV-C eyewear; the LED head interlock is still an open decision.
@@ -352,3 +347,81 @@ Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." 
 - The value-engineering note offers a plain PTFE liner as a saving, but it drops the dose to 46.3 mJ/cm2 and puts R2 at risk, so it is not a like-for-like saving.
 - Cost is $402 against the $340 target, $62 (18 percent) over, and the labels line (item 9) adds a few dollars more.
 - The 2026-09-26 review note says the budget margin is only $2.00; that predates the constructable design and is now out of date.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish, 2026-10-02: "497 follow-up actions that need CAD, drawing, picture, BOM or calculation work ... APPROVED CHANGES, COMPLETE THESE", and for renders "Photoreal renders are out of date in most repos ... COMPLETE THESE". This cloud copy has no git, so nothing was committed or pushed. TRL cap respected: no firmware, PCB, test plan or build log.
+
+### Follow-ups and what was done
+
+1. **Decision 2, LED head interlock: done.** `cad/src/model.py` has the LED head cable (a flat run through the spreader ring slot, then a 6-core round cable about 95 mm from the board to a 6-pin plug in a 12 mm socket in the enclosure floor; two cores are the interlock loop). New checks: the cable covers its 89.8 mm route with 5.2 mm slack, and it is 39 mm short of letting the head slide clear of the cap while plugged in. Build plan sections 3.6, 3.12 and 3.12.1 (wiring, Table 2), steps 5, 6 and 14, Figure 24 (new joint-08), the wiring diagram, and a new first check "LED head interlock" (R12). Safety box and stop S3 now say "plugged in".
+2. **Decision 3, PTFE window washer in the model and plan: done.** A 0.5 mm PTFE washer (57 x 51 mm) sits between the retaining ring and the window; the LED gap is 1.3 mm (was 0.8); the pocket shoulder moved to 13.5 mm; the inlet stays 19 mm up the cap. Build plan section 3.5 (no lapping for metal to glass), step 4, Figure 10 (joint-01), making sketches LMF-DWG-103 and 104 (Rev P2), cap-sections picture.
+3. **Decision 3, optics and window stress re-run: done.** LMF-CAL-001 v0.6, section B: RED at 90 %/cm 50.9 (laminar) to 74.9 (plug) mJ/cm² (was 51.9 to 76.3), 84.8 % of the LED output enters the water (was 87.0 %), the flow limit for the 20 % margin is 1.26 L/min (was 1.30). Window stress unchanged at 6.18 MPa: the washer's bore equals the ring's 51 mm.
+4. **Decision 3, BOM line 17: done.** PTFE washer added, line 17 now USD 14.
+5. **Decision 4, approach the Texas A&M AgriLife Extension Texas Well Owner Network: not done.** Contacting an outside organisation is Amish's action; nothing has been sent and nothing is agreed. LMF-PRB-001 v0.8 says so. Draft first message for Amish to send if he wishes:
+
+   > Subject: UV transmittance data for private well water, open-source UV-C LED disinfection prototype
+   >
+   > I run an open-source hardware project, LumaFlow, a paper-stage design for an under-sink UV-C LED reactor for private well owners. Its dose depends on the water's UV transmittance at about 275 nm, which we have only as published ranges. Would the Texas Well Owner Network be open to sharing anonymised UVT, iron, manganese and turbidity results from household well samples, or to measuring UVT on a small set of samples at a later stage? The design is a research and educational prototype, not a certified water treatment device. The documents are open at github.com/BoujeeEnjinia1701/lumaflow. Amish Chadha
+
+6. **Decision 5, five-segment bar and R18: done.** The single light pipe in the lid is replaced by five 6 x 8 mm segments (model, BOM line 13 now USD 9, LMF-DWG-111 Rev P2, Figure 22 (new joint-09), step 14, wiring diagram). `docs/04-calcs/sizing.py` new C6: segments light at 1.0, 1.1, 1.2, 1.3 and 1.5 times the alarm signal; three of five lit at 90 %/cm with rated LEDs; the last goes out where the alarm trips (88.7 %/cm). R18 added to section K.
+7. **Decision 8, hero with the cord entering the cabinet wall: scene prepared.** `cad/src/product_model.py` routes the DC cord from the gland down under the bracket plate into the cabinet wall through a grommet; the adapter is in the accessory group (exploded view only) and stays in the model and BOM. The photoreal render itself is made on Amish's Mac.
+8. **Decision 9, labels: done.** New BOM line 19 (USD 5): UV-C warning labels on the lower cap front and inside the lid, and the product label on the enclosure's right side. All three are in the model (with contact checks) and shown in the overview, step 4, step 13, Figure 22 and LMF-DWG-111; text in build plan section 3.13.
+9. **Decision 10, idle pulse: calculation part done; firmware part not done.** E6: about 59 s a day, 6.0 h a year of LED time, 0.28 Wh a day; E4: LED on-time 92 h a year, 10,000 h in 108 years (was 116); F7: a pulse warms the still head by 0.16 K. The firmware notes are TRL 4 work and wait for the cap to lift.
+
+### Requirement status changes (LMF-CAL-001 v0.6, LMF-REQ-001 v0.8)
+
+- R18: Not verifiable at TRL 3 to **Met** (by design, C6).
+- R12: Met, now shown in the model and the build plan (was "not yet in the model or build plan").
+- R2 still met (50.9 mJ/cm², 27 % margin, was 30 %); R3 still not met (17.0 to 21.3); R4 still at risk (wall signal 13.4 nA at 90 %/cm, 0.19 nA at 70 %/cm; the sub-nanoampere figure moves between runs); R10 still met (37.3 to 45.1 °C).
+- R16: over the value-engineering target by USD 76 (was 62).
+- Counts: 14 met, 1 not met (R3), 1 at risk (R4), 1 not verifiable (R15), R16 over target.
+- R15's target names a status LED; run, fault and service due are now shown on the UV level bar.
+
+### Cost and mass
+
+Value-engineering target: USD 340. Estimated cost of the constructable design: USD 416 (USD 76 over the target). Added on 2026-10-02: washer USD 2, LED head plug, socket and cable USD 4, UV level bar USD 3, labels USD 5; each with a catalogue basis in `bom/bom.csv`. Mass (new, H2): 4.97 kg dry, 5.44 kg full of water, adapter about 0.2 kg extra.
+
+### Documents changed and new versions
+
+- `cad/src/model.py` (500 constructability checks, all pass; was 324), STEP and STL in `cad/step/` and `cad/stl/`
+- `bom/bom.csv` (19 lines), `bom/bom-notes.md`
+- `docs/04-calcs/sizing.py` and `docs/04-calcs/01-sizing.md`: LMF-CAL-001 v0.6
+- `docs/03-requirements.md`: LMF-REQ-001 v0.8
+- `docs/02-concept.md`: LMF-PRC-001 v0.8
+- `docs/01-problem.md`: LMF-PRB-001 v0.8
+- `docs/06-design-decisions.md`: LMF-DEC-001 v0.3 (value engineering repriced; To confirm item 9 added)
+- `docs/05-build-plan.md`: LMF-BLD-001 v0.2 (25 components, Table 1 rows for the interlock, bar and labels, new first checks for R12 and R18)
+- `cad/src/sheets.py`: LMF-DWG-001 Rev P5; making sketches LMF-DWG-103, 104, 105 and 111 Rev P2 (the others stay P1)
+- `cad/src/concept_media.py`: concept sheet LMF-DWG-010 Rev P5 and all concept media
+- `cad/src/build_plan_media.py`: overview, cap sections, joints 1 to 9 (8 and 9 new), steps 1 to 16, wiring, sketches 101 to 111
+- `cad/src/product_model.py`: rebuilt on the constructable design
+- `README.md`
+
+### Appearance model (`cad/src/product_model.py`), proposed, awaiting Amish
+
+Rebuilt from the model's own solids: the welded sensor boss and holder, the bracket plate, saddles and pipe clamps, the 40 mm upper cap, the LED head cable and plug, the lid with the five-segment bar (four segments lit) and the labels. Appearance-only additions: domed tops on the acorn nuts, a printed UV-C symbol on the cap label, a "LumaFlow" wordmark and accent band on the product label, filleted flow switch and valve bodies, lid screw heads, sensor and valve leads, and the DC cord into the wall. The old concept bracket, saddle and status light are gone.
+
+### Cross-repo actions
+
+None.
+
+### Safety concerns
+
+- The LED head interlock now exists in the design, but the cable-length guard depends on the cable being made to 95 mm; a longer replacement cable would defeat it. The build plan says to keep the length.
+- The window stress margin stays 9 % at 8 bar; the PTFE washer removes metal-to-glass contact.
+- LumaFlow stays a research and educational prototype, not a certified water treatment device.
+
+### Recommended next step
+
+Amish renders the hero, exploded and detail views on his Mac from the exported scenes and regenerates the card and social preview. TRL 4 stays on hold.
+
+## Session 2026-10-02: Photoreal renders redone on the constructable design
+
+Amish, 2026-10-02: "Photoreal renders are out of date in most repos ... COMPLETE THESE". Rendered with Blender Cycles on Amish's Mac (batch F1) from the scenes exported from `cad/src/product_model.py`, captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Each raw render was looked at once. No commit or push; `trl` unchanged.
+
+- Views: `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`.
+- Re-renders: none.
+- Appearance deviations already logged (session "Approved follow-ups carried out", Proposed, awaiting Amish): domed acorn nut tops, printed UV-C symbol on the cap label, "LumaFlow" wordmark and accent band on the product label, filleted flow switch and valve bodies, lid screw heads, sensor and valve leads, and the DC cord into the cabinet wall. Unchanged.
+- `python3 .kit/image_qc.py`: 5 images, 0 problems. `python3 .kit/render.py --check`: no FAIL, no storefront warning.
+- The "Stale, to regenerate on Amish's Mac" note of the 2026-10-01 session is removed; this work resolves it.
