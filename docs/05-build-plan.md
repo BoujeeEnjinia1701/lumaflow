@@ -3,9 +3,9 @@ doc_id: LMF-BLD-001
 title: LumaFlow prototype build plan
 project: LumaFlow
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: "Decisions of 2026-10-02 carried in: PTFE window washer, LED head cable and plug with interlock loop, five-segment UV level bar, labels; first checks for the interlock and the bar; pictures regenerated"
+  - version: "0.3"
+    date: '2026-10-25'
+    author: Amish Chadha
+    change: "Kit 1.9.1: STEM fixes under Amish's standing instruction (LMF-DEC-001 D-S1, D-S2): window gasket and sensor washer in expanded PTFE, retaining ring screws at 0.3 N m; pictures regenerated from the detailed model; after the independent review: ring screws in anti-seize at 0.21 N m (D-S2 revised), outlet pressure sensor and tee (line 20, D-S3), start-up check"
 ---
 
 # LumaFlow prototype build plan
@@ -29,19 +33,19 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is one LumaFlow unit hung on a plate under a kitchen sink: a stainless tube, lined with white PTFE, standing upright between two round end caps, with six UV-C LEDs on a finned heat sink under a quartz window at the bottom, a light sensor in the tube wall, a flow sensor on the way in, a shutoff valve on the way out and a small printed box for the electronics. Water flows up the tube while the LEDs shine up it. Figure 1 shows the 25 components in the order you make or fit them. Eleven are made: the bracket plate, two printed saddles, the stainless lower end cap, the window retaining ring, the drilled heat sink and its spreader ring, four tie rod studs, the tube with its welded sensor boss, the PTFE liner, the acetal upper end cap, the photodiode holder and the printed enclosure. The two caps, the tube boss and the holder need a machine shop with a lathe, a mill and a TIG welder; the rest is sawing, drilling, tapping and 3D printing. Everything else is bought: the window, the PTFE window washer, LEDs, the LED head cable and plug, seals, labels, pipe clamps, push-fit fittings, flow sensor, valve, controller modules and the 24 V adapter. The parts cost about $416 from the bill of materials.
+The prototype is one LumaFlow unit hung on a plate under a kitchen sink: a stainless tube, lined with white PTFE, standing upright between two round end caps, with six UV-C LEDs on a finned heat sink under a quartz window at the bottom, a light sensor in the tube wall, a flow sensor on the way in, a shutoff valve on the way out and a small printed box for the electronics. Water flows up the tube while the LEDs shine up it. Figure 1 shows the 26 components in the order you make or fit them. Eleven are made: the bracket plate, two printed saddles, the stainless lower end cap, the window retaining ring, the drilled heat sink and its spreader ring, four tie rod studs, the tube with its welded sensor boss, the PTFE liner, the acetal upper end cap, the photodiode holder and the printed enclosure. The two caps, the tube boss and the holder need a machine shop with a lathe, a mill and a TIG welder; the rest is sawing, drilling, tapping and 3D printing. Everything else is bought: the window, the PTFE window washer, LEDs, the LED head cable and plug, seals, labels, pipe clamps, push-fit fittings, flow sensor, valve, controller modules, the outlet pressure sensor and the 24 V adapter. The parts cost about $433 from the bill of materials.
 
 > **Safety:** LumaFlow makes UV-C light, which burns the eyes and skin within seconds to minutes and cannot be seen. Never power the LEDs unless the LED head is on the cap and plugged in, the reactor is closed and the enclosure lid is shut, and wear UV-C blocking eyewear and cover your skin for any bench work with the LEDs. The reactor holds mains water pressure next to electronics: leak test it before any wiring is connected (section 6). Only the certified adapter sees mains voltage; it plugs into a GFCI or RCD-protected outlet. LumaFlow is a research and educational prototype, not a certified water treatment device; do not drink water from it or rely on it as a barrier.
 
 ## 2. What changed to make it buildable
 
-The concept showed what the reactor does; some of its parts could not be fitted, fixed, sealed or made as drawn. Each change below keeps what the reactor does (the same water column, LEDs, window, sensor position, flow and size), and all of them are recorded in decision record LMF-DDR-003, which Amish accepted on 2026-10-02 with the window seat changed to a PTFE washer. The last three rows were decided by Amish on 2026-10-02.
+The concept showed what the reactor does; some of its parts could not be fitted, fixed, sealed or made as drawn. Each change below keeps what the reactor does (the same water column, LEDs, window, sensor position, flow and size), and all of them are recorded in decision record LMF-DDR-003, which Amish accepted on 2026-10-02 with the window seat changed to a PTFE washer. Three rows were decided by Amish on 2026-10-02; the last two were found by the STEM check of 2026-10-25 and fixed under his standing instruction of 2026-10-23 (LMF-DEC-001).
 
 *Table 1. Changes from the concept.*
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
-| Quartz window | Trapped in a pocket narrower above and below than the window; no seal | Pocket open from below; the window goes in from below onto a rubber gasket and is held, on a thin PTFE washer, by a stainless ring with six screws (Figure 10) | It can be fitted and taken out, it seals, and the quartz never bears on bare metal |
+| Quartz window | Trapped in a pocket narrower above and below than the window; no seal | Pocket open from below; the window goes in from below onto a PTFE gasket and is held, on a thin PTFE washer, by a stainless ring with six screws (Figure 10) | It can be fitted and taken out, it seals, and the quartz never bears on bare metal |
 | Tie rods | Ending on top of the heat sink with nothing to hold them | Studs screwed into the stainless lower cap, nuts on the upper cap (Figures 15 and 18) | The rods hold the caps together on their own |
 | LED head | No fixing; no way out for the LED cable | Four screws from below between the fins into the lower cap; a slot for the cable (Figure 12) | The head comes off for service without opening the water side |
 | Tube ends | Butted on flat cap faces, no seal or location | Each end sits 2 mm into a seat on a rubber O-ring; a spigot locates the lower end (Figure 15) | Sealed and located at both ends |
@@ -54,6 +58,8 @@ The concept showed what the reactor does; some of its parts could not be fitted,
 | LED head interlock | Named but not shown | A short cable from the LED head to a plug under the enclosure; two of its wires form a loop that the controller watches (Figure 24) | Unplugging the head stops the LEDs, and the cable is too short for the head to come off while plugged in |
 | Status display | One status light in the lid | A five-segment UV level bar in the lid (Figure 22) | Shows the UV level against the alarm point at a glance; it is not a dose reading |
 | Labels | None | UV-C warning labels on the lower cap and inside the lid; a product label on the enclosure side | Warn anyone who opens the unit, and name it |
+| Window gasket and sensor washer | Rubber (EPDM) | Expanded PTFE sheet of the same size | Light refracted outward in the window reaches the gasket (about 4 % of the LED output); UV-C breaks rubber down, PTFE does not |
+| Retaining ring screws | Tightened to about 0.5 N·m, dry | Threads in anti-seize, tightened to 0.21 N·m with a torque screwdriver; ring in 316 (not 316L) | At 0.5 N·m the 2 mm ring bends to about its proof stress, and dry stainless threads scatter the clamping force too widely; with anti-seize 0.21 N·m keeps the ring below two thirds of proof and still seats the gasket at 8 bar |
 
 ## 3. Making the components
 
@@ -154,7 +160,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 9. Retaining ring making sketch (LMF-DWG-104).*
 
-**What it is and what it is made from.** A flat stainless ring that holds the quartz window up against its gasket. 316 stainless sheet 2 mm, laser cut, 72 across outside and 51 across inside. The window (bought) is UV-grade fused silica, 57 across and 10 thick, both faces polished; the gasket (bought or cut) is food-grade EPDM, 57 across outside, 50 inside, 1 thick; the washer (cut) is food-grade PTFE sheet, 57 across outside, 51 inside, 0.5 thick.
+**What it is and what it is made from.** A flat stainless ring that holds the quartz window up against its gasket. 316 stainless sheet 2 mm, laser cut, 72 across outside and 51 across inside. The window (bought) is UV-grade fused silica, 57 across and 10 thick, both faces polished; the gasket (bought or cut) is food-contact expanded PTFE sheet, 57 across outside, 50 inside, 1 thick (not rubber: its inner edge and the ring of quartz it sits on carry UV-C); the washer (cut) is food-grade PTFE sheet, 57 across outside, 51 inside, 0.5 thick.
 
 **How to make it.**
 
@@ -169,7 +175,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 10. Cut through the centre: gasket above the window, PTFE washer and ring below it, LEDs 1.3 mm under the window. Water pressure pushes the window down onto the washer and the ring.*
 
-With the cap upside down, the gasket goes into the pocket against the shoulder, then the window, then the washer, then the ring, flush with the cap's bottom face. Six M3 x 8 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. The ring's 51 mm opening, and the washer's, is the window's free span used in the stress calculation: do not open either out.
+With the cap upside down, the gasket goes into the pocket against the shoulder, then the window, then the washer, then the ring, flush with the cap's bottom face. Six M3 x 8 countersunk A4 screws, threads lightly coated with anti-seize, tightened evenly in a cross pattern to 0.21 N·m with a torque screwdriver (no more: at 0.5 N·m the 2 mm ring bends close to its proof stress and the PTFE washer creeps). The ring's 51 mm opening, and the washer's, is the window's free span used in the stress calculation: do not open either out.
 
 **Check before moving on.** The ring is flat within 0.1 mm across a straight edge; the window sits evenly on the washer with no gap you can see against a light.
 
@@ -295,7 +301,7 @@ The tube's top end sits in the seat on the second O-ring; the liner's turned top
 
 *Figure 19. Photodiode holder making sketch (LMF-DWG-110).*
 
-**What it is and what it is made from.** The dose sensor that looks into the water through the tube wall. A quartz window 10 across and 3 thick (bought), a 0.5 mm EPDM washer, a holder turned from 316 bar, a bought UV-C photodiode in a small metal can, and a bought amplifier.
+**What it is and what it is made from.** The dose sensor that looks into the water through the tube wall. A quartz window 10 across and 3 thick (bought), a 0.5 mm expanded PTFE washer (UV-C reaches it through the window), a holder turned from 316 bar, a bought UV-C photodiode in a small metal can, and a bought amplifier.
 
 **How to make it.**
 
@@ -394,10 +400,11 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 
 *Figure 25. The stem adaptor screws into the lower cap's boss; its stem pushes into the flow sensor's port; the saddle and a cable tie steady the sensor. The outlet and valve are the same at the top.*
 
-- **Seals and window washer (line 17).** Food-grade EPDM: the window gasket (section 3.5) and two O-rings about 61 inside diameter, 1.78 section. Food-grade PTFE sheet 0.5 mm for the window washer.
+- **Seals and window washer (line 17).** Food-contact expanded PTFE sheet 1 mm for the window gasket (section 3.5). Food-grade EPDM for two O-rings about 61 inside diameter, 1.78 section, which sit out of the light. Food-grade PTFE sheet 0.5 mm for the window washer.
 - **Labels (line 19).** Two UV-C warning labels with the optical radiation warning sign and the words "UV-C: do not look into the reactor; disconnect power before removing the LED head"; one product label with the name, the 24 V DC rating and "research and educational prototype, not a certified water treatment device".
 - **Pipe clamps (line 18).** As section 3.3.
 - **Fixings (line 16).** Stainless: four M5 acorn nuts and washers; six M3 x 8 countersunk; four M4 x 16 socket head; three M3 x 10 low head; four M4 x 10 pan head; four M4 x 10 countersunk; two M8 x 20 studs; four wall screws; food-grade silicone grease, thermal pads and paste, medium threadlocker, cable ties.
+- **Outlet pressure sensor and tee (line 20).** A 0 to 10 bar pressure sensor with a 5 V output and stainless wetted parts, threaded into a 3/8 in push-fit tee, pointing down. It goes in the line from the valve to the faucet, about 20 mm from the valve's outlet stem. It is what starts the unit: with the valve shut in standby, opening the faucet drops the pressure in this short line.
 
 ## 4. Putting it together
 
@@ -425,7 +432,7 @@ Stand the cap upside down on a clean cloth (the picture shows it upright, seen f
 
 ![Step 4](05-build-plan/step-04.png)
 
-The PTFE washer on the window, then the ring on the washer. Six M3 countersunk screws, tightened evenly in a cross pattern to about 0.5 N·m. Do not overtighten: quartz cracks under uneven load. Wipe the front of the cap clean and stick on the UV-C warning label, centred on the front of the cap.
+The PTFE washer on the window, then the ring on the washer. Six M3 countersunk screws, threads in anti-seize, tightened evenly in a cross pattern to 0.21 N·m. Do not overtighten: quartz cracks under uneven load. Wipe the front of the cap clean and stick on the UV-C warning label, centred on the front of the cap.
 
 ### Step 5: LED board and its cable onto the heat sink
 
@@ -493,24 +500,26 @@ Push the LED head's plug up into its socket under the enclosure and screw its co
 
 Push each onto its adaptor's stem until it stops, flow arrows pointing up the water path (into the reactor at the bottom, out at the top). One cable tie through each saddle.
 
-### Step 16: water lines and the 24 V adapter
+### Step 16: water lines, outlet pressure sensor and the 24 V adapter
 
 ![Step 16](05-build-plan/step-16.png)
 
-Supply line from the cold-line tee, after the sediment pre-filter and the pressure-limiting valve set at 4 bar or less, into the flow sensor; outlet line from the valve to the faucet, with the 1.2 L/min restrictor. Adapter on the cabinet floor, plugged into a GFCI or RCD-protected outlet above any likely water level. **Hold point:** safety stops S4 and S5.
+Supply line from the cold-line tee, after the sediment pre-filter and the pressure-limiting valve set at 4 bar or less, into the flow sensor; outlet line from the valve to the faucet through the pressure sensor tee (sensor pointing down, its lead to the enclosure gland), with the 1.2 L/min restrictor after the tee. Adapter on the cabinet floor, plugged into a GFCI or RCD-protected outlet above any likely water level. **Hold point:** safety stops S4 and S5.
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of LMF-REQ-001.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of LMF-REQ-001 (R); the same requirements are PR-001 to PR-018 in LMF-PRS-001, which replaced it on 2026-10-25.
 
 *Table 3. First checks.*
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
 | Pressure and leaks | R7, R17 | Reactor alone, ports plugged except one, filled with water and pressed to 8 bar with a hand pump for 10 minutes, LEDs unpowered | No drop on the gauge and no water at the window, tube ends or sensor boss |
+| Window stack after the first fill | R7, R11 | 24 hours after the pressure test, drain, check the six ring screws with the torque screwdriver at 0.21 N·m and look at the PTFE washer and expanded PTFE gasket through the window | Screws still at 0.21 N·m (the PTFE has not crept), no weeping at the window, no marks on the quartz |
 | Flow | R1 | Measure the time to fill a 1 L jug at the faucet | 1.2 L/min, give or take 10 % (about 50 s) |
 | Pressure drop | R8 | Gauges before the flow sensor and after the valve, restrictor out of the line | 0.5 bar or less at 1.2 L/min |
 | Switch on and run-on | R5 | Open the faucet slowly; watch the UV level bar and time it | LEDs on within 0.5 s of flow above 0.3 L/min; off 5 s after flow stops |
+| Start-up | R5 | Faucet shut, unit in standby with the line under pressure; open the faucet | The UV level bar lights and water flows within 0.5 s; with the flow sensor unplugged, the valve shuts again within 0.5 s and the buzzer sounds |
 | Valve fails closed | R4 | Unplug the adapter with the faucet open | Flow stops at once |
 | Lid interlock | R12 | Lift the lid with water flowing | LED driver input goes dead; valve closes; buzzer sounds |
 | LED head interlock | R12 | Eyewear on. With water flowing and the LEDs on, pull the LED head's plug from its socket. Then, with the plug back in, the water off and the adapter unplugged, take out the four head screws and try to slide the head clear of the cap | Removing the plug stops the LEDs at once, the valve closes and the buzzer sounds; the cable stops the head before it is clear of the cap |
@@ -526,7 +535,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 
 Stop at each point. Carry on only when everything listed is true.
 
-- **S1. Before any part goes on the water.** Every wetted part is food-contact grade: 316 stainless, PTFE, fused quartz, EPDM, acetal. No printed plastic touches the water. Parts cleaned with mild detergent and rinsed.
+- **S1. Before any part goes on the water.** Every wetted part is food-contact grade: 316 stainless, PTFE and expanded PTFE, fused quartz, EPDM (O-rings only, out of the light), acetal. No printed plastic touches the water. Parts cleaned with mild detergent and rinsed.
 - **S2. Before anything electrical is connected.** The reactor passes the 8 bar leak test of section 5, with nothing electrical within reach of a spray. The window shows no chip or crack under a bright lamp.
 - **S3. Before the LEDs are first powered.** The reactor is closed: LED head on and plugged in, both caps and the sensor holder in. The enclosure lid is shut and the lid switch tested open and closed with a meter. Everyone nearby wears UV-C blocking eyewear; no one looks at the window, boss or ports. Water is flowing, so the LEDs are cooled.
 - **S4. Before mains is involved.** Only the certified adapter plugs into the mains, into a GFCI or RCD-protected outlet above any likely water level; no mains wiring is part of this build.
@@ -535,7 +544,7 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 7. Tools, skills and workspace
 
-**Tools.** Hacksaw or bandsaw; bench vice with soft jaws; bench drill; drills 2.5 to 12 mm; countersink; M3, M4 and M8 taps and tap wrench; files and a deburring tool; scriber, square, steel rule and calipers; straight edge and fine abrasive paper on a sheet of glass; 3D printer that prints PETG; soldering iron for heat-set inserts and wiring; ferrule crimper and wire strippers; multimeter; long-reach 3 mm hex key; spanners for the stem adaptors and the holder; torque screwdriver covering about 0.5 to 2 N·m; hand pressure pump with a gauge to 10 bar and blanking plugs; plug-in power meter; UV-C indicator cards. The two end caps, the tube boss and weld, and the photodiode holder go to a machine shop.
+**Tools.** Hacksaw or bandsaw; bench vice with soft jaws; bench drill; drills 2.5 to 12 mm; countersink; M3, M4 and M8 taps and tap wrench; files and a deburring tool; scriber, square, steel rule and calipers; straight edge and fine abrasive paper on a sheet of glass; 3D printer that prints PETG; soldering iron for heat-set inserts and wiring; ferrule crimper and wire strippers; multimeter; long-reach 3 mm hex key; spanners for the stem adaptors and the holder; torque screwdriver covering about 0.3 to 2 N·m; hand pressure pump with a gauge to 10 bar and blanking plugs; plug-in power meter; UV-C indicator cards. The two end caps, the tube boss and weld, and the photodiode holder go to a machine shop.
 
 **Skills.** No certified trade is needed for the work in this plan. Basic metalwork (marking out, drilling, tapping), 3D printing, push-fit plumbing, through-hole soldering and crimping. TIG welding of the sensor boss and lathe work on the caps are done by the machine shop. All circuits at the unit are 24 V DC or less; mains stays inside the certified adapter.
 
@@ -547,7 +556,7 @@ Stop at each point. Carry on only when everything listed is true.
 
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 500 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/LMF-DWG-101` to `LMF-DWG-111`.
-- General arrangement: `cad/drawings/LMF-DWG-001.pdf`, Rev P5.
+- General arrangement: `cad/drawings/LMF-DWG-001.pdf`, Rev P6.
 - Calculations: `docs/04-calcs/01-sizing.md` (LMF-CAL-001 v0.6) and `docs/04-calcs/sizing.py`; window stress [G4], end load [G7], upper cap roof [G8], thermal [F1] to [F3], size and mass [H1, H2], cost [I1], UV level bar [C6]; LED head cable length from the model's interlock check.
 - Bill of materials: `bom/bom.csv` and `bom/bom-notes.md`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (LMF-DDR-003), with LMF-DDR-001 and LMF-DDR-002; the register `docs/06-design-decisions.md` (LMF-DEC-001).

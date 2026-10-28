@@ -86,6 +86,7 @@ ORDER = [
     ("lid", "Lid, UV level bar, UV-C label", (90, -90, 0)),
     ("flow", "Flow sensor", (-90, 0, 0)),
     ("valve", "Solenoid valve", (-90, 0, 0)),
+    ("psensor", "Outlet pressure sensor and tee", (-150, 0, 40)),
     ("adapter", "24 V adapter", (60, 0, 0)),
 ]
 
@@ -680,9 +681,10 @@ def steps(only=None):
        elev=18, azim=-118, label_done=False)
     lines = win(fit, -200, -105, -15, 15, 0, 400)
     st(16, boxed + [part("flow"), part("valve")],
-       [Part("Supply and outlet lines", lines, C["fittings"][3], None, (-60, 0, 0), 1.0), part("adapter", "24 V adapter", explode=(60, 0, 0))],
-       "water lines and the 24 V adapter",
-       "Supply from the cold-line tee (after the pre-filter and pressure limiter); outlet to the faucet; adapter on the floor",
+       [Part("Supply and outlet lines", lines, C["fittings"][3], None, (-60, 0, 0), 1.0),
+        part("psensor", "Outlet pressure sensor and tee", explode=(-60, 0, 0)), part("adapter", "24 V adapter", explode=(60, 0, 0))],
+       "water lines, outlet pressure sensor and the 24 V adapter",
+       "Supply from the cold-line tee (after the pre-filter and pressure limiter); outlet through the sensor tee to the faucet; adapter on the floor",
        context=[flr()], elev=18, azim=-62, label_done=False)
     return out
 

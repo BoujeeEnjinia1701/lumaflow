@@ -1,9 +1,9 @@
-"""LumaFlow concept media (TRL 3, design revised by LMF-DDR-002, made constructable by LMF-DDR-003, decisions of 2026-10-02 carried in), built from the parametric model in cad/src/model.py.
+"""LumaFlow concept media (TRL 3, design revised by LMF-DDR-002, made constructable by LMF-DDR-003, decisions of 2026-10-02 carried in, kit 1.9 detailed model of 2026-10-25), built from the parametric model in cad/src/model.py.
 
 Run from the repo root:  python cad/src/concept_media.py
 Writes media/hero.png, cutaway.png, exploded.png, flow.png, concept-blueprint.*, model.glb and viewer.html
 with .kit/concept.py. Figures are those printed by docs/04-calcs/sizing.py (LMF-CAL-001); tags in brackets.
-Massing-plus model; not for fabrication.
+Detailed (D3) model, option A; not for fabrication.
 """
 import sys
 from pathlib import Path
@@ -29,13 +29,13 @@ context = [Part("1 L water bottle", bottle, "#C8CDD3")]
 
 if __name__ == "__main__":
     render_all(
-        parts, project="LumaFlow", title="Inline UV-C LED reactor concept", dwg_no="LMF-DWG-010", rev="P5",
-        date="2026-10-02",
+        parts, project="LumaFlow", title="Inline UV-C LED reactor concept", dwg_no="LMF-DWG-010", rev="P6",
+        date="2026-10-25",
         key_figures=["1.2 L/min (0.32 gpm), 50 mm bore x 242 mm channel",
                      "6 x 275 nm LEDs, 0.36 W UV-C; 53 % absorbed by water",
                      "RED 51 to 75 mJ/cm² at 90 % UVT: R2 (40) met",
                      "22.6 W while flowing, 0.21 W standby (estimates)",
-                     "$416 estimated; value-engineering target $340"],
+                     "$433 estimated; value-engineering target $340"],
         scale_figure=False, context=context,
         cut_exclude=("Bracket plate", "Sensor and valve saddles", "Pipe clamps", "24 V power adapter"),
         flow={"title": "power flow while water runs at 1.2 L/min (estimates from LMF-CAL-001 v0.6, W)", "unit": "W",

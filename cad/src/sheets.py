@@ -62,15 +62,16 @@ def main():
     asm = build(include_adapter=False)
     views = project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P5",
-              author="Amish Chadha", date="2026-10-02", scale=None, theme="technical",
+    s = Sheet(project="LumaFlow", title="General arrangement", dwg_no="LMF-DWG-001", rev="P6",
+              author="Amish Chadha", date="2026-10-25", scale=None, theme="technical",
               material="316 tube and lower cap, high-reflectance PTFE liner, fused silica window, acetal upper cap; see bom/bom.csv. "
                        "PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
                          ("P2", "50 mm bore, wall dose sensor, M5 rods (LMF-DDR-002)", DATE, "AC"),
                          ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
                          ("P4", "Design for construction (LMF-DDR-003)", "2026-10-01", "AC"),
-                         ("P5", "PTFE window washer, LED head plug, UV level bar, labels", "2026-10-02", "AC")])
+                         ("P5", "PTFE window washer, LED head plug, UV level bar, labels", "2026-10-02", "AC"),
+                         ("P6", "Kit 1.9 detailed model; ePTFE window gasket (LMF-DEC-001 D-S1)", "2026-10-25", "AC")])
     s.add_ortho(views)
     k = s.scale
     c = ortho_cells(s, views)
@@ -107,7 +108,7 @@ def main():
         "Ports 1/4 BSPP with push-fit stem adaptors; 316 outlet sleeve",
         f"Heat sink {P['sink_w']:.0f} x {P['sink_w']:.0f} x {P['fin_h'] + P['sink_base']:.0f}, fins down",
         "Working pressure 8 bar; limiter at 4 bar upstream; flow up",
-        "Window from below on a 0.5 PTFE washer and 316 ring; tube ends on face O-rings",
+        "Window from below on a 0.5 PTFE washer and 316 ring (M3 at 0.3 N m); ePTFE gasket",
         "LED head plug with interlock loop under the enclosure; 5-segment UV level bar in the lid",
         "Third-angle; front view from -Y, right view from +X",
     ], x=276, y=150, width=140)

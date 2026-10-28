@@ -1,6 +1,6 @@
 # LumaFlow
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352085.svg)](https://zenodo.org/badge/latestdoi/1386352085) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/lumaflow/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/lumaflow)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352085.svg)](https://zenodo.org/badge/latestdoi/1386352085) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/lumaflow/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/lumaflow/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/lumaflow)
 
 **Area:** Water Security · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** $340 USD · **Difficulty:** 2 of 5
 
@@ -8,7 +8,7 @@ Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized f
 
 ![LumaFlow: under-sink UV-C LED water disinfection reactor for a drinking-water tap, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/LMF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
+[Studio render](media/render-studio.png) · [Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/LMF-DWG-001.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [Requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -56,9 +56,19 @@ Point-of-use disinfection often depends on mercury UV lamps that break.
 
 ## Concept
 
-Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. A five-segment bar on the enclosure shows the UV level relative to the alarm threshold. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 51 to 75 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 21 mJ/cm² in the 70 %/cm test water, which stays below it. The unit draws 22.6 W while flowing and 0.21 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 416 (USD 76 over the target; see the [design decisions register](docs/06-design-decisions.md)).
+Water flows up a stainless tube lined with high-reflectance PTFE (50 mm bore, 242 mm water column) while six 275 nm UV-C LEDs at the bottom shine up through a quartz window. A flow sensor switches the LEDs on only while water runs, and a UV-C photodiode in the tube wall estimates the dose; if it falls too low, a normally closed valve shuts off the water and an alarm sounds. A five-segment bar on the enclosure shows the UV level relative to the alarm threshold. The TRL 3 calculations ([LMF-CAL-001](docs/04-calcs/01-sizing.md)) give a dose of 51 to 75 mJ/cm² at the 1.2 L/min (0.32 gpm) design flow in clear water (90 %/cm UV transmittance), above the 40 mJ/cm² target, and 17 to 21 mJ/cm² in the 70 %/cm test water, which stays below it; with the published response of microbes at 275 to 280 nm the clear-water figure is 47 mJ/cm², so the margin is thinner than the note's 20 % rule. The unit draws 22.6 W while flowing and 0.23 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 433 (USD 93 over the target; see the [design decisions register](docs/06-design-decisions.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
+
+## STEM check
+
+Fifty-one claims are checked against known physics, chemistry and biology ([LMF-STM-001](docs/01b-stem-check.md)): 39 are within known science and 12 are plausible, to confirm with the chosen parts' datasheets or by measurement at TRL 4 (among them the liner's reflectance behind the dose, LED derating, how well the reactor mixes, and light through the PTFE onto the acetal cap), so the check stays open. Four details of the design failed and were fixed under Amish's standing instruction of 2026-10-23: UV-C reached the rubber window gasket and sensor washer (both now expanded PTFE); the retaining ring screws were over-torqued (now anti-seize and 0.21 N·m); and, found by an independent reviewer, the unit could not start with its normally closed valve shut (an outlet pressure sensor now starts it) and the dose alarm was set from an unweighted dose (now set so one failed LED trips it). With the published response of microbes at 275 to 280 nm the clear-water dose is 47 mJ/cm², above the 40 mJ/cm² target but short of the calculation note's 20 % margin, so that requirement is at risk.
+
+## Concept options
+
+![Three ways to treat the water at one tap, side by side at one scale](media/options.png)
+
+The existing design is option A, the axial UV-C LED reactor (score 228 of 275). Two options with different principles were added and modelled at the same level of detail: B, a hollow-fibre ultrafilter that removes microbes by size with no power (229), and C, a radial UV-C LED reactor that shines across a quartz tube from outside (204). A and B are within 10 %, so both go to Amish without a pick; the repo stays on A until he decides ([LMF-OPT-001](docs/02a-concept-options.md), [LMF-DDR-004](docs/decisions/0004-concept-selection.md)).
 
 ## Key components
 
@@ -70,13 +80,13 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Controller with constant-current LED driver, normally closed shutoff valve, external 24 V adapter
 - At installation: a sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv); the parametric model is `cad/src/model.py`, with STEP and STL exports in `cad/step/` and `cad/stl/`.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The parametric model `cad/src/model.py` holds every concept option at detail level D3 (kit 1.9): option A has 119 parts, every screw, stud, washer, nut, insert, weld bead, board and connector among them, checked by `python .kit/cad_check.py --export` into [cad/fidelity.json](cad/fidelity.json). STEP files are in `cad/step/` (one per made or bought part of option A in `cad/step/A/`, and an assembly per option) and STL in `cad/stl/`.
 
 ## Building the prototype
 
 ![LumaFlow prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
-The [prototype build plan](docs/05-build-plan.md) (LMF-BLD-001) shows, in pictures, how to make each of the 25 components and put them together in sixteen steps; nothing has been built yet. The made parts are a drilled aluminium bracket plate with printed saddles, a machined stainless lower end cap, a stainless window retaining ring, a drilled heat sink and spreader ring, tie rod studs, the stainless tube with a welded sensor boss, the PTFE liner, a machined acetal upper end cap, a photodiode holder and a printed enclosure; the rest is bought. Writing the plan made the design buildable: the window now goes in from below and is clamped on a PTFE washer by a ring, the tube ends seal on O-rings, the tie rods are studs in the lower cap, the upper cap's roof is thicker, the ports are threaded and the bracket holds the reactor in two pipe clamps (LMF-DDR-003, accepted by Amish on 2026-10-02). The LED head plugs in under the enclosure through an interlock loop on a cable too short for the head to come off while plugged in, and the lid carries a five-segment UV level bar. Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
+The [prototype build plan](docs/05-build-plan.md) (LMF-BLD-001) shows, in pictures, how to make each of the 26 components and put them together in sixteen steps; nothing has been built yet. The made parts are a drilled aluminium bracket plate with printed saddles, a machined stainless lower end cap, a stainless window retaining ring, a drilled heat sink and spreader ring, tie rod studs, the stainless tube with a welded sensor boss, the PTFE liner, a machined acetal upper end cap, a photodiode holder and a printed enclosure; the rest is bought. Writing the plan made the design buildable: the window now goes in from below and is clamped on a PTFE washer by a ring, the tube ends seal on O-rings, the tie rods are studs in the lower cap, the upper cap's roof is thicker, the ports are threaded and the bracket holds the reactor in two pipe clamps (LMF-DDR-003, accepted by Amish on 2026-10-02). The LED head plugs in under the enclosure through an interlock loop on a cable too short for the head to come off while plugged in, and the lid carries a five-segment UV level bar. Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
 
 ## Safety
 
@@ -86,7 +96,7 @@ The [prototype build plan](docs/05-build-plan.md) (LMF-BLD-001) shows, in pictur
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, calculations and design decisions |
+| `docs/` | Problem, STEM check, concept and options, user and product requirements, traceability, calculations, build plan, design decisions, regulatory, feasibility, risk, market and plan |
 | `cad/src/` | build123d Python source, the source of truth for all geometry |
 | `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
 | `cad/drawings/` | 2D sketches and dimensioned drawings |

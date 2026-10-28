@@ -3,9 +3,9 @@ doc_id: LMF-CAL-001
 title: LumaFlow sizing calculations
 project: LumaFlow
 doc_type: Calculation
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,11 +33,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Approved follow-ups carried out: section B and the window stress re-run for the 0.5 mm PTFE window washer (LED gap 1.3 mm); new C6 for the UV level bar (R18, now met); idle LED pulse in E4, E6 and F7; mass H2; cost with the washer, interlock plug, bar and labels (USD 416)"
+- version: "0.7"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1: rerun on the detailed model (kit 1.9 interface; dimensions unchanged); after the independent review: 275 nm response factor (B10), LED derating stack (B11), weighted alarm threshold (C3 to C6, D-S4), outlet pressure sensor start-up (D5, E2, D-S3), Kv 0.10 valve case (G9); R2 and R8 at risk; cost USD 433"
 ---
 
 # LumaFlow sizing calculations
 
-This note checks the LumaFlow design as revised by LMF-DDR-002 and made constructable by LMF-DDR-003: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow meets fourteen of its eighteen requirements, has one at risk (R4) and misses one (R3); one cannot be verified at TRL 3, and the cost (R16) is over its value-engineering target. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 50.9 (laminar) to 74.9 (plug) mJ/cm², so **R2 is met** with the 20 % margin this note requires; in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.0 to 21.3 mJ/cm² (**R3 not met**, kept visible by decision D1). Value-engineering target: USD 340. Estimated cost of the constructable design: USD 416 (USD 76 over the target) [I1]. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
+This note checks the LumaFlow design as revised by LMF-DDR-002 and made constructable by LMF-DDR-003: a 50 mm bore lined with high-reflectance PTFE, a design flow of 1.2 L/min (0.32 gpm), a UV-C photodiode in the tube wall at mid height, a flow sensor of 15 Hz per L/min, an upstream pressure limiter and a thermal cut-back. On paper, LumaFlow meets twelve of its eighteen requirements, has three at risk (R2, R4, R8) and misses one (R3); one cannot be verified at TRL 3, and the cost (R16) is over its value-engineering target. The reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance, UVT) is 50.9 (laminar) to 74.9 (plug) mJ/cm² for a 254 nm-equivalent response, and 47.3 mJ/cm² with the published response at 275 to 280 nm [B10], so **R2 is at risk**: above 40, but short of the 20 % margin this note requires (v0.7, after the independent review of 2026-10-25); in v0.1, with a 25 mm bore at 2.0 L/min, it was 14.7 to 19.0 mJ/cm². The dose at the 70 %/cm test condition is 17.0 to 21.3 mJ/cm² (**R3 not met**, kept visible by decision D1). Value-engineering target: USD 340. Estimated cost of the constructable design: USD 433 (USD 93 over the target) [I1]. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [B5], is the line of that script's output that carries it.
 
 > **Safety:** These calculations concern a device meant to disinfect drinking water with UV-C light under mains pressure. They are first-principles estimates for a paper proof of concept, not a substitute for biodosimetry, datasheets or a review by a qualified engineer. A calculated dose above target is not a demonstrated dose. LumaFlow is a research and educational prototype, not a certified water treatment device. See LMF-PRC-001, Safety.
 
@@ -88,7 +92,7 @@ The six LEDs give 0.36 W of UV-C from 13.02 W electrical, a UV-C efficiency of 2
 | 75 | 27.8 | 27.5 | 21.3 | 0.77 |
 | 70 | 21.5 | 21.3 | 17.0 | 0.79 |
 
-At the design water quality of 90 %/cm the RED is 50.9 (laminar) to 74.9 (plug) mJ/cm² [B5]. **R2 (40 mJ/cm²) is met**, with the laminar value 27 % above the target (30 % with the 0.8 mm gap of v0.5). At 70 %/cm it is 17.0 to 21.3 mJ/cm² [B6], so **R3 is not met**, as decision D1 accepted; it is now above the Class B level of 16 mJ/cm².
+At the design water quality of 90 %/cm the RED is 50.9 (laminar) to 74.9 (plug) mJ/cm² [B5]. The laminar value is 27 % above the 40 mJ/cm² target for a 254 nm-equivalent response; with the response factor of 0.93 for 275 nm it is 47.3 mJ/cm², 18 % above [B10], so **R2 is at risk** under this note's 20 % rule. A worst-case stack of LED derating (about 12 % less output at the junction temperature, a 10 % low bin) gives 37.5 mJ/cm² [B11], to be checked on the chosen LED. At 70 %/cm it is 17.0 to 21.3 mJ/cm² [B6], 15.8 with the 275 nm factor, so **R3 is not met**, as decision D1 accepted.
 
 The reactor efficiency (RED over average dose) is 0.67, lower than the 0.77 of v0.1: the slow laminar core on a wide bore sees less light than the water beside the wall. Streamline doses at 90 %/cm range from 41 mJ/cm² on the axis to 79 at mid radius and 1,433 beside the wall [B7]. The liner reflectance is the main optical uncertainty: 45.2, 48.7 and 50.9 mJ/cm² at 0.80 (plain PTFE), 0.90 and 0.95 [B8], so even plain PTFE meets 40 mJ/cm² but not the 20 % margin. LEDs 20 % below rating (bin, aging or temperature) give 40.7 mJ/cm² [B9].
 
@@ -107,9 +111,9 @@ The photodiode now sits behind an 8 mm quartz window in the tube wall at mid hei
 | 75 | 0.013 | 0.96 | 0.072 | 0.42 |
 | 70 | 0.003 | 0.19 | 0.014 | 0.34 |
 
-The controller keeps the proportional mapping RED_est = RED_ref x (S/S_ref) x (Q_ref/Q), which blames every loss of signal on the LEDs and so always under-reads. With RED_ref = 50.9 mJ/cm² the alarm threshold is S/S_ref = 0.79 [C3]. With LEDs at rated output the alarm trips below about 88.7 %/cm UVT, and LEDs aged to 79 % of output trip it in 90 %/cm water, where the true RED is 40.0 mJ/cm² [C4]. A mapping that blamed the water instead would be unsafe: with LEDs at 70 % output in 90 %/cm water it would claim 44.9 mJ/cm² when the true RED is 35.6 [C5]. R4 stays **at risk** because the sub-nanoampere signal in poor water, the mapping and the 1 s fail-safe still need firmware and a test, which are TRL 4 work. The wall-sensor signals in poor water come from few rays in the trace, so the sub-nanoampere figures move between runs (0.38 nA at 70 %/cm in v0.5, 0.19 nA now); the trend, not the last digit, is the result.
+The controller keeps the proportional mapping RED_est = RED_ref x (S/S_ref) x (Q_ref/Q), which blames every loss of signal on the LEDs and so always under-reads. With RED_ref = 47.3 mJ/cm², the 275 nm weighted value (STEM fix D-S4, 2026-10-25; v0.6 used 50.9), the alarm threshold is S/S_ref = 0.85 [C3], so one failed LED of six (S/S_ref 0.83) trips it. With LEDs at rated output the alarm trips below about 89.1 %/cm UVT, and LEDs aged to 85 % of output trip it in 90 %/cm water, where the true weighted RED is 40.0 mJ/cm² [C4]. A mapping that blamed the water instead would be unsafe: with LEDs at 70 % output in 90 %/cm water it would claim 44.9 mJ/cm² when the true RED is 35.6 [C5]. R4 stays **at risk** because the sub-nanoampere signal in poor water, the mapping and the 1 s fail-safe still need firmware and a test, which are TRL 4 work. The wall-sensor signals in poor water come from few rays in the trace, so the sub-nanoampere figures move between runs (0.38 nA at 70 %/cm in v0.5, 0.19 nA now); the trend, not the last digit, is the result.
 
-The five-segment UV level bar on the enclosure lid (R18) shows the same wall signal relative to the alarm threshold, not a dose. Its segments light at 1.0, 1.1, 1.2, 1.3 and 1.5 times the alarm signal. With rated LEDs it shows three of five segments in 90 %/cm water (1.27 times the alarm signal) and all five above about 90.6 %/cm; the last segment goes out at 88.7 %/cm, exactly where the alarm trips. In 90 %/cm water the segments go out one by one as the LEDs age to 118, 102, 94, 87 and 79 % of their rated output [C6]. **R18 is met** by design; the bench check against the wall sensor reading is TRL 4 work.
+The five-segment UV level bar on the enclosure lid (R18) shows the same wall signal relative to the alarm threshold, not a dose. Its segments light at 1.0, 1.1, 1.2, 1.3 and 1.5 times the alarm signal. With rated LEDs it shows two of five segments in 90 %/cm water (1.18 times the alarm signal) and all five above about 90.9 %/cm; the last segment goes out at 89.1 %/cm, exactly where the alarm trips. In 90 %/cm water the segments go out one by one as the LEDs age to 127, 110, 101, 93 and 85 % of their rated output [C6]. **R18 is met** by design; the bench check against the wall sensor reading is TRL 4 work.
 
 ## D. Flow switching and run-on (R5)
 
@@ -119,7 +123,7 @@ During the 5 s run-on the water held in the channel receives a volume-average 19
 
 ## E. Power and energy (R9)
 
-The LEDs draw 13.02 W; with the driver, the 4.8 W valve and the controller the 24 V bus carries 19.87 W, and the mains draw is 22.6 W while water flows [E1]. Standby is 0.21 W, dominated by the adapter's no-load draw and the powered flow sensor [E2]. **R9 is met** (25 W and 0.5 W).
+The LEDs draw 13.02 W; with the driver, the 4.8 W valve and the controller the 24 V bus carries 19.87 W, and the mains draw is 22.6 W while water flows [E1]. Standby is 0.23 W, dominated by the adapter's no-load draw, the powered flow sensor and the outlet pressure sensor that starts the unit when the faucet opens [E2, D5]. **R9 is met** (25 W and 0.5 W).
 
 At 15 L/day and 1.2 L/min the LEDs run 14.2 min/day (86 h/year); the unit uses 10.4 Wh/day or 3.8 kWh/year [E3]. The idle pulse decided on 2026-10-02 runs the LEDs for about 10 s every 4 h of idle with the valve shut: 59 s a day, 6.0 h a year of LED time, 17.1 W while it runs and 0.28 Wh a day, so the unit uses 3.9 kWh a year in all [E6]. With the pulses the LEDs run 92 h a year, and 10,000 h of LED on-time would take 108 years (116 years without them) [E4], so LED life is still set by aging in storage and by switching, not by on-time. For comparison, tap-scale mercury units drawing 13 to 22 W all day ([VIQUA VT1, VT4 and S2Q-PA spec sheet](https://viqua.com/wp-content/uploads/LIT520326_SpecSheet.pdf)) use 114 to 193 kWh/year [E5].
 
@@ -151,7 +155,7 @@ The 57 x 10 mm window on its 51 mm seat carries a peak stress of 6.18 MPa at 8 b
 
 The unit is 277 x 100 x 322 mm without the adapter, inside the 350 x 150 x 350 mm envelope [H1]: **R14 is met**. It weighs about 5.0 kg dry and 5.4 kg full of water; the aluminium bracket plate (1.05 kg), the stainless tube (0.98 kg) and the stainless lower cap (0.94 kg) are the heaviest parts, and the adapter adds about 0.2 kg on the floor [H2]. Made parts are weighed from the model's volumes; bought parts at typical catalogue masses.
 
-Value-engineering target: USD 340 (`budget_usd`, a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 416 (USD 76 over the target), from the 19-line BOM [I1]. The largest lines are the LEDs ($54), the machined 316 lower cap ($48) and the high-reflectance PTFE liner ($45) [I2]. The concept BOM was $338.00; making the design buildable (LMF-DDR-003) added the welded sensor boss, the window retaining ring and seals, the threaded ports with stem adaptors, the drilled bracket plate and saddles, the pipe clamps and more fixings (USD 402 in v0.5). The decisions of 2026-10-02 add USD 14: the PTFE window washer (USD 2), the LED head plug, socket and interlock-loop cable (USD 4), the five-segment UV level bar (USD 3) and the labels line (USD 5). R16 is reported against the target, not as a failure; savings worth trying are listed in the design decisions register (LMF-DEC-001).
+Value-engineering target: USD 340 (`budget_usd`, a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 433 (USD 93 over the target), from the 19-line BOM [I1]. The largest lines are the LEDs ($54), the machined 316 lower cap ($48) and the high-reflectance PTFE liner ($45) [I2]. The concept BOM was $338.00; making the design buildable (LMF-DDR-003) added the welded sensor boss, the window retaining ring and seals, the threaded ports with stem adaptors, the drilled bracket plate and saddles, the pipe clamps and more fixings (USD 402 in v0.5). The decisions of 2026-10-02 add USD 14: the PTFE window washer (USD 2), the LED head plug, socket and interlock-loop cable (USD 4), the five-segment UV level bar (USD 3) and the labels line (USD 5). R16 is reported against the target, not as a failure; savings worth trying are listed in the design decisions register (LMF-DEC-001).
 
 ## J. Flow limits and options
 
@@ -173,25 +177,41 @@ The 1.2 L/min design flow sits inside the 1.26 L/min limit for the 20 % margin; 
 | ID | Target | Value (tag) | Status |
 | --- | --- | --- | --- |
 | R3 | RED 40 mJ/cm² or more at 1.2 L/min, 70 %/cm | 17.0 to 21.3 mJ/cm² [B6] | **Not met** (accepted by D1) |
-| R16 | Value-engineering target USD 340; no custom PCB | $416.00 [I1]; module-based electronics | Over the target by USD 76 |
-| R4 | Dose monitor; alarm and valve closed within 1 s | Wall signal 13.4 nA at 90 %/cm, 0.19 nA at 70 %/cm; alarm below about 89 %/cm [C1, C4] | At risk |
+| R16 | Value-engineering target USD 340; no custom PCB | $433.00 [I1]; module-based electronics | Over the target by USD 93 |
+| R4 | Dose monitor; alarm and valve closed within 1 s | Wall signal 13.4 nA at 90 %/cm, 0.19 nA at 70 %/cm; alarm at S/S_ref 0.85, below about 89 %/cm or on one failed LED [C1, C3, C4] | At risk |
 | R15 | Window and LED head replaced in 15 min | LED head off on four screws from below, window out after six ring screws, no plumbing disturbed; needs a build to time | Not verifiable at TRL 3 |
 | R1 | 1.2 L/min, restrictor | Restrictor; sensor range covers it [A3] | Met |
-| R2 | RED 40 mJ/cm² or more at 1.2 L/min, 90 %/cm | 50.9 (laminar) to 74.9 (plug) mJ/cm² [B5] | Met |
-| R5 | LEDs on within 0.5 s above 0.3 L/min; 5 s run-on | 0.24 s worst case [D2] | Met |
+| R2 | RED 40 mJ/cm² or more at 1.2 L/min, 90 %/cm | 50.9 (laminar) to 74.9 (plug) mJ/cm² [B5]; 47.3 weighted for 275 nm [B10] | At risk |
+| R5 | LEDs on within 0.5 s above 0.3 L/min; 5 s run-on | Outlet pressure sensor wakes the unit, LEDs on before the valve opens; flow confirmed in 0.24 s worst case [D2, D5] | Met |
 | R6 | No mercury; full output in 0.1 s | LEDs, microsecond rise | Met |
 | R7 | Window 6.8 MPa or less at 8 bar | 6.18 MPa [G4] | Met |
-| R8 | 0.5 bar or less at 1.2 L/min, excluding the restrictor | 0.15 bar, on assumed Kv [G2] | Met |
-| R9 | 25 W flowing, 0.5 W standby | 22.6 W, 0.21 W [E1, E2] | Met |
+| R8 | 0.5 bar or less at 1.2 L/min, excluding the restrictor | 0.15 bar on assumed Kv [G2]; 0.59 with a Kv 0.10 valve [G9] | At risk |
+| R9 | 25 W flowing, 0.5 W standby | 22.6 W, 0.23 W [E1, E2] | Met |
 | R10 | LED board 50 °C or less; cut-back above 50 °C | 37.3 to 45.1 °C steady [F3] | Met |
-| R11 | Food-contact wetted parts; no UV-C on plastics but PTFE | 316 lower cap; PTFE liner, top disc and 316 outlet sleeve shield the acetal upper cap; EPDM gasket and O-rings | Met |
+| R11 | Food-contact wetted parts; no UV-C on plastics but PTFE | 316 lower cap; PTFE liner, top disc and 316 outlet sleeve shield the acetal upper cap; expanded PTFE window gasket (STEM fix 2026-10-25), EPDM O-rings out of the light | Met |
 | R12 | No UV-C outside the unit; interlocks | Metal and PTFE light path; sensor window sealed in the welded boss by the photodiode holder; interlocks: the lid reed switch, and an interlock loop in the LED head's plug, whose 95 mm cable is 39 mm short of letting the head clear the cap while plugged in (model check) | Met |
 | R13 | 24 V DC only at the unit | Certified adapter and input fuse | Met |
 | R14 | 350 x 150 x 350 mm or less | 277 x 100 x 322 mm [H1] | Met |
 | R17 | Pressure limiter at 4 bar or less upstream | Window 6.18 MPa at twice the setting [G5] | Met |
 | R18 | Five-segment UV level bar, UV level relative to the alarm threshold | Three of five segments at 90 %/cm; last segment goes out where the alarm trips [C6]; bar in the model and BOM line 13 | Met |
 
-Counts: 14 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3, and R16 over its value-engineering target by USD 76 [K1].
+Counts: 12 met, 3 at risk, 1 not met, 1 not verifiable at TRL 3, and R16 over its value-engineering target by USD 93 [K1].
+
+
+## Changes in v0.7 (kit 1.9.1 and the independent review, 2026-10-25)
+
+*Table 8. What the independent review of 2026-10-25 changed in this note.*
+
+| Item | v0.6 | v0.7 |
+| --- | --- | --- |
+| Organism response at 275 nm | Taken as equal to 254 nm | Factor 0.93 from published MS2 data at 280 nm: RED 47.3 mJ/cm² at 90 %/cm, 15.8 at 70 %/cm [B10]; R2 at risk |
+| LED derating | 20 % low output only [B9] | Stacked junction-temperature and bin derating with the 275 nm factor: 37.5 mJ/cm² [B11], to confirm on the chosen LED |
+| Alarm threshold | S/S_ref 0.79 from the unweighted RED | 0.85 from the weighted RED; one failed LED trips it [C3, C4]; the UV level bar shows two of five segments [C6] |
+| Start-up | Flow sensor wakes the unit (impossible with the outlet valve shut) | Outlet pressure sensor wakes the unit; flow sensor confirms flow [D5]; standby 0.23 W [E2] |
+| Pressure drop | Assumed Kv only | Kv 0.10 valve case 0.59 bar [G9]; R8 at risk |
+| Cost | USD 416 | USD 433: expanded PTFE gasket (USD 2) and outlet pressure sensor with tee (USD 15), both estimates [I1] |
+
+The review also showed that the laminar RED is not a strict lower bound: the profile never develops over the 226 mm flow path, the inlet jet and the warm lower cap mix the water, and a strongly back-mixed reactor would give less (LMF-STM-001, S34). The residence-time distribution is a TRL 4 measurement; an inlet flow distributor is proposed to Amish (LMF-DEC-001, O-4). The water-film coefficient in the lower cap, which the review questioned, is about 490 W/(m² K) for developing flow over the first 18 mm of stainless bore, above the 150 used for the hottest board case (S35).
 
 ## Numbers changed from v0.1
 
@@ -239,6 +259,6 @@ Counts: 14 met, 1 not met, 1 at risk, 1 not verifiable at TRL 3, and R16 over it
 | Window stress at 8 bar | 6.18 MPa | 6.18 MPa, unchanged [G4] |
 | LED on-time | 86 h/year | 92 h/year with the idle pulse [E4, E6] |
 | Mass | not estimated | 4.97 kg dry, 5.44 kg full [H2] |
-| Estimated cost | $402.00, 18 lines | $416.00, 19 lines [I1] |
+| Estimated cost | $402.00, 18 lines | $433.00, 19 lines [I1] |
 | R18 | Not verifiable at TRL 3 | Met [C6] |
-| Requirements | 13 met | 14 met, 1 not met, 1 at risk, 1 not verifiable, R16 over its target by USD 76 [K1] |
+| Requirements | 13 met | 14 met, 1 not met, 1 at risk, 1 not verifiable, R16 over its target by USD 93 [K1] |

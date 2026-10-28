@@ -1,0 +1,47 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "1bdb8a3581da60b0",
+ "options": {
+  "A": {
+   "title": "Axial UV-C LED reactor",
+   "parts": 119,
+   "made_or_bought": 65,
+   "fasteners": 53,
+   "welds": 1,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 4.7,
+   "step_files": 65
+  },
+  "B": {
+   "title": "Hollow-fibre ultrafilter",
+   "parts": 36,
+   "made_or_bought": 26,
+   "fasteners": 10,
+   "welds": 0,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 3.3,
+   "step_files": 0
+  },
+  "C": {
+   "title": "Radial UV-C LED reactor",
+   "parts": 132,
+   "made_or_bought": 68,
+   "fasteners": 64,
+   "welds": 0,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 3.7,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 60.5
+}

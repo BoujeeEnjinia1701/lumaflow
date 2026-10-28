@@ -3,9 +3,9 @@ doc_id: LMF-PRB-001
 title: LumaFlow problem statement
 project: LumaFlow
 doc_type: Problem statement
-version: "0.8"
+version: "0.9"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -41,6 +41,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Cost of the constructable design with the 2026-10-02 decisions carried in (USD 416); partner approach status"
+- version: "0.9"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.8 users-and-needs and stakeholders tables; cost USD 418"
 ---
 
 # LumaFlow problem statement
@@ -75,11 +79,34 @@ The gap LumaFlow addresses is an **open, documented, garage-buildable** tap-scal
 | Small clinic, school or community water point | A low-maintenance disinfection stage for a drinking-water tap | Indoor, mains power available |
 | Researcher or maker | An open reference design to test reactor geometries, LEDs and dose sensing | Lab bench, makerspace |
 
+### Users and needs
+
+Table 1. Users and needs (kit 1.8).
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Household on a private well or rainwater tank (first user, LMF-DDR-001 D9) | Microbiologically safer water at one drinking tap, no chemicals, no mercury, no yearly lamp; know when it is not working | 10 to 20 L a day in about 20 short draws from a dedicated faucet; unit under the sink after a sediment filter | Mercury lamps run all day, need warm-up and yearly replacement; low-cost units fail silently; the household is its own utility |
+| Household on an intermittent or suspect municipal supply | A barrier after pressure drops and boil-water events | Same as above, downstream of a carbon or sediment filter | Contamination events are unpredictable; boiling is a chore |
+| Small clinic, school or community water point | A low-maintenance disinfection stage for one drinking tap, with a visible fault signal | Indoor tap on mains power, used by many people a day | No technician on site; parts must be replaceable locally |
+| Researcher or maker | An open, documented reference reactor to test optics, LEDs and dose sensing | Lab bench or makerspace | Commercial units are closed and cannot be inspected or modified |
+
+### Stakeholders
+
+Table 2. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| University extension programme for private well owners (Texas A&M AgriLife Extension Texas Well Owner Network as first candidate, LMF-DEC-001) | Samples household wells; can measure UV transmittance and microbiology on real water | First approach by Amish (not yet made); co-design of requirements and TRL 4 testing |
+| Certification bodies (NSF, a certified laboratory) | Own NSF/ANSI 55 and the material standards a product would need | Informative only at TRL 3; certification is out of scope in this phase |
+| Local plumbers and installers | Fit the pre-filter, pressure limiter and push-fit lines | Review of the installation requirements (PR-017) |
+| Makerspaces and university labs | Build and test copies of the open design | Build reports through the issue templates once the repo is public |
+| Component suppliers (UV-C LEDs, PTFE reflector, quartz) | Datasheets for reflectance, output bin and lifetime | Data requests at part selection (decisions register, To confirm) |
+
 Typical conditions assumed for the concept: water supply pressure of 2 to 6 bar (29 to 87 psi), water temperature 5 to 30 °C, cabinet air up to 35 °C, and a drinking and cooking demand of about 10 to 20 L per household per day drawn in short bursts.
 
 ## Constraints
 
-- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The $340 figure is a value-engineering target (Amish, 2026-10-01); the constructable design of LMF-DDR-003, with the decisions of 2026-10-02 carried in, is estimated at $416.00, $76 over it.
+- Garage-buildable prototype, $340 USD or less in parts (budget raised from $200 to $225 by Amish, LMF-DDR-001 D2, then to $340 by the budget top-up Amish approved on 2026-09-26), from off-the-shelf LEDs, sensors and plumbing plus simple machined end caps. The $340 figure is a value-engineering target (Amish, 2026-10-01); the constructable design of LMF-DDR-003, with the decisions of 2026-10-02 carried in, is estimated at $433.00, $93 over it.
 - A drinking-water flow of 1.2 L/min (0.32 gpm) is enough for one tap; it fills a 1 L bottle in about 50 s.
 - A sediment pre-filter and a pressure-limiting valve at 4 bar (58 psi) or less are part of the installation.
 - Fits under a kitchen sink and connects to a standard cold line with push-fit fittings.

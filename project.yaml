@@ -5,17 +5,33 @@ repo: BoujeeEnjinia1701/lumaflow         # GitHub repository, shown on every dra
 area: Water Security
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19; P3 recorded 2026-10-25 (kit 1.9.1 upgrade)
+stem_check: open         # LMF-STM-001 v0.1: 36 within, 8 plausible; S6, S7, S10 and the liner reflectance need TRL 4 measurements; fixes D-S1, D-S2
+concept_options: [A, B, C]   # LMF-OPT-001: A axial UV-C LED reactor (228), B hollow-fibre ultrafilter (229), C radial UV-C LED reactor (204)
+# concept_chosen: unset; A and B within 10 %, both to Amish (LMF-DDR-004, LMF-DEC-001 O-1); the repo stays on A until he decides
 design_state: constructable   # concept or constructable, see .kit/STANDARDS.md section 18
 trl_evidence:
   - docs/01-problem.md
+  - docs/01b-stem-check.md
   - docs/02-concept.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
   - docs/03-requirements.md
+  - docs/03b-traceability.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-recommendations-accepted.md
   - docs/decisions/0003-design-for-construction.md
+  - docs/decisions/0004-concept-selection.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
   - cad/src/model.py
+  - cad/src/product_model.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/step/C-assembly.step
   - cad/step/lumaflow-assembly.step
   - cad/stl/lumaflow-assembly.stl
   - cad/drawings/LMF-DWG-001.svg
@@ -26,6 +42,14 @@ trl_evidence:
   - docs/06-design-decisions.md
   - docs/05-build-plan/overview.png
   - cad/src/build_plan_media.py
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - media/hero.png
+  - media/concept-blueprint.png
+  - media/model.glb
 shortlisted: false
 pitch: >-
   Inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap.

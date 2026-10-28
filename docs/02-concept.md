@@ -3,9 +3,9 @@ doc_id: LMF-PRC-001
 title: LumaFlow design precis
 project: LumaFlow
 doc_type: Design precis
-version: "0.8"
+version: "0.9"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -41,6 +41,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Approved follow-ups carried out (LMF-CAL-001 v0.6): window on a 0.5 mm PTFE washer, LED head interlock plug, UV level bar in place of the status light, labels; figures updated"
+- version: "0.9"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: "Kit 1.9.1: STEM check (LMF-STM-001) and concept options (LMF-OPT-001) added around the design; expanded PTFE window gasket and 0.3 N m ring screws (LMF-DEC-001 D-S1, D-S2); cost USD 418"
 ---
 
 # LumaFlow design precis
@@ -49,7 +53,7 @@ revisions:
 
 LumaFlow is an inline UV-C LED reactor with a flow-activated switch and a dose monitor, sized for a household tap. Water flows up a stainless tube lined with high-reflectance PTFE, with a 50 mm bore, while six 275 nm LEDs at the bottom shine up a 242 mm water column through a quartz window. A Hall-effect flow sensor turns the LEDs on only while water runs, and a UV-C photodiode in the tube wall at mid height measures the light in the water, which lets the controller estimate the dose and close a valve if it falls too low.
 
-The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 50.9 to 74.9 mJ/cm², so **R2 is met**. At the 70 %/cm test condition it is 17.0 to 21.3 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.21 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 416 (USD 76 over the target). The design was made physically buildable on 2026-10-01 (LMF-DDR-003, accepted by Amish on 2026-10-02 with the window seat changed to a PTFE washer), and the prototype build plan LMF-BLD-001 shows how to make and fit every part.
+The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bore lost half of the light to the wall and delivered only 14.7 to 19.0 mJ/cm² at 2 L/min. Amish accepted the recommended route on 2026-09-25 (LMF-DDR-002): a wider bore, a higher-reflectance liner and a modest flow cut. With a 50 mm bore, a liner reflectance of 0.95 and a design flow of 1.2 L/min (0.32 gpm), the reduction equivalent dose (RED) in clear water (90 %/cm UV transmittance) is 50.9 to 74.9 mJ/cm², so R2 is met for a 254 nm-equivalent response; with the published response at 275 to 280 nm (0.93) it is 47.3 mJ/cm², 18 % over the target, so R2 (PR-002) is now **at risk** against the 20 % margin rule (LMF-STM-001, S3). At the 70 %/cm test condition it is 17.0 to 21.3 mJ/cm² (**R3 not met**, accepted by decision D1). The unit draws 22.6 W while water flows and 0.23 W on standby. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 433 (USD 93 over the target). The design was made physically buildable on 2026-10-01 (LMF-DDR-003, accepted by Amish on 2026-10-02 with the window seat changed to a PTFE washer), and the prototype build plan LMF-BLD-001 shows how to make and fit every part.
 
 ![Hero render](../media/hero.png)
 
@@ -57,11 +61,11 @@ The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bo
 
 ## How it works
 
-1. **Flow starts.** When someone opens the drinking-water faucet, water enters through the Hall-effect flow sensor (item 8). Its pulses, 15 per second for each L/min, tell the controller that flow has started and how fast it is.
-2. **LEDs on.** The controller opens the normally closed outlet valve (item 11) and drives the six 275 nm LEDs (item 4) at 350 mA. At the 0.3 L/min threshold the first sensor pulse arrives within 0.22 s, so switch-on takes up to 0.24 s against the 0.5 s target (LMF-CAL-001, D2). LEDs reach full output almost at once, so no warm-up or bypass is needed.
+1. **Faucet opens.** In standby the normally closed outlet valve (item 11) is shut, so opening the drinking-water faucet first drops the pressure in the short line between the valve and the faucet. An outlet pressure sensor on a tee in that line (item 20, added by the STEM fix D-S3 of 2026-10-25) sees the drop within about 50 ms and wakes the controller.
+2. **LEDs on, valve open.** The controller drives the six 275 nm LEDs (item 4) at 350 mA and opens the valve 20 ms later, so the LEDs are on before any water moves. The Hall-effect flow sensor (item 8), 15 pulses per second for each L/min, must then confirm flow: at the 0.3 L/min threshold its first pulse arrives within 0.24 s (LMF-CAL-001, D2, D5); with no pulse in 0.5 s the valve shuts again as a fault. LEDs reach full output almost at once, so no warm-up or bypass is needed.
 3. **Irradiate.** The LEDs sit 1.3 mm under a 10 mm fused quartz window (item 3), which rests on a 0.5 mm PTFE washer on its stainless retaining ring, in the 316 stainless lower end cap (item 6). Water enters the lower cap just above the window, flows up the 50 mm bore of the PTFE liner (item 2) at about 1 cm/s and leaves through a 316 insert in the acetal upper cap (item 7) after about 22 s. The wide bore lets light cross more water between wall reflections, and the liner returns about 95 % of the light that reaches it, so the water absorbs 53 % of the LED output at 90 %/cm.
 4. **Measure.** A UV-C photodiode (item 9) behind an 8 mm quartz window in the tube wall at mid height sees the light in the water. Its signal falls if the water's UVT drops, the liner or window fouls or the LEDs age. The controller combines that reading with the flow rate to estimate the dose, using a proportional rule that blames every loss of signal on the LEDs, which always under-reads (LMF-CAL-001, C3 to C5).
-5. **Alarm and shut off.** If the estimated dose falls below 40 mJ/cm², the flow exceeds its limit, a sensor fails or the enclosure lid is opened, the controller closes the valve, sounds the buzzer and shows the fault on the UV level bar. In normal running the five-segment bar shows the UV level relative to the alarm threshold, read from the wall sensor (R18); it is not a dose reading. With fresh LEDs this happens below about 89 %/cm UVT. The valve also closes if power is lost, so no untreated water passes silently.
+5. **Alarm and shut off.** If the estimated dose falls below 40 mJ/cm², the flow exceeds its limit, a sensor fails or the enclosure lid is opened, the controller closes the valve, sounds the buzzer and shows the fault on the UV level bar. In normal running the five-segment bar shows the UV level relative to the alarm threshold, read from the wall sensor (R18); it is not a dose reading. With fresh LEDs this happens below about 89 %/cm UVT, and it also happens if one of the six LEDs fails. The valve also closes if power is lost, so no untreated water passes silently.
 6. **Stay cool.** A temperature sensor on the LED board lets the controller cut LED current above 50 °C. A cut-back lowers the dose, which the photodiode sees, so the alarm rule still protects the user.
 7. **Flow stops.** The LEDs stay on for 5 s after flow stops, then everything switches off.
 
@@ -71,7 +75,7 @@ The first TRL 3 calculation (LMF-CAL-001 v0.1) showed that the original 25 mm bo
 
 ## Main components
 
-Numbers match the exploded view (Figure 3), `bom/bom.csv` and drawing LMF-DWG-001 Rev P4.
+Numbers match the exploded view (Figure 3), `bom/bom.csv` and drawing LMF-DWG-001 Rev P6.
 
 Table 1. Main components.
 
@@ -93,8 +97,10 @@ Table 1. Main components.
 | 14 | Wall bracket | 6 mm aluminium plate with two printed saddles for the flow sensor and valve | Holds the reactor vertical (decision D7) |
 | 15 | Fittings, stem adaptors and outlet sleeve | 3/8 in push-fit, stainless stem adaptors in 1/4 BSPP ports, tee to the cold line, 1.2 L/min restrictor, 316 outlet sleeve | Restrictor enforces R1 |
 | 16 | Tie rods and hardware | Four M5 316 studs on an 80 mm circle, threaded into the lower cap | 664 N each at 8 bar (G7) |
-| 17 | Window retaining ring and seals | 316 ring under the window, EPDM window gasket, two EPDM face O-rings at the tube ends | Added by LMF-DDR-003 |
+| 17 | Window retaining ring and seals | 316 ring under the window, expanded PTFE window gasket, two EPDM face O-rings at the tube ends | Added by LMF-DDR-003; gasket in expanded PTFE since the STEM check of 2026-10-25 (LMF-DEC-001 D-S1), because UV-C reaches it through the window |
 | 18 | Pipe clamps | Two rubber-lined 65 mm clamps on M8 studs | Added by LMF-DDR-003 |
+| 19 | Labels | Two UV-C warning labels and the product label | Decided 2026-10-02 |
+| 20 | Outlet pressure sensor and tee | 0 to 10 bar, 5 V sensor on a push-fit tee in the faucet line | Starts the unit when the faucet opens (STEM fix D-S3, 2026-10-25) |
 
 Not in the BOM, but required at installation: a 5 µm sediment pre-filter and a pressure-limiting valve set at 4 bar (58 psi) or less (R17).
 
@@ -129,7 +135,7 @@ The dose target is the NSF/ANSI 55 Class A dose level for context only ([Fresh W
 
 ### Dose monitor
 
-The wall photodiode gives about 13.4 nA at 90 %/cm, 2.4 nA at 80 %/cm and 0.19 nA at 70 %/cm [C1], and its signal falls 2.6 times as fast as the dose [C2]. With the proportional mapping the alarm threshold is S/S_ref = 0.79 [C3]: it trips below about 89 %/cm with fresh LEDs, or when the LEDs have aged to 79 % of output in 90 %/cm water [C4]. R4 is at risk until the mapping and the 1 s fail-safe are shown in firmware and test. The five-segment UV level bar shows three segments in 90 %/cm water with fresh LEDs and loses its last segment where the alarm trips, so R18 is met [C6].
+The wall photodiode gives about 13.4 nA at 90 %/cm, 2.4 nA at 80 %/cm and 0.19 nA at 70 %/cm [C1], and its signal falls 2.6 times as fast as the dose [C2]. With the proportional mapping, and the reference dose weighted for the response at 275 nm (47.3 mJ/cm², STEM fix D-S4), the alarm threshold is S/S_ref = 0.85 [C3]: it trips below about 89 %/cm with fresh LEDs, when the LEDs have aged to 85 % of output in 90 %/cm water, or when one LED of six fails (S/S_ref 0.83) [C4]. R4 is at risk until the mapping and the 1 s fail-safe are shown in firmware and test. The five-segment UV level bar shows two segments in 90 %/cm water with fresh LEDs and loses its last segment where the alarm trips, so R18 is met [C6].
 
 ### Power and energy
 
@@ -139,7 +145,7 @@ Table 3. Power and energy [E1 to E6].
 | --- | --- | --- |
 | LED electrical power | 13.02 W | |
 | Power from mains while flowing | 22.6 W | R9 met (25 W) |
-| Standby power | 0.21 W | R9 met (0.5 W) |
+| Standby power | 0.23 W | R9 met (0.5 W) |
 | LED on-time | 14.2 min/day, 86 h/year flowing; 92 h/year with the idle pulse of about 10 s every 4 h | 10,000 h in 108 years |
 | Energy | 10.4 Wh/day flowing, 0.28 Wh/day for the idle pulse; 3.9 kWh/year | |
 | Tap-scale mercury unit of 13 to 22 W running all day ([VIQUA spec sheet](https://viqua.com/wp-content/uploads/LIT520326_SpecSheet.pdf)) | 114 to 193 kWh/year | For comparison |
@@ -158,7 +164,7 @@ The unit drops 0.15 bar at 1.2 L/min, not counting the restrictor, against 0.5 b
 
 ### Size and cost
 
-The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1], and weighs about 5.0 kg dry and 5.4 kg full of water [H2]. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 416 (USD 76 over the target) [I1]; the LEDs ($54), the stainless lower cap ($48) and the high-reflectance liner ($45) are the largest lines.
+The unit is 277 x 100 x 322 mm without the adapter, inside R14 [H1], and weighs about 5.0 kg dry and 5.4 kg full of water [H2]. Value-engineering target: USD 340. Estimated cost of the constructable design: USD 433 (USD 93 over the target) [I1]; the LEDs ($54), the stainless lower cap ($48) and the high-reflectance liner ($45) are the largest lines.
 
 ## Key design choices
 
@@ -186,7 +192,7 @@ Items marked "Decided" were decided by Amish on 2026-09-25, going with the recom
 - **Pressure and leaks.** Supply pressure acts on the window, caps, sensor window and tubing; the larger window has a 9 % margin at 8 bar, and an unprotected spike would overstress it. Fit a shutoff valve and a pressure-limiting valve at 4 bar or less upstream. A cracked window would flood the LED head; the board runs at 24 V, so the hazard is short circuit and loss of treatment rather than shock. The fuse on the 24 V input and a leak check in the fault logic are required.
 - **Electrical.** Mains is confined to the certified adapter, which should plug into a GFCI or RCD-protected outlet above any likely water level in the cabinet.
 - **Heat.** The board temperature sensor cuts LED current above 50 °C, and the controller must switch the LEDs off when flow stops.
-- **Materials.** UV-C degrades most plastics; only PTFE, quartz and metal may see it. Every wetted part must be food-contact grade.
+- **Materials.** UV-C degrades most plastics and rubbers; only PTFE (solid or expanded), quartz and metal may see it, which is why the window gasket and the sensor window washer are expanded PTFE (LMF-STM-001, S9). Whether the 3 mm PTFE wall passes enough UV-C to age the acetal upper cap is to be measured (S10). Every wetted part must be food-contact grade.
 
 ## Open questions
 

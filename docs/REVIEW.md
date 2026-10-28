@@ -425,3 +425,118 @@ Amish, 2026-10-02: "Photoreal renders are out of date in most repos ... COMPLETE
 - Appearance deviations already logged (session "Approved follow-ups carried out", Proposed, awaiting Amish): domed acorn nut tops, printed UV-C symbol on the cap label, "LumaFlow" wordmark and accent band on the product label, filleted flow switch and valve bodies, lid screw heads, sensor and valve leads, and the DC cord into the cabinet wall. Unchanged.
 - `python3 .kit/image_qc.py`: 5 images, 0 problems. `python3 .kit/render.py --check`: no FAIL, no storefront warning.
 - The "Stale, to regenerate on Amish's Mac" note of the 2026-10-01 session is removed; this work resolves it.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Carried out on 2026-10-24 and 2026-10-25 (the rollout was paused by Amish and resumed), on the instruction "Kit 1.9.1 rollout - proceed to rollout across the other repos", with "I want detailed TRL3 CAD" and "Detail every option" (2026-10-24) and the standing STEM fix instruction of 2026-10-23. The design of option A keeps every dimension; only the record around it and the modelling grew, plus four detail fixes under the standing instruction.
+
+### What was added or changed
+
+- `docs/01b-stem-check.md` (LMF-STM-001 v0.1) and `docs/04-calcs/stem_check.py` (writes `stem_results.csv` and refreshes the STM table): 51 claims, 39 within known science, 12 plausible; `stem_check: open`.
+- `docs/02a-concept-options.md` (LMF-OPT-001 v0.1) and `docs/decisions/0004-concept-selection.md` (LMF-DDR-004): options A, B, C with scoring.
+- `docs/03a-user-requirements.md` (LMF-URS-001, 18 URs); `docs/03-requirements.md` is now LMF-PRS-001 v0.9 (R1 to R18 as PR-001 to PR-018, new PR-019); `docs/03b-traceability.md` (LMF-RTM-001, generated, 0 gaps).
+- `docs/07-regulatory.md`, `08-feasibility.md`, `09-risk.md` (with preliminary hazard analysis and first-pass design FMEA), `10-market.md`, `11-plan.md` (REG, FEA, RSK, MKT, PLN v0.1). Market prices cited and dated 2026-10-25: VIQUA VT1 USD 315.00, Acuva ArrowMax 2.0 USD 349.95, Waterdrop UF CAD 125.99, VIQUA VH200-F10 USD 980.00.
+- PRB v0.9 (users-and-needs and stakeholder tables), PRC v0.9, CAL v0.7 (`sizing.py`: B10, B11, D5, G9 added; alarm threshold weighted for 275 nm), BLD v0.3, DEC v0.4, README (stage badge, links, STEM check and concept options sections), `project.yaml` (`stage: P3`, `stem_check: open`, `concept_options: [A, B, C]`, `concept_chosen` unset, `trl_evidence` extended).
+- `cad/src/model.py` rebuilt to the kit 1.9 interface (`PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS`, `components(option)`); option A is built from named sub-parts (every screw, stud, washer, acorn nut, heat-set insert, clamp stud and nut, weld bead, PCB, standoff, LED, connector, gland and socket) and `build_parts()` unions them into the legacy parts, so `sizing.py`, `sheets.py`, `build_plan_media.py` and `concept_media.py` run unchanged. Added fasteners that were in the BOM but not drawn: enclosure, lid, saddle, wall and PCB screws, heat-set inserts, clamp studs and lock nuts. 806 constructability checks pass. STL tolerance raised from 0.05 to 0.15 mm.
+- `cad/src/product_model.py` rebuilt from `components(CHOSEN)` plus a kitchen sink base cabinet as "(site)" context parts and a 1.75 m mannequin ("(scale)") standing on the kitchen floor at z = 0. `RENDER_VIEWS`: **hero**, **studio**, **exploded**.
+- `cad/src/options_preview.py` (new, repo-specific): a shaded preview of `media/options.png` from the detailed models, so the repo carries an options picture until the Cycles render replaces it (see kit issues).
+- Regenerated: `cad/fidelity.json`, `cad/step/A/` (one STEP per made or bought part of option A), `cad/step/{A,B,C}-assembly.step`, legacy STEP and STL, LMF-DWG-001 Rev P6 and the making sketches, all build plan pictures, concept media (LMF-DWG-010 Rev P6, hero, cutaway, exploded, flow, `model.glb` 3.0 MB, viewer). No file over 45 MB.
+
+### STEM verdicts and fixes
+
+39 within known science, 12 plausible (option A: S6 photorepair, S7 regrowth, S10 light through the PTFE onto the acetal cap, S22 valve Kv, S33 LED derating, S34 mixing, S39 photodiode spectrum; B1, B3, B5; C2, C6), none failing after the fixes. Fixed under the standing instruction and recorded in LMF-DEC-001:
+
+- **D-S1** window gasket and sensor window washer in expanded PTFE, not EPDM: about 4.2 % of the LED output reaches the gasket through the window (S9). About USD 2.
+- **D-S2** retaining ring screws in anti-seize at 0.21 N·m, ring in 316 sheet: 0.5 N·m dry put the 2 mm ring at its proof stress (S12, S13). First set at 0.3 N·m dry; revised after the review.
+- **D-S3** (found by the review) outlet pressure sensor on a tee in the faucet line: with the normally closed valve downstream of the flow sensor the unit could never start (S37). New BOM line 20, about USD 15; standby 0.21 to 0.23 W.
+- **D-S4** (found by the review) dose alarm threshold from the 275 nm weighted reference dose: S/S_ref 0.85 instead of 0.79, so one failed LED trips it (S38). The UV level bar now shows two of five segments in design water.
+
+### Independent review
+
+A separate Claude Code session, run headless (`claude -p`) with read-only access to a folder holding only the STEM check, CAL, PRS and `sizing.py`, tried to refute the headline results and every "Within known science" row. It reproduced the ray trace within 2 %. It refuted the claim that the laminar RED is a lower bound (S21; mixing now S34, to Amish as O-4), weakened the dose margin (the 275 nm factor gives 47.3 mJ/cm², under the note's 20 % rule; a derating stack gives 37.5; PR-002 now at risk, O-3), the ring torque window (D-S2 revised), the pressure drop with a slow-flow valve (0.59 bar; PR-008 at risk), the alarm threshold (D-S4) and the board temperature (answered with a developing-flow film coefficient, S35), and found the start-up failure (D-S3) and the missing water-hammer check (S36: 6.5 bar peak, within 8). Full table in LMF-STM-001.
+
+### Concept options
+
+| Option | Score (of 275) | Parts | Fasteners | Welds | Mass, fidelity check |
+| --- | --- | --- | --- | --- | --- |
+| A, axial UV-C LED reactor (current design) | 228 | 119 (65 made or bought) | 53 | 1 | 4.7 kg |
+| B, hollow-fibre ultrafilter | 229 | 36 (26 made or bought) | 10 | 0 | 3.3 kg |
+| C, radial UV-C LED reactor | 204 | 132 (68 made or bought) | 64 | 0 | 3.7 kg |
+
+All three pass D3 in `cad/fidelity.json`. A and B are within 10 %, so both go to Amish without a pick. Masses use the kit densities; LMF-CAL-001 H2 gives 4.97 kg for option A.
+
+### Requirements not met
+
+- PR-003 (dose at 70 %/cm) **not met**: 17.0 to 21.3 mJ/cm², 15.8 with the 275 nm factor; accepted by D1.
+- At risk: PR-002 (47.3 mJ/cm² weighted, 18 % margin against the 20 % rule; 37.5 worst-case derating), PR-004 (firmware and test), PR-008 (valve Kv).
+- PR-015 to verify at TRL 4; PR-016 over the value-engineering target: USD 433 against USD 340 (USD 93 over).
+
+### Decisions proposed, awaiting Amish
+
+1. **O-1 concept selection:** A (228) or B (229); B changes the pitch. The repo stays on A until Amish decides.
+2. **O-2 graft from the runner-up:** with A, an automatic leak and stuck-valve check on each idle pulse; with B, a valve and alarm on a differential pressure sensor.
+3. **O-3 dose margin** once the LED is chosen: high-output bin, then seven or eight LEDs, or a lower flow.
+4. **O-4 mixing:** tracer test at TRL 4, with a perforated PTFE inlet ring ready.
+5. **Product render site:** the hero is a studio render of the unit in a kitchen sink cabinet with a mannequin at the counter, not a kit 1.9 outdoor scene, because the real site is indoors; proposed, awaiting Amish.
+6. D-S1 to D-S4 were decided under the standing instruction and can be reversed.
+
+### Safety
+
+No new hazards; the fixes remove a UV-C ageing path for the seals, an over-torque risk on the window clamp, a start-up dead end and an alarm blind spot. The calculated dose margin is thinner than earlier stated, which strengthens the existing warning: LumaFlow is a research and educational prototype, not a certified water treatment device.
+
+### Kit and environment issues met
+
+1. No subagent tool was available to this agent, so the independent reviewer ran as a headless `claude -p` session on a folder holding only the four files.
+2. `render.py --check` requires `media/options.png`, which only `.kit/options.py` (Cycles, studio machine) or `--massing` (not allowed by the rollout) can write; worked around with `cad/src/options_preview.py`. The coordinator's Cycles render will overwrite it.
+3. `cad_parts.MATERIALS` has no PTFE (2150 kg/m³), acetal (1410), fused quartz (2200), PETG (1270) or FR-4; nearest classes were used, so fidelity masses read low.
+4. `cad_parts.break_edges()` on the saddle-cut sensor boss returned a valid-looking solid whose hidden-line projection drew a stray 335 mm edge, which changed the GA drawing's overall depth; the chamfer was removed from that part.
+5. `.kit/options.py` labels the `CHOSEN` option "CHOSEN" even when `concept_chosen` is unset and the choice is awaiting Amish; the interface requires `CHOSEN`, so the Cycles picture will read "CHOSEN" for A.
+6. `photoreal.py` site scenes are outdoor only; there is no indoor scene for under-sink products.
+7. The scratchpad folder is shared by the fleet agents: a log with a generic name was overwritten by another repo's job; lumaflow logs were renamed with a prefix.
+8. `trace.py` adds a revision row each time it regenerates, so one session produced RTM v0.1 and v0.2.
+
+### Checks
+
+Run in this order on 2026-10-25, after the last edit to `cad/src/` and `bom/bom.csv`:
+
+- `python3 docs/04-calcs/sizing.py`: runs; K1 12 met, 3 at risk, 1 not met, 1 not verifiable at TRL 3, R16 over target by USD 93.
+- `python3 docs/04-calcs/stem_check.py`: open, 39 within, 12 plausible, 0 fail.
+- `python3 .kit/trace.py`: RTM regenerated, 0 gaps; `--check` passes.
+- `python3 .kit/cad_check.py --export`: PASS at D3 for A, B and C.
+- `python3 .kit/render.py`: PDFs written to `docs/pdf/`.
+- `python3 .kit/render.py --check`: passes, no FAIL and no warnings.
+- `python3 -m reuse lint`: compliant (292 of 292 files).
+- No em or en dashes outside `.kit/` and `LICENSES/`.
+
+Not run, as the rollout asks: `.kit/options.py` without `--export`, `photoreal.py`, `export_views.py`, `cards.py`. `media/render-hero.png`, `render-exploded.png`, `render-detail.png`, `card.png` and `social-preview.png` are still the renders of 2026-10-02 and `media/render-studio.png` (linked from the README) does not exist yet; the coordinator renders them from the new `product_model.py`.
+
+### Recommended next step
+
+Amish decides O-1 (and O-2 to O-4); the coordinator renders `media/options.png` and the three product views on the studio machine. TRL 4 stays on hold.
+
+## Session 2026-10-25: decisions
+
+Amish, 2026-10-25 10:19 CT, after a report listing each repo's proposed decisions and recommendations: "i concur with your recommendations". Every decision that carried a recommendation is recorded as decided with the option recommended; every decision without a pick stays open.
+
+### Decided by Amish, 2026-10-25
+
+- **O-4 mixing in the reactor:** option (a). The side inlet stays; the residence-time distribution is measured by tracer test at TRL 4, with the perforated PTFE inlet ring held ready. No part, dimension or price changed. Recorded in LMF-DEC-001 v0.5, LMF-STM-001 v0.2 (S34 closing route, `docs/04-calcs/stem_check.py`, `stem_results.csv`), LMF-RSK-001 v0.2 (P8) and LMF-PLN-001 v0.2 (P4 verification).
+- **Product render site:** the indoor kitchen sink cabinet studio hero with a 1.75 m mannequin, as built in `cad/src/product_model.py` on 2026-10-24. No change; recorded in LMF-DEC-001 v0.5.
+
+### Still open (no recommendation to concur with)
+
+- **O-1 concept selection:** A (228) and B (229) are within 10 %, sent without a pick; `concept_chosen` stays unset and the repo stays on A.
+- **O-2 graft from the runner-up:** depends on O-1 (recommendation "after O-1").
+- **O-3 dose margin:** recommendation was to decide after the LED is chosen.
+
+### Checks
+
+Run in this order on 2026-10-25 after the last edit to `cad/src/` and `bom/bom.csv` (neither changed this session):
+
+- `python3 docs/04-calcs/sizing.py`: runs; K1 12 met, 3 at risk, 1 not met (PR-003, accepted by D1), 1 not verifiable at TRL 3, over target by USD 93 (unchanged).
+- `python3 docs/04-calcs/stem_check.py`: open, 39 within, 12 plausible, 0 fail (unchanged).
+- `python3 .kit/trace.py`: RTM regenerated (v0.4), 0 gaps.
+- `python3 .kit/cad_check.py --export`: PASS at D3.
+- `python3 .kit/render.py` and `python3 .kit/render.py --check`: pass, no FAIL.
+- `python3 -m reuse lint`: compliant.
+- Em and en dash scan outside `.kit/` and `LICENSES/`: none.

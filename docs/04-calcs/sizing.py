@@ -1,4 +1,6 @@
-"""LumaFlow sizing calculations for LMF-CAL-001 v0.6 (TRL 3, design as revised by LMF-DDR-002, made
+"""LumaFlow sizing calculations for LMF-CAL-001 v0.7 (kit 1.9.1, 2026-10-25: 275 nm response factor in B10 and in
+the alarm threshold, outlet pressure sensor in the standby budget and the start-up sequence D5, LED derating B11;
+LMF-DEC-001 D-S3, D-S4). Earlier: v0.6 (TRL 3, design as revised by LMF-DDR-002, made
 constructable by LMF-DDR-003 and carried forward by the decisions of 2026-10-02 in LMF-DEC-001: PTFE
 window washer, LED head interlock loop, five-segment UV level bar (R18), labels and the idle LED pulse).
 
@@ -46,6 +48,8 @@ CP_W = 4180.0                     # J/(kg K)
 N_LED, I_LED, V_LED, PO_LED = P["led_n"], 0.350, 6.2, 0.060   # A, V, W optical per LED
 ETA_DRV, P_VALVE, P_CTRL, ETA_AD = 0.90, 4.8, 0.6, 0.88
 P_SENSE_SB, P_MCU_SB, P_AD_NL, ETA_AD_LIGHT = 0.075, 0.005, 0.10, 0.70
+P_PRESS_SB = 0.010                # outlet pressure sensor, W (start-up trigger, LMF-DEC-001 D-S3, 2026-10-25)
+K275 = 0.93                       # MS2 response at a 280 nm LED relative to 254 nm (Beck et al. 2017; LMF-STM-001 S3)
 DRAWS, L_DAY, RUNON = 20, 15.0, 5.0
 PULSE_S, PULSE_EVERY_H = 10.0, 4.0   # idle LED pulse: about 10 s every 4 h of idle (decided 2026-10-02)
 N_QUARTZ, N_WATER = 1.496, 1.372  # refractive indices near 275 nm
@@ -251,6 +255,11 @@ for rp_ in (0.80, 0.90):
 show("B8", f"Sensitivity to wetted liner reflectance at 90 %/cm (laminar RED): {sens[0.80]:.1f} at 0.80 (plain PTFE), "
      f"{sens[0.90]:.1f} at 0.90, {RED90_l:.1f} at 0.95 mJ/cm2", sens[0.80])
 show("B9", f"LED output 20 % low (aging, bin, temperature): laminar RED {RED90_l*0.8:.1f} mJ/cm2 at 90 %/cm")
+RED90_w = RED90_l * K275
+show("B10", f"With the 275 nm response factor {K275}: laminar RED {RED90_w:.1f} mJ/cm2 at 90 %/cm "
+     f"({(RED90_w/DOSE_T-1)*100:.0f} % over 40; the Met rule needs 20 %), {RED70_l*K275:.1f} at 70 %/cm", RED90_w)
+show("B11", f"Stacked derating (junction near 62 degC about 12 % less output, a low bin 10 % less, and the 275 nm factor): "
+     f"laminar RED {RED90_w*0.88*0.90:.1f} mJ/cm2 at 90 %/cm (independent review, 2026-10-25; to confirm on the chosen LED)")
 
 # ---------------------------------------------------------------- C dose monitor
 head("C. Dose monitor (wall sensor at mid height)")
@@ -266,13 +275,13 @@ show("C1", f"Wall sensor at Z {L['z_det']:.0f} mm: {S[0.90]*1e3:.2f} mW/cm2 and 
      f"{cur[0.80]*1e9:.1f} nA at 80 %/cm, {cur[0.70]*1e9:.2f} nA at 70 %/cm (SiC, {RESP} A/W, 0.06 mm2)", cur[0.90])
 g = math.log(S[0.85] / S[0.90]) / math.log(res[0.85]["laminar"][3] / RED90_l)
 show("C2", f"Between 90 and 85 %/cm the wall signal falls {g:.1f} times as fast (in log terms) as the RED")
-thr = DOSE_T / RED90_l
+thr = DOSE_T / (RED90_l * K275)       # reference RED weighted for 275 nm (independent review, 2026-10-25)
 show("C3", f"Proportional mapping RED_est = RED_ref x (S/S_ref) x (Q_ref/Q) is always conservative; with RED_ref "
-     f"{RED90_l:.1f} mJ/cm2 the alarm threshold is S/S_ref = {thr:.2f}", thr)
+     f"{RED90_l*K275:.1f} mJ/cm2 (275 nm weighted) the alarm threshold is S/S_ref = {thr:.2f}; one dead LED of six gives 0.83 and trips it", thr)
 uvts = np.array(CASES[::-1]); sig = np.array([S[u] for u in uvts]); reds = np.array([res[u]["laminar"][3] for u in uvts])
 u_trip = float(np.interp(math.log(thr * S[0.90]), np.log(sig), uvts))
 show("C4", f"With LEDs at rated output the alarm trips below about {u_trip*100:.1f} %/cm UVT; LEDs aged to "
-     f"{thr*100:.0f} % of output trip it in 90 %/cm water, where the true RED is {thr*RED90_l:.1f} mJ/cm2 (safe)", u_trip)
+     f"{thr*100:.0f} % of output trip it in 90 %/cm water, where the true weighted RED is {thr*RED90_l*K275:.1f} mJ/cm2", u_trip)
 S_age = 0.7 * S[0.90]
 uvt_claim = float(np.interp(math.log(S_age), np.log(sig), uvts))
 red_claim = float(np.interp(uvt_claim, uvts, reds))
@@ -294,6 +303,9 @@ K_HZ = 15.0                                  # Hz per L/min, higher pulse-rate s
 show("D1", f"Sensor pulses at 0.3 L/min: {K_HZ*0.3:.2f} Hz, one pulse every {1/(K_HZ*0.3):.2f} s; at {Q_LPM} L/min {K_HZ*Q_LPM:.1f} Hz", 1 / (K_HZ * 0.3))
 t_on = 1 / (K_HZ * 0.3) + 0.02
 show("D2", f"Worst-case detection plus LED rise at 0.3 L/min: {t_on:.2f} s against 0.5 s", t_on)
+show("D5", "Start-up (LMF-DEC-001 D-S3): with the outlet valve shut in standby, opening the faucet drops the outlet line "
+     "pressure; the outlet pressure sensor trips within about 50 ms, the LEDs come on, the valve opens 20 ms later and the "
+     "flow sensor must confirm flow within 0.5 s or the valve shuts again (fault)")
 # stagnant parcel doses (plug flow): prior pass + 5 s run-on + remainder after restart with a 0.5 s dark delay
 Ucm = Q_LPM * 1000 / 60 / (math.pi * R_cm ** 2)
 E = E90
@@ -314,10 +326,10 @@ head("E. Power and energy")
 P_led = N_LED * I_LED * V_LED
 P_dc = P_led / ETA_DRV + P_VALVE + P_CTRL
 P_ac = P_dc / ETA_AD
-P_sb = (P_SENSE_SB + P_MCU_SB) / ETA_AD_LIGHT + P_AD_NL
+P_sb = (P_SENSE_SB + P_PRESS_SB + P_MCU_SB) / ETA_AD_LIGHT + P_AD_NL
 show("E1", f"LED {P_led:.2f} W; 24 V bus {P_dc:.2f} W (driver 90 %, valve {P_VALVE} W, controller {P_CTRL} W); "
      f"from mains {P_ac:.1f} W", P_ac)
-show("E2", f"Standby from mains {P_sb:.2f} W (flow sensor {P_SENSE_SB*1e3:.0f} mW, MCU sleep, adapter no-load {P_AD_NL} W)", P_sb)
+show("E2", f"Standby from mains {P_sb:.2f} W (flow sensor {P_SENSE_SB*1e3:.0f} mW, outlet pressure sensor {P_PRESS_SB*1e3:.0f} mW, MCU sleep, adapter no-load {P_AD_NL} W)", P_sb)
 t_day = L_DAY / Q_LPM * 60 + DRAWS * RUNON
 e_day = P_ac * t_day / 3600 + P_sb * (24 - t_day / 3600)
 show("E3", f"On-time {t_day/60:.1f} min/day ({t_day/3600*365:.0f} h/year); energy {e_day:.1f} Wh/day, {e_day*365/1000:.1f} kWh/year")
@@ -410,6 +422,9 @@ show("G1", f"Flow sensor {dp_s:.2f} (Kv {KV_SENS}), valve {dp_v:.2f} (Kv {KV_VAL
 show("G2", f"Total at {Q_LPM} L/min, excluding the flow restrictor: {dp:.2f} bar ({dp*14.5:.1f} psi) against 0.5 bar", dp)
 dp_lo = (q_m3h / 0.5) ** 2 + (q_m3h / 0.4) ** 2 + dp_tube + dp_fit + dp_ports
 show("G3", f"With Kv 0.5 sensor and Kv 0.4 valve: {dp_lo:.2f} bar; at 2 bar supply {2-dp:.2f} bar is left for the restrictor and faucet")
+dp_kv01 = (q_m3h / KV_SENS) ** 2 + (q_m3h / 0.10) ** 2 + dp_tube + dp_fit + dp_ports
+show("G9", f"With a direct-acting valve of Kv 0.10 (independent review): {dp_kv01:.2f} bar; R8 stays at risk until the "
+     "sensor and valve are chosen from datasheets", dp_kv01)
 p = 0.8
 a_w = P["aperture_d"] / 2
 sig = lambda t, pr=p: 3 * (3 + 0.17) / 8 * pr * a_w ** 2 / t ** 2
@@ -484,8 +499,8 @@ led_clear = led_cable_route()["clear"]
 dims = OUT["H1"]
 status = [
     ("R1", f"{Q_LPM} L/min, restrictor", f"{Q_LPM} L/min restrictor; sensor range 0.3 to 6 L/min", "Met"),
-    ("R2", f"RED >= 40 at 90 %/cm, {Q_LPM} L/min", f"{RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2",
-     "Met" if RED90_l >= DOSE_T * 1.2 else ("At risk" if RED90_p >= DOSE_T else "Not met")),
+    ("R2", f"RED >= 40 at 90 %/cm, {Q_LPM} L/min", f"{RED90_l:.1f} (laminar) to {RED90_p:.1f} (plug) mJ/cm2; {RED90_w:.1f} weighted for 275 nm",
+     "Met" if RED90_w >= DOSE_T * 1.2 else ("At risk" if RED90_p >= DOSE_T else "Not met")),
     ("R3", "RED >= 40 at 70 %/cm", f"{RED70_l:.1f} to {RED70_p:.1f} mJ/cm2", "Met" if RED70_l >= DOSE_T else "Not met"),
     ("R4", "Dose monitor, fail closed in 1 s", f"wall signal {cur[0.90]*1e9:.1f} nA at 90 %/cm, {cur[0.70]*1e9:.2f} nA at 70 %/cm; "
      f"alarm below about {u_trip*100:.0f} %/cm; mapping and fail-safe need firmware and test",
@@ -494,7 +509,7 @@ status = [
     ("R6", "No mercury; full output in 0.1 s", "LEDs, microsecond rise", "Met"),
     ("R7", "Window <= 6.8 MPa at 8 bar", f"{OUT['G4']:.2f} MPa", "Met" if OUT["G4"] <= 6.8 else "Not met"),
     ("R8", f"<= 0.5 bar at {Q_LPM} L/min, excluding the restrictor", f"{dp:.2f} bar on assumed Kv",
-     "Met" if dp <= 0.35 else ("At risk" if dp <= 0.5 else "Not met")),
+     "Met" if dp <= 0.35 and dp_kv01 <= 0.5 else ("At risk" if dp <= 0.5 else "Not met")),
     ("R9", "<= 25 W flowing, <= 0.5 W standby", f"{P_ac:.1f} W, {P_sb:.2f} W", "Met" if P_ac <= 25 and P_sb <= 0.5 else "Not met"),
     ("R10", "Board <= 50 degC; cut-back above 50 degC", f"{res_T[600][0]:.0f} to {res_T[150][0]:.0f} degC steady",
      "Met" if res_T[150][0] <= 50 else ("At risk" if Tb <= 50 else "Not met")),
