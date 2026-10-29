@@ -33,6 +33,19 @@ import concept
 INK, MUTED, ACCENT = "#111827", "#4B5563", "#0F766E"
 
 
+
+def _choice_label(from_model):
+    """CHOSEN only when project.yaml records a decided concept_chosen; otherwise the option is the current design
+    (kit 1.9.1: a proposed or open choice must not read as decided)."""
+    try:
+        import yaml
+        c = str((yaml.safe_load((ROOT / "project.yaml").read_text()) or {}).get("concept_chosen") or "")
+    except Exception:
+        c = ""
+    if c and "propos" not in c.lower() and "open" not in c.lower() and "await" not in c.lower():
+        return "CHOSEN"
+    return "CURRENT DESIGN" if from_model else "RECOMMENDED"
+
 def load_options():
     src = ROOT / "cad/src/options.py"
     if not src.exists():
@@ -163,7 +176,7 @@ def main():
         fig.text(i / n + 0.02, 0.17, f"Option {o['key']}: {o['name']}", fontsize=11, fontweight="bold", color=INK, va="top")
         fig.text(i / n + 0.02, 0.12, textwrap.fill(o.get("principle", ""), 52), fontsize=8.5, color=MUTED, va="top")
         if o.get("chosen"):
-            fig.text((i + 1) / n - 0.02, 0.17, "CHOSEN" if mo else "RECOMMENDED", fontsize=8, fontweight="bold", color=ACCENT, va="top", ha="right")
+            fig.text((i + 1) / n - 0.02, 0.17, _choice_label(mo), fontsize=8, fontweight="bold", color=ACCENT, va="top", ha="right")
     out = ROOT / "media/options.png"
     out.parent.mkdir(exist_ok=True)
     fig.savefig(out, facecolor="white"); plt.close(fig)
